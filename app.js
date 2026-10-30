@@ -34,10 +34,10 @@ const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2
 
 /* ---------- data store: Supabase when configured, this device otherwise ---------- */
 const D = Object.fromEntries(COLS.map(c => [c, []]));
-/* Google sign-in through Supabase. Tutors sign in, the program lead approves them once in Admin. */
+/* Google sign-in through Supabase. Anyone who signs in with Google is a tutor; admins are listed in the database. */
 const Auth = { on: false, user: null, isAdmin: null, email: "" };
 const myRecord = () => Auth.email ? D.tutors.find(t => (t.email || "").toLowerCase() === Auth.email && t.active !== false) : null;
-const isApproved = () => Auth.isAdmin === true || myRecord()?.approved === true;
+const isApproved = () => !!Auth.user;
 const Store = {
   sb: null, live: false, ready: false, err: "",
   local() { try { return JSON.parse(lsGet("icl-local") || "{}"); } catch { return {}; } },
@@ -70,11 +70,13 @@ const Store = {
     if (Auth.on) {
       const { data, error } = await this.sb.rpc("is_admin");
       Auth.isAdmin = error ? null : !!data;
-      const rec = myRecord();
-      if (!rec && Auth.isAdmin) {
-        const name = Auth.user.user_metadata?.full_name || Auth.user.user_metadata?.name || Auth.email.split("@")[0];
-        const id = await this.add("tutors", { name, email: Auth.email, approved: true, active: true, at: Date.now() }).catch(() => null);
-        if (id) S.me = id;
+      if (!myRecord()) {
+        const old = D.tutors.find(t => (t.email || "").toLowerCase() === Auth.email);
+        if (old) await this.update("tutors", old.id, { active: true }).catch(() => {});
+        else {
+          const name = Auth.user.user_metadata?.full_name || Auth.user.user_metadata?.name || Auth.email.split("@")[0];
+          await this.add("tutors", { name, email: Auth.email, approved: true, active: true, at: Date.now() }).catch(() => {});
+        }
       }
       if (myRecord() && isApproved()) { S.me = myRecord().id; lsSet("icl-me", S.me); S.signedToday = lsGet("icl-day") === TODAY && lsGet("icl-day-who") === S.me; loadSessions(); }
     }
@@ -105,9 +107,8 @@ const Store = {
     } else {
       const r = p.new; if (!r || !D[r.col]) return;
       const id = r.id.slice(r.col.length + 1);
-      const wasApproved = isApproved();
       D[r.col] = D[r.col].filter(x => x.id !== id).concat({ ...r.data, id });
-      if (Auth.on && r.col === "tutors" && !wasApproved && isApproved()) { this.afterLogin(); return; }
+
     }
     sortAll(); scheduleRender();
   },
@@ -295,22 +296,10 @@ function gateHTML() {
   if (!Auth.user) return `<div class="col"><div class="title-row"><div><h1 class="greet">Welcome, tutors.</h1>
       <p class="sub">Interschool Corner of Learning · Sunday reading log</p></div></div>
     <section class="panel s6"><h2 style="font-size:16px;margin-bottom:6px">Sign in to start</h2>
-      <p class="muted" style="margin-bottom:16px">Use your Google account. The first time, the program lead approves you, then you're in every week.</p>
+      <p class="muted" style="margin-bottom:16px">Use your Google account. You'll stay signed in on this computer.</p>
       <button class="btn google" data-act="google">${GOOGLE_G}Sign in with Google</button>
       <p class="muted small" style="margin-top:14px">School accounts sometimes block outside sign-ins. If yours does, use a personal Gmail.</p></section></div>`;
-  const rec = myRecord();
-  if (!rec && Auth.isAdmin !== true) {
-    if (S.regName == null) S.regName = Auth.user.user_metadata?.full_name || Auth.user.user_metadata?.name || "";
-    return `<div class="col"><div class="title-row"><div><h1 class="greet">Nice to meet you.</h1><p class="sub">Signed in as ${esc(Auth.email)}</p></div></div>
-      <section class="panel s6"><form class="stack" data-form="register" style="gap:12px">
-        <div class="field"><label for="regname">Your name, as the kids and other tutors know you</label><input type="text" id="regname" data-input="regName" value="${esc(S.regName)}" autocomplete="name" required></div>
-        <div class="inline"><button class="btn primary" type="submit">Ask to join</button><button class="btn quiet" type="button" data-act="signout">Use a different account</button></div>
-      </form></section></div>`;
-  }
-  if (rec && rec.approved !== true && Auth.isAdmin !== true) return `<div class="col"><div class="title-row"><div><h1 class="greet">Almost there, ${esc(first(rec.name))}.</h1><p class="sub">Signed in as ${esc(Auth.email)}</p></div></div>
-    <section class="panel s6"><h2 style="font-size:16px;margin-bottom:6px">Waiting for approval</h2>
-      <p class="muted">The program lead needs to approve you once. This page opens by itself as soon as they do, so you can leave it open.</p>
-      <div class="inline" style="margin-top:16px"><button class="btn quiet" data-act="signout">Sign out</button></div></section></div>`;
+  if (!myRecord()) return `<div class="col"><p class="muted"><span class="spin"></span> Setting up your account…</p></div>`;
   return null;
 }
 
@@ -997,13 +986,10 @@ function adminHTML() {
     <section class="panel s6"><div class="panel-head"><h2>Kids missing lately <span class="count">${missing.length}</span></h2></div>
       <div class="stack">${missing.map(s => { const a = kidAttendance(s.id); const lastDay = D.picks.filter(p => p.studentId === s.id).map(p => p.date).sort().reverse()[0]; return `<div class="row"><div class="grow"><div class="t">${esc(s.name)}</div><div class="m">Missed the last 2 classes · last came ${fmtDay(lastDay)} · ${a.came} of ${a.of} overall</div></div><button class="btn small quiet" data-act="kid" data-id="${s.id}">Progress</button></div>`; }).join("") || `<div class="empty">Everyone has come to at least one of the last two classes.</div>`}</div>
     </section>
-    ${Auth.on ? (() => { const pending = activeTutors().filter(t => t.email && t.approved !== true); return `<section class="panel ${pending.length ? "pending-panel" : ""}"><div class="panel-head"><h2>Waiting for approval <span class="count">${pending.length}</span></h2></div>
-      ${pending.length ? `<div class="stack">${pending.map(t => `<div class="row"><div class="grow"><div class="t">${esc(t.name)}</div><div class="m">${esc(t.email)} · asked ${fmtShort(dayKey(new Date(t.at || Date.now())))}</div></div><button class="btn small primary" data-act="approve" data-id="${t.id}">Approve</button><button class="btn small quiet" data-act="decline" data-id="${t.id}">Decline</button></div>`).join("")}</div>`
-        : `<div class="empty">No one is waiting. When a new tutor signs in with Google, they show up here.</div>`}</section>`; })() : ""}
-    <section class="panel s6"><div class="panel-head"><h2>Tutors <span class="count">${activeTutors().filter(t => !Auth.on || t.approved === true || !t.email).length}</span></h2></div>
-      ${Auth.on ? `<form class="inline" data-form="adminTutor" style="margin-bottom:12px"><input type="text" id="atutor" data-input="newTutor" placeholder="Tutor's name" value="${esc(S.newTutor)}" aria-label="Tutor's name"><input type="email" id="atutoremail" data-input="newTutorEmail" placeholder="Their Google email" value="${esc(S.newTutorEmail || "")}" aria-label="Tutor's Google email"><button class="btn" type="submit">Add and approve</button></form>`
+    <section class="panel s6"><div class="panel-head"><h2>Tutors <span class="count">${activeTutors().length}</span></h2></div>
+      ${Auth.on ? `<p class="muted small" style="margin-bottom:12px">Tutors appear here the first time they sign in with Google.</p>`
         : `<form class="inline" data-form="adminTutor" style="margin-bottom:12px"><input type="text" id="atutor" data-input="newTutor" placeholder="Tutor's full name" value="${esc(S.newTutor)}" aria-label="Tutor's full name"><button class="btn" type="submit">Add tutor</button></form>`}
-      <div class="stack">${activeTutors().filter(t => !Auth.on || t.approved === true || !t.email).map(t => `<div class="row"><div class="grow"><div class="t">${esc(t.name)}</div><div class="m">${t.email ? `${esc(t.email)} · ` : Auth.on ? "No Google account linked · " : ""}${plural(D.attendance.filter(a => a.tutorId === t.id).length, "class", "classes")} taught</div></div><button class="btn small quiet" data-act="rmtutor" data-id="${t.id}">Remove</button></div>`).join("") || `<div class="empty">No tutors yet.</div>`}</div>
+      <div class="stack">${activeTutors().map(t => `<div class="row"><div class="grow"><div class="t">${esc(t.name)}</div><div class="m">${t.email ? `${esc(t.email)} · ` : Auth.on ? "No Google account linked · " : ""}${plural(D.attendance.filter(a => a.tutorId === t.id).length, "class", "classes")} taught</div></div><button class="btn small quiet" data-act="rmtutor" data-id="${t.id}">Remove</button></div>`).join("") || `<div class="empty">No tutors yet.</div>`}</div>
     </section>
     <section class="panel s6"><div class="panel-head"><h2>Kids <span class="count">${activeStudents().length}</span></h2></div>
       <div class="stack">${activeStudents().map(s => `<div class="row"><div class="grow"><div class="t">${esc(s.name)}</div><div class="m">${s.level ? `Level ${s.level}` : "No level"} · ${plural(readingsOf(s.id).length, "story", "stories")}</div></div><button class="btn small quiet" data-act="rmkid" data-id="${s.id}">Remove</button></div>`).join("") || `<div class="empty">No kids yet.</div>`}</div>

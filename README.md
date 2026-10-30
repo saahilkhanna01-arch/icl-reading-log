@@ -88,9 +88,9 @@ Edit or replace a file on GitHub (open the file, click the pencil, save). Vercel
 
 ## Google sign-in
 
-Tutors sign in with Google. The first time, they type their name and wait; you approve them on the Admin page (or add them yourself with their name and Google email), and from then on they go straight in. Only the Google account(s) listed in `setup-signin.sql` can open Admin.
+Tutors sign in with Google and go straight in. Their name comes from their Google account. Only the Google account(s) listed in `setup-signin.sql` can open Admin.
 
-To turn it on: switch on Google in Supabase (Authentication > Providers), put your Google email in `setup-signin.sql`, and run it in the SQL Editor. Once that's run, nobody can read or change the log without signing in and being approved.
+To turn it on: switch on Google in Supabase (Authentication > Providers), put your Google email in `setup-signin.sql`, and run it in the SQL Editor. Once that's run, nobody can read or change the log without signing in with Google.
 
 ## Good to know
 
