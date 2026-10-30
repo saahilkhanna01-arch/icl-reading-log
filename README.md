@@ -1,0 +1,97 @@
+# Interschool Corner of Learning: reading log website
+
+This folder is the whole website. Putting it online takes about 30 minutes the first time and uses four free accounts. A Gmail address works for all of them.
+
+| Service | What it does | Cost |
+| --- | --- | --- |
+| Supabase | Saves tutors, kids and reading results so every tutor sees the same log | Free |
+| Groq | The AI that writes stories, questions and end-of-lesson notes | Free |
+| GitHub | Holds these files | Free |
+| Netlify | Puts the website online and keeps the Groq key hidden | Free |
+
+Want to look around first? Double-click `index.html`. It opens in your browser and saves to that computer only. The AI only works once the site is online.
+
+---
+
+## Step 1: Make the database (Supabase)
+
+1. Go to **supabase.com** and click **Start your project**. Sign in with GitHub or Google.
+2. Click **New project**. Name it `icl-reading-log`, make up a database password (you won't need it again), pick the region closest to Ontario (for example Canada Central), and click **Create new project**. Wait a minute or two.
+3. In the left menu, open **SQL Editor**, then **New query**.
+4. Open `setup.sql` from this folder in Notepad or TextEdit, copy everything, paste it into Supabase, and click **Run**. You should see "Success".
+5. In the left menu, open **Project Settings**, then **API** (it may be called **Data API** or **API Keys**). Copy two things:
+   - the **Project URL** (looks like `https://abcd1234.supabase.co`)
+   - the **anon public** key (it may be called the **publishable** key). It's long, and it's fine to share it.
+6. Open `config.js` from this folder in Notepad or TextEdit, paste them between the quotes, and save:
+
+```js
+window.ICL_CONFIG = {
+  supabaseUrl: "https://abcd1234.supabase.co",
+  supabaseAnonKey: "paste-the-long-key-here",
+};
+```
+
+## Step 2: Get the AI key (Groq)
+
+1. Go to **console.groq.com** and sign in.
+2. Open **API Keys**, then click **Create API Key**. Name it `icl`.
+3. Copy the key (it starts with `gsk_`) and keep it somewhere safe for Step 4. Don't put it in any of these files.
+
+## Step 3: Upload the files (GitHub)
+
+1. Go to **github.com** and create an account.
+2. Click the **+** at the top right, then **New repository**. Name it `icl-reading-log`, choose **Private**, and click **Create repository**.
+3. On the next page, click **uploading an existing file**.
+4. Open this folder on your computer, select **everything inside it** (including the `netlify` and `vendor` folders), and drag it all onto the GitHub page.
+5. Wait for the uploads to finish, then click **Commit changes**.
+
+Check that the repository shows `index.html`, `netlify.toml` and the `netlify` folder at the top level, not inside another folder.
+
+## Step 4: Put it online (Netlify)
+
+1. Go to **netlify.com** and sign up with your GitHub account.
+2. Click **Add new site** (or **Add new project**), then **Import an existing project**, then **GitHub**. Allow access and pick `icl-reading-log`.
+3. Leave the build settings as they are. This folder's `netlify.toml` sets them.
+4. Find **Environment variables** (on the same page, or after deploying under **Site configuration > Environment variables**) and add:
+   - Key: `GROQ_API_KEY`
+   - Value: the `gsk_` key from Step 2
+5. Click **Deploy**. After a minute you get a link like `random-name-123.netlify.app`.
+6. To get a nicer link, go to **Site configuration > Change site name** and type something like `cornerlearning`. The link becomes `cornerlearning.netlify.app`.
+
+If you added the key after the first deploy, go to **Deploys** and click **Trigger deploy** so the site picks it up.
+
+## Step 5: First visit
+
+1. Open your link, click **Admin**, and enter the password `corner2026`.
+2. Change the password straight away (bottom of the Admin page).
+3. Add your tutors, or let them add themselves on Sunday.
+4. Under **Make this week's stories**, tick the levels you want and click **Write stories**. With no kids yet, all 12 levels are ticked. It takes a few minutes; leave the page open.
+5. Send the link to your tutors.
+
+---
+
+## Each week
+
+- **Before Sunday:** open Admin and write this week's stories. The levels your kids are on (and the next one up) are ticked for you. Read a few and delete any you don't like.
+- **On Sunday:** tutors sign in, pick their kids, start the lesson, and end with notes for next week.
+- **Any time:** download everything as a spreadsheet from Admin.
+
+## Changing something later
+
+Edit or replace a file on GitHub (open the file, click the pencil, save). Netlify updates the website on its own within a minute.
+
+## If something goes wrong
+
+- **"Trying it out: the database isn't connected"**: `config.js` is still empty on GitHub. Fill it in (Step 1, part 6) and upload it again.
+- **"Can't reach the class log"**: the Supabase URL or key in `config.js` has a typo, or `setup.sql` wasn't run.
+- **"The AI isn't set up yet"**: add `GROQ_API_KEY` in Netlify, then trigger a deploy.
+- **"The free AI limit is used up"**: Groq's free plan allows roughly 30 requests a minute and 1,000 a day. Wait a minute and try again.
+- **Stories stop working one day**: Groq may have retired the model. In Netlify, add `GROQ_MODEL` set to a current model name from console.groq.com/docs/models, then trigger a deploy.
+- **Supabase project paused**: free projects pause after about a week with no use. Log in to Supabase and click **Restore**. Using the site every Sunday keeps it awake.
+
+## Good to know
+
+- There are no logins. Anyone with the link can see and change the log, so share it only with your tutors and use kids' first names (plus a last initial if two share a name).
+- The admin password keeps casual visitors out of Admin, but it isn't real security.
+- The 36 built-in stories are always there. AI stories are added on top and can be deleted from Admin.
+- Story levels follow the UFLI Foundations order. The lesson ranges are approximate, so check them against your UFLI manual.
