@@ -181,18 +181,17 @@ function practiceWords(sid, max = 10) {
   return [...seen.entries()].sort((a, b) => b[1] - a[1]).slice(0, max).map(e => e[0]);
 }
 const shuffle = arr => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-/* About 30 warm-up words, shuffled every time: every word the kid has been missing, this level's tricky
+/* Up to 150 warm-up words, shuffled every time: every word the kid has been missing, this level's tricky
    words, words from this level's stories that use its sound pattern, and a few from the level below as review. */
-function warmupDeck(k, size = 30) {
-  const lvl = k.level || 1, out = [], add = w => { const c = clean(w); if (c && c.length > 1 && !out.includes(c)) out.push(c); };
-  practiceWords(k.id, 12).forEach(add);
-  shuffle([...new Set(storiesAt(lvl).flatMap(st => st.tricky || []))]).slice(0, 8).forEach(add);
-  const pattern = shuffle([...new Set(storiesAt(lvl).flatMap(st => patternWords(st, 40)))]);
-  const review = lvl > 1 ? shuffle([...new Set(storiesAt(lvl - 1).flatMap(st => patternWords(st, 40)))]) : [];
-  for (const w of pattern) { if (out.length >= size - 4) break; add(w); }
-  for (const w of review) { if (out.length >= size) break; add(w); }
-  for (const w of pattern) { if (out.length >= size) break; add(w); }
-  return shuffle(out).slice(0, size);
+function warmupDeck(k, size = 150) {
+  const lvl = k.level || 1, out = [], add = w => { const c = clean(w); if (c && c.length > 1 && !out.includes(c) && out.length < size) out.push(c); };
+  const fromLevel = n => n >= 1 ? storiesAt(n) : [];
+  practiceWords(k.id, 20).forEach(add);
+  shuffle([...new Set(fromLevel(lvl).flatMap(st => st.tricky || []))]).forEach(add);
+  shuffle([...new Set(fromLevel(lvl).flatMap(st => patternWords(st, 200)))]).slice(0, 90).forEach(add);
+  for (let n = lvl - 1; n >= Math.max(1, lvl - 3) && out.length < size - 10; n--) shuffle([...new Set(fromLevel(n).flatMap(st => patternWords(st, 200)))]).slice(0, 25).forEach(add);
+  shuffle([...new Set(fromLevel(lvl).flatMap(st => tokens(st.text).map(clean)).filter(w => w.length >= 3))]).forEach(add);
+  return shuffle(out);
 }
 function struggling(s) {
   if (!s.level || s.level <= 1) return false;
@@ -397,8 +396,8 @@ function lessonHTML(me) {
 const LESSON_STEPS = [
   { key: "home", label: "Get ready", min: 2 },
   { key: "warmup", label: "Warm-up words", min: 8 },
-  { key: "prep", label: "Teach new words", min: 7 },
   { key: "read", label: "Read the story", min: 15 },
+  { key: "review", label: "Hard words", min: 5 },
   { key: "questions", label: "Questions", min: 8 },
   { key: "second", label: "Read again", min: 12 },
   { key: "wrap", label: "Wrap up", min: 3 },
@@ -420,20 +419,29 @@ function nextStoryFor(k, skip) {
   const list = storiesAt(lvl).filter(st => (!st.forKid || st.forKid === k.id) && !done.has(st.id) && st.id !== skip);
   return list.find(st => st.forKid) || list[0] || storiesAt(lvl)[0];
 }
+function startRead(k, storyId, extra = {}) {
+  const s = sess(k.id);
+  Object.assign(s, { round: s.round || 1, reread: false }, extra, { mode: "read", lstep: LESSON_STEPS.findIndex(x => x.key === (extra.round > 1 ? "second" : "read")),
+    storyId: storyId || s.storyId || nextStoryFor(k)?.id, marked: new Set(), acc: 0, running: false, startedAt: 0, askTime: false, timeAsked: false, estimated: false, q: null });
+  window.scrollTo(0, 0);
+}
 function goStep(k, key, extra = {}) {
   const s = sess(k.id);
+  if (key === "read") { if (s.mode === "read") return; return startRead(k, extra.storyId, extra); }
+  if ((key === "review" || key === "questions") && !s.result) { toast("Read a story first, then this step opens."); return; }
   Object.assign(s, extra, { mode: key, lstep: LESSON_STEPS.findIndex(x => x.key === key) });
-  if (key === "prep" && !s.storyId) s.storyId = nextStoryFor(k)?.id;
   if (key === "warmup") s.warm = { words: warmupDeck(k), res: [], i: 0 };
+  if (key === "questions" && (!s.q || s.q.forId !== s.resultId)) loadQuestions(k.id);
   window.scrollTo(0, 0);
 }
 function stepDone(k, key) {
   const today = readingsOf(k.id).filter(r => r.date === TODAY && r.tutorId === S.me), s = sess(k.id);
-  return { home: (s.lstep || 0) > 0, warmup: D.warmups.some(w => w.studentId === k.id && w.date === TODAY), prep: (s.lstep || 0) > 2 || today.length > 0,
+  return { home: (s.lstep || 0) > 0, warmup: D.warmups.some(w => w.studentId === k.id && w.date === TODAY), review: today.length > 0 && (s.lstep || 0) > 3,
     read: today.length > 0, questions: today.some(r => r.questions?.length), second: today.length > 1, wrap: D.notes.some(n => n.id === `${TODAY}_${k.id}`) }[key];
 }
 function stepperHTML(k, s) {
-  const cur = s.mode === "result" ? (s.round > 1 ? 5 : 4) : s.mode === "pick" ? 2 : LESSON_STEPS.findIndex(x => x.key === s.mode);
+  const idx = key => LESSON_STEPS.findIndex(x => x.key === key);
+  const cur = s.mode === "result" ? idx(s.round > 1 ? "second" : "questions") : s.mode === "pick" ? idx("read") : s.mode === "read" && s.round > 1 ? idx("second") : idx(s.mode);
   return `<nav class="stepper" aria-label="Lesson steps for ${esc(first(k.name))}">${LESSON_STEPS.map((x, i) => {
     const done = stepDone(k, x.key) && i !== cur;
     return `<button class="stp ${i === cur ? "cur" : ""} ${done ? "done" : ""}" data-act="gostep" data-id="${k.id}" data-v="${x.key}" ${i === cur ? 'aria-current="step"' : ""}><span class="stp-n">${done ? TICK : ""}</span><span class="stp-l">${x.label}</span></button>`;
@@ -448,40 +456,29 @@ function readyHTML(k, s) {
     <section class="panel"><div class="panel-head"><h2>Today's lesson with ${name}</h2><span class="muted small">Share your screen in Zoom now</span></div>
       <ol class="plan-list">
         <li><b>Warm-up words</b><span>Flash cards of words ${name} missed last time, plus this level's tricky words.</span></li>
-        <li><b>Teach new words</b><span>Go over the tricky words and this level's sound before reading${st ? ` “${esc(st.title)}”` : ""}.</span></li>
-        <li><b>Read the story</b><span>${name} reads aloud. You time it and tap any word they get wrong.</span></li>
+        <li><b>Read the story</b><span>${st ? `“${esc(st.title)}”. ` : ""}${name} reads aloud. You time it and tap any word they get wrong.</span></li>
+        <li><b>Hard words</b><span>Go over the words ${name} missed in the story.</span></li>
         <li><b>Questions</b><span>Three quick questions to check they understood.</span></li>
         <li><b>Read again</b><span>Re-read the same story to build speed, or read a new one.</span></li>
         <li><b>Wrap up</b><span>Write a short note for next week's tutor.</span></li>
       </ol>
       ${script(`Hi ${name}! Today we'll practise some words, read a story together and then talk about it. Ready?`)}
       <div class="inline" style="margin-top:16px"><button class="btn primary big" data-act="gostep" data-id="${k.id}" data-v="warmup">Start: Warm-up words</button>
-        <button class="btn quiet" data-act="gostep" data-id="${k.id}" data-v="prep">Skip the warm-up</button></div>
+        <button class="btn quiet" data-act="gostep" data-id="${k.id}" data-v="read">Skip the warm-up</button></div>
     </section></div>`;
 }
 
-function prepHTML(k, s) {
-  const st = storyById(s.storyId) || nextStoryFor(k);
-  if (!st) return `<section class="panel"><div class="empty"><b>No stories found</b></div></section>`;
-  s.storyId = st.id;
-  const lv = levelOf(st.level), name = esc(first(k.name)), pat = patternWords(st), tricky = st.tricky || [];
-  const pw = new Set(practiceWords(k.id)), watch = [...new Set(tokens(st.text).map(clean))].filter(w => pw.has(w)).slice(0, 8);
+function reviewHTML(k, s) {
+  const r = s.result, st = storyById(r.storyId), name = esc(first(k.name));
+  const missed = [...new Set(r.missed || [])];
+  const tricky = (st?.tricky || []).map(clean).filter(w => w && !missed.includes(w));
   return `<section class="panel">
-    <div class="panel-head"><div><h2>Before reading: “${esc(st.title)}”</h2><p class="muted small" style="margin-top:2px">Level ${st.level} · ${wordCount(st.text)} words${st.forKid ? ` · practice story for ${name}` : ""}${s.round > 1 ? " · second story" : ""}</p></div>
-      <div class="inline"><button class="btn small quiet" data-act="gostep" data-id="${k.id}" data-v="pick">Choose a different story</button></div></div>
-    <div class="prep-grid">
-      ${tricky.length ? `<div class="prep-box"><h3>Tricky words</h3><p class="muted small">These don't follow the sound rules, so ${name} has to remember them.</p>
-        <div class="bigwords">${tricky.map(w => `<span>${esc(w)}</span>`).join("")}</div>
-        ${script(`Read each word, then ask ${name} to say it back: “This word is <i>${esc(tricky[0])}</i>. Your turn.”`)}</div>` : ""}
-      ${pat.length ? `<div class="prep-box"><h3>Today's sound: ${esc(lv.name)}</h3><p class="muted small">Words from the story that use this level's pattern.</p>
-        <div class="bigwords">${pat.map(w => `<span>${esc(w)}</span>`).join("")}</div>
-        ${script(`Point to each word. “Sound it out with me… now read it fast.”`)}</div>` : ""}
-      ${watch.length ? `<div class="prep-box warnbox"><h3>Watch for these</h3><p class="muted small">${name} missed these before, and they're in this story.</p>
-        <div class="bigwords">${watch.map(w => `<span>${esc(w)}</span>`).join("")}</div></div>` : ""}
-    </div>
-    ${script(`This story is called “${esc(st.title)}”. What do you think it will be about? Read it out loud for me, and take your time.`)}
-    <div class="inline" style="margin-top:16px"><button class="btn primary big" data-act="read" data-id="${k.id}" data-story="${st.id}">Start reading</button>
-      <span class="muted small">Tap <b>Start timer</b> on the next screen as ${name} begins.</span></div>
+    <div class="panel-head"><h2>Hard words from “${esc(r.title)}”</h2></div>
+    ${missed.length ? `<div class="bigwords xl">${missed.map(w => `<span>${esc(w)}</span>`).join("")}</div>
+      <p class="muted small" style="margin-top:12px">Point to each word. ${name} sounds it out, then reads it again.</p>`
+      : `<p style="font-size:18px">${name} didn't miss any words.</p>`}
+    ${tricky.length ? `<h3 class="group-h">Tricky words in this story</h3><div class="bigwords">${tricky.map(w => `<span>${esc(w)}</span>`).join("")}</div>` : ""}
+    <div class="inline" style="margin-top:20px"><button class="btn primary big" data-act="gostep" data-id="${k.id}" data-v="questions">Next: Questions</button></div>
   </section>`;
 }
 
@@ -490,7 +487,7 @@ function secondHTML(k, s) {
   return `<section class="panel"><div class="panel-head"><h2>Second reading</h2><span class="muted small">Pick one</span></div>
     <div class="choice-grid">
       <button class="choice" data-act="reread" data-id="${k.id}" ${prev ? "" : "disabled"}><b>Read “${esc(prev?.title || "the same story")}” again</b><span>Best for building speed. Most kids read faster the second time, and you'll see the change in words a minute.</span></button>
-      ${next ? `<button class="choice" data-act="newsecond" data-id="${k.id}" data-story="${next.id}"><b>Read a new story: “${esc(next.title)}”</b><span>Best if ${name} read the first one easily (95% or more). We'll go over its new words first.</span></button>` : ""}
+      ${next ? `<button class="choice" data-act="newsecond" data-id="${k.id}" data-story="${next.id}"><b>Read a new story: “${esc(next.title)}”</b><span>Best if ${name} read the first one easily (95% or more).</span></button>` : ""}
     </div>
     ${script(`Great reading! Let's read ${prev ? "it" : "a story"} one more time. See if you can make it sound smooth, like you're telling it to a friend.`)}
     <div class="inline" style="margin-top:14px"><button class="btn quiet" data-act="gostep" data-id="${k.id}" data-v="wrap">Skip to wrap up</button></div>
@@ -526,9 +523,9 @@ function kidWorkHTML(k) {
   const top = stepperHTML(k, s);
   if (s.mode === "read") return top + `<section>${readerHTML(k, s)}</section>`;
   if (s.mode === "warmup") return top + `<section>${s.warm ? warmupHTML(k, s) : ""}</section>`;
-  if (s.mode === "questions") return top + `<section>${questionsHTML(k, s)}</section>`;
+  if (s.mode === "questions") return top + (s.q ? `<section>${questionsHTML(k, s)}</section>` : readyHTML(k, s));
   if (s.mode === "result") return top + `<section class="panel">${resultHTML(k, s)}</section>`;
-  if (s.mode === "prep") return top + prepHTML(k, s);
+  if (s.mode === "review") return top + (s.result ? reviewHTML(k, s) : readyHTML(k, s));
   if (s.mode === "second") return top + secondHTML(k, s);
   if (s.mode === "wrap") return top + wrapHTML(k, s);
   if (s.mode === "pick") return top + planHTML(k, s).replace('<div class="s9 stack"', '<div class="stack" style="grid-column:1/-1"');
@@ -622,10 +619,10 @@ function warmupHTML(k, s) {
     return `<div class="reader"><div class="reader-bar"><div class="ttl">Warm-up done for ${esc(k.name)}</div></div>
       <div class="result-nums" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="tile"><span class="k">Read correctly</span><span class="v">${w.words.length - wrong.length}<small>of ${w.words.length}</small></span></div>
       <div class="tile"><span class="k">To keep practising</span><span class="c" style="margin-top:auto">${wrong.length ? "" : "None. Great start!"}</span><div class="words">${wrong.map(x => `<span class="chip bad">${esc(x)}</span>`).join("")}</div></div></div>
-      <div class="inline"><button class="btn primary big" data-act="gostep" data-id="${k.id}" data-v="prep">Next: Teach new words</button><button class="btn" data-act="gostep" data-id="${k.id}" data-v="warmup">Do it again</button></div></div>`;
+      <div class="inline"><button class="btn primary big" data-act="gostep" data-id="${k.id}" data-v="read">Next: Read the story</button><button class="btn" data-act="gostep" data-id="${k.id}" data-v="warmup">Do it again</button></div></div>`;
   }
   return `<div class="reader">
-    <div class="reader-bar"><div><button class="linkish" data-act="gostep" data-id="${k.id}" data-v="prep">Skip to new words</button><div class="ttl">Warm-up words for ${esc(k.name)}</div></div>
+    <div class="reader-bar"><div><button class="linkish" data-act="gostep" data-id="${k.id}" data-v="read">Skip to the story</button><div class="ttl">Warm-up words for ${esc(k.name)}</div></div>
       <span class="muted num">Word ${i + 1} of ${w.words.length}</span></div>
     ${i === 0 ? script(`Let's warm up! Read each word as fast as you can. If you're not sure, sound it out.`) : ""}
     <div class="flash-word" aria-live="polite">${esc(w.words[i])}</div>
@@ -646,7 +643,7 @@ function readerHTML(k, s) {
   const total = wordCount(st.text), size = 36 + S.textSize * 4;
   return `<div class="reader">
     <div class="reader-bar">
-      <div><button class="linkish" data-act="gostep" data-id="${k.id}" data-v="prep">Back to new words</button>
+      <div><button class="linkish" data-act="gostep" data-id="${k.id}" data-v="pick">Choose a different story</button>
         <div class="ttl">${esc(k.name)} is reading${s.round > 1 ? (s.reread ? " again" : " a second story") : ""} · Level ${st.level}</div></div>
       <div class="inline">
         <button class="btn small quiet" data-act="size" data-d="-1" aria-label="Smaller text">A−</button>
@@ -700,11 +697,11 @@ function questionsHTML(k, s) {
 async function loadQuestions(kid) {
   const s = sess(kid), st = storyById(s.result.storyId);
   const have = st && questionsFor(st);
-  if (have) { s.q = { items: have, marks: have.map(() => null) }; render(); return; }
-  s.q = { loading: true }; render();
+  if (have) { s.q = { items: have, marks: have.map(() => null), forId: s.resultId }; render(); return; }
+  s.q = { loading: true, forId: s.resultId }; render();
   try {
     const out = await AI.call("questions", { title: st.title, text: st.text, level: st.level });
-    s.q = { items: out.questions, marks: out.questions.map(() => null) };
+    s.q = { items: out.questions, marks: out.questions.map(() => null), forId: s.resultId };
     Store.set("questions", st.id, { items: out.questions, at: Date.now() }).catch(() => {});
   } catch (e) { s.q = { error: e.message }; }
   if (S.activeKid === kid) render();
@@ -1042,8 +1039,8 @@ async function saveReading(kid) {
   let id = null;
   try { id = await Store.add("readings", rec); } catch { toast("That didn't save. Check the internet connection and try again."); render(); return; }
   if (s.reread) { Object.assign(s, { mode: "result", result: rec, resultId: id, rnote: null }); render(); return; }
-  Object.assign(s, { mode: "questions", lstep: 4, result: rec, resultId: id, rnote: null });
-  loadQuestions(kid);
+  Object.assign(s, { mode: "review", lstep: LESSON_STEPS.findIndex(x => x.key === "review"), result: rec, resultId: id, rnote: null, q: null });
+  render();
 }
 async function writeStoryFor(kid) {
   const k = student(kid), s = sess(kid), level = s.browse || k.level || 1;
@@ -1053,7 +1050,7 @@ async function writeStoryFor(kid) {
     const st = out.stories[0];
     const id = await Store.add("stories", { ...st, level, source: "ai", forKid: kid, at: Date.now() });
     s.writing = false;
-    goStep(k, "prep", { storyId: id });
+    startRead(k, id);
     toast("Practice story ready");
   } catch (e) { s.writing = false; toast(e.message); }
   render();
@@ -1086,11 +1083,11 @@ document.addEventListener("click", async e => {
     case "toggleread": sess(id).showRead = !sess(id).showRead; break;
     case "scrollstories": $("#stories")?.scrollIntoView({ behavior: "smooth", block: "start" }); return;
     case "gostep": goStep(student(id), b.dataset.v); break;
-    case "choose": goStep(student(id), "prep", { storyId: b.dataset.story }); break;
-    case "reread": { const x = sess(id); Object.assign(x, { mode: "read", lstep: 5, round: 2, reread: true, storyId: x.result?.storyId, marked: new Set(), acc: 0, running: false, startedAt: 0, askTime: false, timeAsked: false, estimated: false }); window.scrollTo(0, 0); break; }
-    case "newsecond": goStep(student(id), "prep", { storyId: b.dataset.story, round: 2, reread: false }); break;
+    case "choose": startRead(student(id), b.dataset.story, { round: sess(id).round || 1 }); break;
+    case "reread": { const x = sess(id); startRead(student(id), x.result?.storyId, { round: 2, reread: true, result: x.result }); break; }
+    case "newsecond": startRead(student(id), b.dataset.story, { round: 2, reread: false }); break;
     case "savewrap": { const x = sess(id), text = (x.wrapNote || "").trim(); if (!text) { toast("Write a short note first."); return; } await safe(Store.set("notes", `${TODAY}_${id}`, { date: TODAY, studentId: id, tutorId: S.me, text, at: Date.now() }), "Note saved for next week"); break; }
-    case "read": { const x = sess(id); Object.assign(x, { round: x.round || 1, reread: false, mode: "read", lstep: 3, storyId: b.dataset.story, marked: new Set(), acc: 0, running: false, startedAt: 0, askTime: false, timeAsked: false, estimated: false }); window.scrollTo(0, 0); break; }
+    case "read": startRead(student(id), b.dataset.story, { round: sess(id).round || 1 }); break;
     case "home": Object.assign(sess(id), { mode: "home", running: false }); break;
     case "restart": Object.assign(s, { marked: new Set(), acc: 0, running: false }); break;
     case "mark": { const i = Number(b.dataset.i); s.marked.has(i) ? s.marked.delete(i) : s.marked.add(i); saveSessions(); if (!s.running && !elapsed(s) && s.marked.size === 1) break; b.classList.toggle("miss"); b.setAttribute("aria-pressed", s.marked.has(i)); const c = $("#misscount"); if (c) c.textContent = s.marked.size; return; }
