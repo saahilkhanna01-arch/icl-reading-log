@@ -1,220 +1,220 @@
-/* Level 2: Short i and o (with short a). */
-S(2, "The Big Pig", `Tim has a big pig. The pig is fat and pink. The pig sits in a pit.
+/* Level 2: Short i and o (with short a). Real little stories with a problem, a fix and something to learn. */
+S(2, "The Big Pig", `Tim has a big pink pig named Dot. Dot is fun, but Dot is a mess. She digs in the mud all day.
 
-The pig can dig. Dig, dig, dig! The pig digs and digs in the pit. The pig is hot. The pig is in a lot of mud.
+One hot day, Mom says, "Tim, your cousins come at six. That pig is not fit to be seen!"
 
-Tim got a mop. "Pig, I can mop the mud," said Tim. Tim did mop the pig. The pig did not sit still. The pig hit the mop! The mop hit Tim. Tim got mud on his hat.
+Tim gets a mop and a tub. He scrubs and scrubs. Dot kicks and flops. Tim gets mud on his chin and his top. At last, Dot is pink and clean.
 
-Mom ran in. "Tim, is the pig in a mess, or is Tim in a mess?" said Mom. Tim had a big laugh.
+Tim sits on a log. He is hot and a bit cross. Then he looks at Dot. She is not in the mud. She sits on the grass next to him, as if to say thanks.
 
-Tim and the pig sat in the sun. The pig is not hot. The pig had a nap. Tim had a nap. It is a fun job, a pig job!`, "the, is, of, mud, I, said, his, on, Mom, mess, or, laugh, sun, fun, job",
-"Where does the pig sit?|In a pit;What did Tim use to clean the pig?|A mop;Who got mud on his hat?|Tim");
+At six, the cousins come. "What a fine pig!" they say. Tim grins. The job was not fun, but it was worth it.`, "named, Mom, says, your, cousins, come, seen, they",
+"What is the pig's name?|Dot;Why must Tim clean the pig?|His cousins are coming at six;How does Tim feel at the end?|Proud, the hard job was worth it");
 
-S(2, "Hop on the Log", `Ali has a dog. The dog is Pip. Pip is a big dog, and Pip can hop. Hop, hop, hop!
+S(2, "Hop on the Log", `Ali has a dog named Pip. Pip can hop and jog and spin. But Pip will not hop on the log at the pond.
 
-Ali and Pip go to the pond. A log sits in the pond. "Pip, can you hop on the log?" said Ali. Pip hops on the log. The log tips! Pip is in the pond.
+Ali hops on the log. "Pip, it is not a big hop!" Pip sits on the bank. He looks at the log and whimpers.
 
-Pip did not mind. Pip can swim! Pip swims to Ali and sits. Pip is wet. Pip did a big shake. Ali is wet!
+Ali gets off the log. He sits with Pip. "Is it the pond?" asks Ali. "Do you think you will fall in?"
 
-"Pip!" said Ali. Ali had a laugh. Ali and Pip sit on a rock in the hot sun. Pip is not wet. Ali is not wet.
+Ali has a plan. He puts a stick on the log, then a bit of a biscuit. Pip sniffs. He puts a paw on the log. Then a second paw. Then, hop! Pip is on the log!
 
-"Pip, I think the log is not for dogs," said Ali. Pip did a big lick on Ali's hand.`, "Ali, the, is, go, to, you, said, swim, mind, wet, shake, laugh, sun, think, for, lick",
-"What is the dog's name?|Pip;What happened when Pip hopped on the log?|The log tipped and Pip fell in;How did they get dry?|They sat in the hot sun");
+Ali claps. Pip wags and wags. "You did it, Pip!" says Ali. "Big jobs are just lots of small steps."`, "Ali, named, Pip, pond, whimpers, asks, biscuit, small",
+"What will Pip not do?|Hop on the log;Why might Pip be scared?|He thinks he will fall in the pond;How does Ali help him?|Small steps, a stick and a bit of biscuit");
 
-S(2, "The Hot Pot", `Mom has a pot. The pot is big. The pot is hot. In the pot is dal.
+S(2, "The Hot Pot", `Mom has a big pot of dal on the stove. It is hot, hot, hot. "Sid, do not tip the pot," says Mom. Then she gets milk from the shop.
 
-"Do not tip the pot!" said Mom. "It is hot, hot, hot." Sid sat on a mat. Sid did not tip the pot. Sid got a lid. Sid put the lid on the pot.
+Sid sits on a mat. His little sister, Lin, toddles in. She wants to see the pot. She grabs at the handle!
 
-Bob the cat ran in. Bob sat at the pot. Bob did a sniff. Sniff, sniff. "Bob, not the pot!" said Sid. Sid got Bob. Sid put Bob on his lap.
+Sid jumps up. "Lin, stop! It is hot!" He picks Lin up and sits her on the mat. Lin is sad. She cries.
 
-Dad got in. "Is it dal?" said Dad. "It is!" said Sid. Mom got the pot off the fire. Mom, Dad and Sid had dal and hot rotis.
+Sid gets a lid and a spoon. "Lin, look!" He taps the lid. Ding, ding! Lin stops crying. She grins and taps the lid, as well.
 
-Bob did not get dal. Bob got a bit of milk. Bob is glad.`, "the, is, dal, do, said, put, sniff, his, off, fire, rotis, of, milk, glad",
-"What was in the pot?|Dal;Who put the lid on the pot?|Sid;What did Bob the cat get?|A bit of milk");
+Mom gets back. She sees the pot is fine and Lin is fine. "Sid, you kept your sister safe," she says, and hugs him.`, "Mom, dal, stove, says, she, little, sister, cries",
+"What is in the pot?|Dal;What does Lin try to do?|Grab the hot pot handle;How does Sid stop Lin from crying?|He gives her a lid and spoon to tap");
 
-S(2, "Tim and the Kit", `Tim has a kit. In the kit is a pin, a lid, a mop and a rag. Tim can fix things with his kit.
+S(2, "Rob Is Lost", `Rob and his mom go to a big shop in the city. It has lots of stalls, lots of things and lots of people.
 
-Mom had a pot with a dip in it. Tim did fix the pot. Dad had a cap with a rip. Tim did fix the cap with a pin.
+Rob sees a stall with toy ships. He stops to look. When he looks back, Mom is not there! Rob's lip trembles.
 
-Gran had a big box. The box had a lid, but the lid did not fit. Tim got his kit. Tim did tip the box, and Tim did tap the lid. The lid did fit!
+Then Rob thinks of what Mom told him. "If you get lost, stop. Do not run off. Ask a man or a lady at a stall."
 
-"Tim, you can fix a lot!" said Gran. Tim is glad. Then Tim's kit fell off the box. The pin, the lid, the mop and the rag fell in a big pile.
+Rob stands still. He goes to the lady at the toy stall. "I am lost," he says. "My mom has a pink top on." The lady picks up a bell and rings it. "A lost lad is at the toy stall!" she calls.
 
-Tim had a laugh. "I can not fix a kit!" said Tim.`, "the, is, things, with, his, Mom, but, you, said, glad, then, fell, off, pile, laugh, I",
-"What is in Tim's kit?|A pin, a lid, a mop and a rag;What did Tim fix for Gran?|The lid of her box;What could Tim not fix?|His kit");
+In a minute, Mom runs up and hugs Rob. "You did the right thing," she says. "You did not panic."`, "Rob, his, mom, city, things, people, there, told",
+"Where does Rob get lost?|At a big shop in the city;What does Mom tell him to do if he gets lost?|Stop, don't run off, ask someone at a stall;Who helps Rob?|The lady at the toy stall");
 
-S(2, "Fox in a Box", `A fox sat in a box. The fox is red. The box is big. The fox had a nap in the box.
+S(2, "Dig, Dig, Dig", `Grandpa wants a fig tree. He asks Tim to dig a pit for it.
 
-Tom got up. Tom saw the box. Tom did not see the fox. "Is it a box of figs?" said Tom. Tom did tip the box. The fox did a big hop!
+Tim gets a spade and digs. Dig, dig, dig. The sun is hot. His arms ache. After a bit, the pit is not big. Tim is cross. "This is a bad job," he says, and sits on a rock.
 
-The fox ran past Tom. The fox ran past the hens. The hens did flap and flap. "Fox! Fox!" said Tom. Tom got a big stick.
+Grandpa sits with him. "Tim, when I was a lad, I dug a pit for a fig tree," he says. "I did not quit. Look at it now." He points to a big tree full of figs.
 
-The fox hid in a log. Tom sat on the log. The fox did not pop out. Tom did not hit the log.
+Tim looks at the big tree. He gets up and digs. Dig, dig, dig. At last, the pit is big. Tim and Grandpa plant the little fig tree.
 
-Tom had a fig. Tom put the fig at the log. The fox got the fig and ran off. "Fox, not the hens!" said Tom.`, "the, is, red, up, saw, see, of, said, hens, stick, out, put, off",
-"Where did the fox nap?|In a box;Where did the fox hide?|In a log;What did Tom give the fox?|A fig");
+"In ten years," says Grandpa, "you can sit in its shade." Tim grins. It was a hard job, but he did it.`, "Grandpa, tree, asks, spade, says, when, full, years",
+"What does Grandpa want to plant?|A fig tree;Why does Tim stop digging?|He is hot and tired;What makes Tim start again?|Grandpa shows him the big fig tree he planted as a boy");
 
-S(2, "Sita and the Kid", `Sita has a kid. A kid is a little goat. The kid is Dot. Dot is black, with a spot on his lip.
+S(2, "The Hen and the Fox", `Gran has six hens. At dusk, Kim must lock them in the pen. But Kim wants to play, so she rushes. She does not lock the pen.
 
-Dot can hop. Dot can skip. Dot did hop on a box. Dot did skip on a log. Dot did nip at Sita's hat.
+That night, Kim hears a big fuss. Cluck! Cluck! Kim runs out with a lamp. A fox is at the pen!
 
-"Dot! Not my hat!" said Sita. Dot did not stop. Dot got the hat and ran. Sita ran and ran. Dot hid in the hay.
+Kim yells and bangs a pot. Clang, clang! The fox runs off past the hill. Kim counts the hens. One, two, six. All six are safe.
 
-Sita sat in the hay. Sita did not look for Dot. Sita did hum a song. Dot did peek. Dot did hop to Sita and sit on her lap.
+Kim locks the pen. Then she sits on the step. She is shaking. She thinks of what can have happened.
 
-Sita got the hat. Dot got a pat. "Dot, you are a bad kid," said Sita, "but you are my kid."`, "Sita, little, goat, black, with, my, said, stop, hay, look, for, hum, song, peek, her, you, are, but",
-"What is a kid?|A little goat;What did Dot take?|Sita's hat;How did Sita get Dot to come back?|She sat and hummed a song");
+The next day, Kim tells Gran. Gran nods. "A job done fast is not a job done well," she says. That dusk, Kim checks the lock two times.`, "Gran, dusk, Kim, she, play, night, hears, happened",
+"What job does Kim rush?|Locking the hen pen;What comes to the pen at night?|A fox;What does Kim do the next dusk?|Checks the lock two times");
 
-S(2, "The Lost Mitt", `Kim has a mitt for cricket. It is a big mitt. Kim can catch with it.
+S(2, "Lin Is Sick", `Lin is sick in bed. She has a hot head and a cough. She cannot go to school. She is sad and a bit bored.
 
-Kim lost the mitt! Kim did look in the box. No mitt. Kim did look on the cot. No mitt. Kim did look in the van. No mitt.
+Her brother Tom has a plan. He gets a big box and a pen. He cuts a hole in the box. Then he gets his socks and a bit of string.
 
-"Mom, I lost my mitt!" said Kim. Mom did look in the pot. No mitt. Dad did look in the bin. No mitt. Kim is sad.
+Tom sits next to the bed. He pops a sock up in the hole. "Hello, Lin! I am Mr. Sock!" Lin giggles. Tom pops up the next sock. "And I am Mrs. Sock!"
 
-Kim's dog, Rob, did a sniff. Sniff, sniff! Rob ran to the pit at the back. Rob did dig, dig, dig. Rob got the mitt!
+The socks sing. The socks hop. The socks fall off the box. Lin laughs and laughs. She forgets she is sick.
 
-"Rob, did you hid my mitt?" said Kim. Rob did a big wag. Kim had a laugh. Kim got the mitt and did a hug on Rob.`, "for, cricket, catch, with, look, no, Mom, I, my, said, sniff, back, you, wag, laugh, hug",
-"What did Kim lose?|Her cricket mitt;Where did Rob find the mitt?|In the pit at the back;Who hid the mitt?|Rob the dog");
+"Tom, you are the best," says Lin. Tom grins. A bit of fun is good medicine.`, "Lin, she, school, her, brother, Tom, hello, medicine",
+"Why is Lin in bed?|She is sick;What does Tom make?|A sock puppet show in a box;How does Lin feel at the end?|Happy, she forgets she is sick");
 
-S(2, "Pop Pop Pop", `Mom has a big pan. In the pan, Mom has a lot of corn. Mom put the lid on.
+S(2, "The Lost Mitt", `Kim has a cricket mitt. It was a gift from her dad. She keeps it in a box by her bed.
 
-Sam and Liz sat on a mat. "Mom, is it hot?" said Liz. "It is hot," said Mom. Then it did pop! Pop, pop, pop!
+One day, the mitt is not in the box! Kim looks in the cot. She looks in the van. She looks in the pit at the back. No mitt.
 
-The lid did hop. Pop, pop, pop! The lid hit the top of the pan. Pop, pop! Sam did a big jig. Liz did a big jig. Pop, pop, pop!
+Kim is upset. She thinks Rob has it. "Rob, did you nab my mitt?" she asks. Rob looks hurt. "No, Kim. I did not."
 
-Then the pop did stop. Mom got the lid off. The pan is full of pop corn! Mom put it in a big tin.
+Then Kim sees the dog, Rocky, in the yard. He has the mitt! He is chewing on it.
 
-Sam, Liz and Mom sat on the mat. "It is a pop party!" said Liz. Sam had a lot. Liz had a lot. Mom had a bit.`, "Mom, the, of, corn, put, said, then, jig, stop, off, full, party",
-"What did Mom cook in the pan?|Popcorn;What did Sam and Liz do when it popped?|A big jig, a dance;Where did Mom put the popcorn?|In a big tin");
+Kim gets the mitt back. Then she goes to Rob. "I am sorry, Rob. I was wrong to blame you," she says. Rob grins. "That's ok. Can I play catch with you and your mitt?"`, "cricket, Kim, her, dad, she, asks, Rob, sorry",
+"Who gave Kim her mitt?|Her dad;Who does Kim blame at first?|Rob;What does Kim learn?|To say sorry when she blames someone wrongly");
 
-S(2, "Bilal and the Hill", `Bilal and his dad go to the top of a hill. It is a big hill. Bilal is hot. Dad is hot.
+S(2, "Hop, Skip, Jump", `It is sports day at school. Asif is in the hop race. He is not fast. He is not big. But he has been practising a lot.
 
-At the top of the hill is a rock. Bilal and Dad sit on the rock. Bilal can see a lot. Bilal can see the pond. Bilal can see a big pig in a pit. Bilal can see Mom and Gran.
+The kids stand on the line. "Go!" Asif hops and hops. A big lad hops past him. Then Asif trips! He lands on the grass.
 
-"Dad, I can see Gran at the cot!" said Bilal. Bilal did a big wave. Gran did not see Bilal. Bilal did a big, big wave. Gran did see Bilal!
+The kids gasp. Asif's knee stings. He wants to quit. Then he sees his mom by the gate. She claps and claps.
 
-Gran did wave and wave. Then Gran did a big hop! Bilal had a laugh. Dad had a laugh.
+Asif gets up. He hops and hops. He is not first. He is not second. He is the last to get to the end.
 
-Bilal and Dad ran to the pond and to Gran. Gran had a hot pot of tea for Bilal and Dad.`, "Bilal, his, go, to, the, of, is, see, Mom, I, said, wave, then, laugh, tea, for",
-"Where did Bilal and Dad go?|To the top of a hill;What did Bilal see?|The pond, a pig, Mom and Gran;What did Gran have for them?|A hot pot of tea");
+But all the kids clap for him. The teacher hands him a pin. It says "Never Quit." Asif pins it on his top. It is the best pin of all.`, "sports, day, school, Asif, been, practising, never, teacher",
+"What race is Asif in?|The hop race;What happens in the race?|He trips and falls;What does his pin say?|Never Quit");
 
-S(2, "Dig a Pit", `Dad has a job. Dad must dig a pit. It is a big pit for a fig tree.
+S(2, "The Box of Figs", `Mom has a box of figs for Gran. "Tim, the figs are not for you," she says. "Do not dip in the box."
 
-Dad got a spade. Dad did dig. Dig, dig, dig. Tim got a little spade. Tim did dig. Dig, dig, dig.
+Tim looks at the box. The figs look so good. He thinks, "Mom will not see if I get one." He picks one fig. Then he picks six figs! The box is not full.
 
-The pit got big. Tim did dig and hit a rock. "Dad, a rock!" said Tim. Dad did dig at the rock. The rock is big. Dad and Tim did tug, tug, tug. The rock did pop out!
+Mom sees the box. She looks at Tim. Tim has fig on his lips. Tim looks at his feet.
 
-Tim sat on the rock. Dad got the fig tree. Dad put the fig tree in the pit. Tim did pat the mud on top.
+"Mom, I got the figs," he says. "I am sorry." Mom is quiet. Then she says, "Thank you for telling me. How can we fix it?"
 
-"In a lot of days, the tree will have figs," said Dad. "Figs for Tim!" said Tim.`, "job, must, the, for, tree, spade, little, said, tug, out, put, mud, on, days, will, have",
-"Why did Dad dig a pit?|To plant a fig tree;What did Tim hit?|A rock;What will the tree have one day?|Figs");
+Tim thinks. "I can pick figs from the tree," he says. So Tim and Mom pick a lot of figs. Gran gets the biggest box of figs she has ever had.`, "Mom, figs, Gran, she, says, one, full, sorry",
+"Who were the figs for?|Gran;What does Tim do wrong?|He eats six of Gran's figs;How does Tim fix it?|He picks more figs from the tree for Gran");
 
-S(2, "The Hen in the Box", `Gran has a hen. The hen is Dot. Dot is a big, fat hen. Dot sits in a box.
+S(2, "Fix It", `Dad has an old cot. It has a big rip in it. When Dad sits on it, the cot sags to the ground! Tim laughs. Dad laughs, as well.
 
-Dot did not get up. Dot did not sit on a log. Dot did not hop. "Gran, is Dot sick?" said Tim. "Not sick," said Gran. "Dot is on a job."
+"Can we fix it?" asks Tim. Dad gets his kit. In the kit is a big pin, a lot of string and a strip of cloth.
 
-Tim did sit and sit. Dot did sit and sit. Tim got hot. Tim had a sip of milk. Dot did sit.
+Dad and Tim fix the cot. Tim holds the string. Dad pins the strip of cloth. It takes a long time. Tim's hands get sore. But they do not stop.
 
-Then Dot got up. In the box, Tim did see six eggs! "Gran! Dot has six eggs!" said Tim.
+At last, the cot is fixed. Dad sits on it. It does not sag! Tim sits on it. It does not sag!
 
-Gran had a big grin. "Dot did a big job," said Gran. Tim did a pat on Dot. Dot sat on the eggs, and Tim got Dot a dish of corn.`, "the, is, up, sick, said, on, job, sip, milk, then, see, eggs, grin, dish, corn",
-"What is the hen's name?|Dot;Why did Dot sit in the box?|She was sitting on her eggs;How many eggs were there?|Six");
+"A new cot costs lots of cash," says Dad. "A fixed cot costs a bit of time." Tim grins. He likes the fixed cot best.`, "Dad, old, ground, asks, string, cloth, long, new",
+"What is wrong with Dad's cot?|It has a big rip and sags;What do they use to fix it?|A pin, string and a strip of cloth;Why does Dad like fixing things?|A new cot costs cash, fixing costs only time");
 
-S(2, "Ozzy the Ox", `Ozzy is an ox. Ozzy is big and strong. Ozzy can tug a cart.
+S(2, "Lots of Rocks", `Pam has a bag of rocks. She picks them up on the hill. She has pink rocks, black rocks and rocks with spots.
 
-Dad and Tom got Ozzy. "Ozzy, can you tug the cart to the shop?" said Dad. Ozzy did tug. The cart had a lot of logs.
+Bob wants a rock. "Pam, can I have a rock?" he asks. Pam holds the bag. "No, they are mine," she says.
 
-Ozzy did tug the cart up a hill. Ozzy did stop. Ozzy is hot. Tom got a big dish. Tom put a lot of water in the dish. Ozzy did sip and sip.
+Bob is sad. He sits on the step. Pam sits with her rocks. But it is not fun to look at rocks on your own.
 
-Ozzy did tug the cart to the top of the hill. Ozzy did tug the cart to the shop. The man at the shop did get the logs.
+Pam looks at Bob. She picks a big rock with pink spots. It is the best one. She hands it to Bob.
 
-"Ozzy, you did a big job!" said Tom. Tom did pat Ozzy. Ozzy had a lot of hay and a nap.`, "strong, tug, cart, to, the, shop, you, said, of, up, stop, dish, put, water, sip, man, job, hay",
-"What is Ozzy?|An ox;What was in the cart?|Logs;What did Tom give Ozzy on the hill?|Water");
+Bob's face lights up. "Thanks, Pam!" Then Bob and Pam go to the hill and hunt for rocks. They find a rock that glints in the sun. "It is fun to hunt with a pal," says Pam.`, "Pam, she, them, Bob, asks, mine, says, your",
+"What does Pam collect?|Rocks;Why is Pam not having fun?|It is no fun to look at rocks on her own;What does Pam give Bob?|Her best rock with pink spots");
 
-S(2, "Kit and the Kite", `Kit has a kite. It is a red kite with a long tail. Kit and Mom go to a big hill. It is windy.
+S(2, "The Ox and the Hill", `Ozzy is an ox. He tugs the cart for Dad. One day, the cart has lots of sacks of wheat. It is very big.
 
-Kit did run. The kite did lift up, up, up. "Mom, it is a lot of fun!" said Kit. The kite did dip and spin.
+Ozzy tugs. The cart rolls. Then they get to a big hill. Ozzy stops. He cannot tug the cart up the hill.
 
-Then the kite did dip, dip, dip. The kite got stuck in a big tree! Kit is sad. Mom got a long stick. Mom did tap at the kite. Tap, tap. The kite did not drop.
+Dad looks at the sacks. Then he has a plan. He takes half the sacks off. Ozzy tugs the cart up the hill. Then Dad and Tom carry the rest of the sacks up the hill.
 
-A big wind did hit the tree. The kite did pop out! The kite did sail up.
+It takes a lot of trips. Tom is hot, and Dad is hot. But at last, the sacks are on the cart at the top of the hill.
 
-Kit got the string. "Mom, the wind is on my side!" said Kit. Mom and Kit had a big laugh on the hill.`, "kite, red, with, long, tail, Mom, go, windy, run, up, fun, said, spin, then, stuck, tree, stick, drop, wind, out, sail, string, my, side, laugh",
-"What color is the kite?|Red;Where did the kite get stuck?|In a big tree;What got the kite out of the tree?|A big wind");
+"If a job is too big," says Dad, "split it up." Ozzy flops on the grass. He has earned a nap.`, "Ozzy, Dad, very, wheat, they, cannot, carry, says",
+"What does Ozzy pull?|A cart of wheat sacks;Why does Ozzy stop?|He cannot pull the heavy cart up the hill;How do they solve it?|They split the load into smaller trips");
 
-S(2, "Rob and the Mop", `Rob has a job. Rob must mop the hall at school. It has lots of mud on it.
+S(2, "Tom Is Not Fast", `Tom is the slowest kid in the class. When the kids jog, Tom is last. When they play tag, Tom is it all day. Tom is sad.
 
-Rob got a mop and a big tin of water. Rob did mop and mop. The mop did slop. Slop, slop! Rob did a big mop on a spot. The spot did not go.
+Then the class has a kite day. Tom is not fast, but he is good with his hands. He makes a kite with sticks, string and a bit of cloth.
 
-Liz ran in. Liz had mud on her socks. Liz did hop on the spot! Rob is mad. "Liz, I did mop that spot!" said Rob. Liz did stop. "Rob, I can help," said Liz.
+The fast kids run with their kites. Their kites flop on the grass. Tom stands still. He lets the wind lift his kite. Up, up, up it goes!
 
-Liz got a rag. Liz did rub, rub, rub. Rob did mop, mop, mop. The hall is not a mess. The hall is spotless.
+The kids stop and look. Tom's kite is up in the sky. "Tom, can you help us?" they ask.
 
-"Rob and Liz, top job!" said Miss Fatima. Rob and Liz did a hop.`, "job, must, the, hall, school, lots, mud, water, slop, go, her, socks, said, I, that, stop, help, rub, mess, spotless, Miss Fatima",
-"What was Rob's job?|To mop the hall;Who ran in with muddy socks?|Liz;Who said top job?|Miss Fatima");
+Tom helps them fix their kites. Soon all the kites are up in the sky. Tom is not fast, but Tom is good at lots of things.`, "Tom, slowest, class, they, play, their, sky, things",
+"What is Tom not good at?|Running fast;What does Tom make?|A kite;What does Tom do for the other kids?|Helps them fix their kites");
 
-S(2, "The Box of Figs", `Mom has a box of figs. The figs are for Gran. "Tim, do not dig in the box," said Mom.
+S(2, "Mom's Gift", `It is Mom's big day. Liz wants to get her a gift. But Liz has no cash, not one coin.
 
-Tim did not dig in the box. Tim did look at the box. The figs did look fab. Tim did sniff. Sniff, sniff. The figs did smell fab.
+Liz is sad. She looks at the hut. She looks at the hill. Then she has a plan.
 
-Tim did a little tap on the lid. Tim did a little lift of the lid. Tim got a fig. Then Tim got six figs! The box is not full.
+Liz picks pink and white blossoms on the hill. She sets them in a tin with water. Then she gets a stick and a bit of cloth. She makes a little sign: "I love you, Mom."
 
-Mom got in. Mom did look at the box. Mom did look at Tim. Tim had fig on his lips! "Tim!" said Mom. Tim is sad.
+Liz sets the tin and the sign on the box by Mom's bed. Then she mops the hut and fills the pot with water.
 
-"Mom, I can pick figs for Gran," said Tim. Tim and Mom got a lot of figs off the fig tree. Gran got a big box of figs.`, "Mom, of, are, for, said, do, look, fab, sniff, smell, little, lift, then, full, his, lips, I, pick, off, tree",
-"Who were the figs for?|Gran;How many figs did Tim eat?|Six;How did Tim fix his mistake?|He picked more figs from the tree");
+Mom comes in. She sees the blossoms. She sees the clean hut. She looks at Liz, and her eyes get wet. "Liz, this is the best gift," she says. "A gift from the heart costs nothing."`, "Mom's, Liz, her, cash, one, coin, she, blossoms",
+"Why is Liz sad?|She has no money for a gift;What does Liz give Mom?|Blossoms in a tin, a sign and a clean hut;What does Mom say?|A gift from the heart costs nothing");
 
-S(2, "Fix It, Dad", `Dad has a cot. The cot is old. It has a big rip in it. Dad sat on the cot. Rip! Dad is on the mat!
+S(2, "Dot Spots a Snake", `Dot and Bob go to the well to fill the jug. On the path, Dot stops. A snake is on a rock in the sun!
 
-"Dad, can you fix it?" said Tim. "I can fix it," said Dad. Dad got a kit. In the kit, Dad had a pin, a lot of string and a big pad.
+Bob wants to get a stick and hit it. "No, Bob," says Dot. "Mom said if you see a snake, do not get close and do not poke it. Just back off."
 
-Dad did fix, fix, fix. Tim did hold the string. Tim did hand Dad the pin. Dad put the pad on the cot.
+Dot and Bob step back, slow. The snake lifts its head. Then it slips off the rock and into the grass.
 
-Dad sat on the cot. The cot did not rip! "Dad, it is fixed!" said Tim. Tim sat on the cot. Mom sat on the cot. The cat sat on the cot.
+Dot and Bob take the long path to the well. It is a lot of steps, but it is safe.
 
-Rip! Dad, Tim, Mom and the cat sat on the mat. Dad had a big laugh. "I can fix it, but I can not fix it for six!"`, "old, you, said, I, string, hold, hand, put, Mom, but, for",
-"What was wrong with the cot?|It had a big rip;Who helped Dad fix it?|Tim;Why did it rip again?|Too many people sat on it");
+At the hut, Dot tells Mom. Mom nods. "You did it right," she says. "The snake did not want trouble. It just wanted the sun."`, "Dot, Bob, well, says, Mom, said, slow, trouble",
+"What do Dot and Bob see on the path?|A snake on a rock;What does Mom say to do if you see a snake?|Don't get close or poke it, just back off;What did the snake want?|Just to sit in the sun");
 
-S(2, "The Pot Spot", `Gran has a pot spot. It is a spot at the back with lots of pots. In the pots, Gran has mint and chilli.
+S(2, "Sit Still, Sid", `Sid cannot sit still. In class, he taps his pen. He kicks his feet. He hops up and gets a drink. Miss Bano is not happy.
 
-Gran did a big job. Gran got a pot, and Gran did dig. Gran put in a little plant. Gran did tap the soil and add water.
+"Sid, I can tell you have lots of zip," says Miss Bano. "Can you help me with a job?"
 
-Kim did help. Kim got a pot and did dig. Kim put in a little plant. Kim did tap the soil and add water. "Gran, is it a mint plant?" said Kim.
+Miss Bano has a big box of books. They have to go to the top shelf. Sid lifts the books. He stacks them on the shelf. It takes a long time.
 
-"It is a fig," said Gran. "In a lot of days, it will be big, and it will not fit in a pot."
+Then Sid sits at his desk. He is a bit tired. He picks up his pen. He sits still and does his sums.
 
-Kim did a big grin. Kim did sit with Gran in the pot spot. Kim did sniff the mint. It did smell fab.`, "back, lots, mint, chilli, job, put, little, plant, soil, add, water, help, said, days, will, be, grin, with, sniff, smell, fab",
-"What does Gran grow in her pots?|Mint and chilli;What did Kim plant?|A fig;What did Kim smell?|The mint");
+At the end of class, Miss Bano gives Sid a big tick. "Sid, you did a big job and big sums," she says. Sid grins. He likes to help.`, "Sid, class, drink, Miss Bano, happy, books, sums, gives",
+"Why is Miss Bano not happy at first?|Sid cannot sit still;What job does Sid do?|Puts a big box of books on the top shelf;What happens after the job?|Sid sits still and does his sums");
 
-S(2, "Hot Dog, Not Dog", `Max is a dog. Max is big and black. Max can sit, and Max can hop. Max is hot.
+S(2, "The Lost Kitten", `Lin hears a mew in the ditch by the road. Mew, mew. She looks in. A little kitten sits in the mud. It is wet and shivering.
 
-Max did sit in the sun. Max is hot! Max did sit in the van. Max is hot! Max did sit on the hot rocks. Max is hot, hot, hot!
+Lin picks the kitten up. She hugs it in her top and runs to the hut. "Mom, a kitten! It is lost!"
 
-Tom got a big tub. Tom did fill the tub with water. "Max, hop in!" said Tom. Max did not hop in. Max did look at the tub.
+Mom gets a rag. Lin rubs the kitten dry. Mom gets a dish of milk. The kitten laps it up. Lap, lap, lap. Then it naps on Lin's lap.
 
-Tom did hop in the tub! Splash! Max did look at Tom. Max did hop in the tub. Splash, splash! Max is not hot. Tom is not hot.
+"Can it stay?" asks Lin. Mom thinks. "It can stay if you look after it," she says. "A pet is a big job."
 
-Mom got in. Mom did look at Tom and Max. "Is it a dog tub, or is it a Tom tub?" said Mom.`, "black, sun, the, rocks, tub, fill, with, water, said, look, splash, Mom, or",
-"Why was Max unhappy?|He was too hot;What did Tom fill the tub with?|Water;How did Tom get Max into the tub?|He hopped in first");
+Lin nods. Each day, she fills the dish and pets the kitten. She names it Mitts. Lin is proud. She is a good friend to Mitts.`, "Lin, hears, little, kitten, she, Mom, milk, stay",
+"Where does Lin find the kitten?|In the ditch by the road;What does Mom say Lin must do?|Look after it every day;What does Lin name the kitten?|Mitts");
 
-S(2, "Lost in the Fog", `It is a day of fog. Sam and Ozzy the ox go to the top of the hill. The fog is thick.
+S(2, "Lots of Hands", `It is going to rain. Gran's crop of chillies is on mats in the sun to dry. If it rains, the chillies will rot.
 
-Sam can not see a lot. Sam can not see the hill. Sam can not see the pond. "Ozzy, I think we are lost," said Sam.
+"I cannot get them all in on my own," says Gran. Kim runs to get help. She gets Tom. She gets Rob and Liz. She gets Sid and his dad.
 
-Ozzy did not stop. Ozzy did plod, plod, plod. Ozzy did go past a rock. Ozzy did go past a log. Sam did hold on to Ozzy.
+Six kids and a dad and Gran pick up the chillies. They fill tins and bags and pots. They run to the hut. Drip, drip. The rain begins!
 
-Then the fog did lift a bit. Sam did see a hut! It is Sam's hut! Mom is at the hut with a lamp.
+The last bag of chillies gets in just in time. Then the rain pours down.
 
-"Ozzy got us to the hut!" said Sam. Sam did pat Ozzy. Ozzy got a big dish of corn for a job well done.`, "day, of, fog, go, the, thick, see, I, think, we, are, said, stop, plod, hold, then, lift, hut, Mom, with, lamp, us, dish, corn, for, job, well, done",
-"What was the weather like?|Foggy;Who led the way home?|Ozzy the ox;What did Ozzy get for his job?|A dish of corn");
+Gran looks at the chillies. They are all safe. "Thank you, all," she says. "One pair of hands is not a lot. But lots of hands can do big things." She gives each kid a bag of hot snacks.`, "going, rain, Gran's, chillies, says, help, they, begins",
+"What is drying in the sun?|Gran's chillies;Why must they hurry?|It is going to rain;What does Gran give the kids?|Bags of hot snacks");
 
-S(2, "Tin Can Pals", `Kit and Pip are pals. Kit's hut is on a hill. Pip's hut is at the pond. It is a long way.
+S(2, "Bilal on the Hill", `Bilal and his dad go to the top of a big hill. It is a long trip. Bilal's legs are stiff. "Dad, can we stop?" he asks.
 
-Kit had an idea. Kit got two tin cans and a long, long string. Kit did a pin hole in the cans. Kit put the string in the holes.
+Dad stops. They sit on a rock and sip water. Then they go on. Bilal huffs and puffs. He wants to quit. Dad takes his hand.
 
-Kit ran to Pip's hut with a can. "Pip, hold the can at your lip," said Kit. Kit ran up the hill with the other can.
+At last, they get to the top. Bilal looks out. He can see the pond. He can see the mill. He can see his hut, so small! He can see Mom on the step. He waves and waves.
 
-"Pip, can you hear me?" said Kit in the can. "Kit! I can hear you!" said Pip. Pip did a big hop. Kit did a big hop.
+"Dad, it is so big up here!" says Bilal. Dad grins. "That's the thing with hills," he says. "The top is worth the trip."
 
-Kit and Pip did chat and chat. It is a fab tin can phone! Then Mom did call Kit for a hot pot of dal.`, "are, pals, long, way, idea, two, string, hole, holes, put, with, hold, your, said, up, other, you, hear, me, I, chat, fab, phone, then, Mom, call, for, dal",
-"Where does Kit live?|On a hill;What did Kit make?|A tin can phone;What did Mom call Kit for?|A hot pot of dal");
+They sit on the top of the hill and watch the sun sink. Bilal is not tired now. He is glad he did not quit.`, "Bilal, his, dad, long, asks, water, Mom, says",
+"Where do Bilal and Dad go?|To the top of a big hill;What can Bilal see from the top?|The pond, the mill, his hut and Mom;What does Dad say about hills?|The top is worth the trip");

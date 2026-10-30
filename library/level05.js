@@ -1,220 +1,220 @@
-/* Level 5: Digraphs sh, th, ch, wh. */
-S(5, "The Red Ship", `Shan has a red ship. It is not a big ship. It is a ship that can sit in a tub. Shan got it from his dad.
+/* Level 5: Digraphs sh, th, ch, wh. Real little stories with a problem, a fix and something to learn. */
+S(5, "The Red Ship", `Shan has a little red ship that his grandpa made from wood. It has a mast and a white sail. Shan loves it more than any other thing.
 
-Shan sets the ship in a tub of water. Splash! The ship can rock, but it will not sink. Shan did a push. The ship went to the other end of the tub.
+One day, Shan takes the ship to the stream. He sets it on the water, and it rushes off! The stream is fast. Shan runs after it, but he cannot catch it. The ship is gone.
 
-Then a chick hops up on the tub. The chick is Chip. Chip did a hop, and Chip is on the ship! The ship did a wobble. Chip did not fall off.
+Shan sits on the bank and sobs. Then he thinks of Grandpa. Grandpa will be so sad.
 
-Shan did a laugh. "Chip, which of us is the captain?" said Shan. Chip did a cheep, cheep. Shan did a push. The ship went with Chip on top.
+That night, Shan tells Grandpa. Grandpa is quiet. Then he picks up his knife and a chunk of wood. "Then we will make a fresh ship," he says. "And this time, you will help."
 
-Then the ship hit the edge of the tub. Bump! Chip did flap and hop back to Shan's hand. "Chip, you did fine," said Shan. "You can be the captain of the ship."`, "the, from, his, water, push, other, wobble, fall, captain, said, cheep, edge, you, be",
-"Who gave Shan the ship?|His dad;What is the chick's name?|Chip;Where did Chip hop at the end?|Back to Shan's hand");
+Shan and Grandpa chip and shape the wood. It takes a week. The new ship is lumpy, but Shan made it with his own hands. That makes it the best ship of all.`, "Shan, little, his, grandpa, made, wood, white, water",
+"Who made Shan's first ship?|His grandpa;What happens to the ship?|The fast stream carries it away;Why is the new ship the best?|Shan made it with his own hands");
 
-S(5, "Lunch on the Bench", `It is lunch, and the sun is hot. Mum, Dad and Ash sit on a bench in the shade of a big tree.
+S(5, "Lunch on the Bench", `At school, Ash sits on a bench at lunch. He has a dish of rice and chicken. Next to him sits Seth. Seth has no lunch. His dish is empty. He looks at the ground.
 
-Mum has fish. Dad has chicken. Ash has chips and a dish of dal. "Which is the best lunch?" said Ash. "I think it is the fish!" said Mum. "I think it is the chicken!" said Dad.
+Ash looks at his chicken. He is hungry. He wants it all. Then he thinks of what his mum told him. "When you have a lot, share a bit."
 
-Ash did munch a chip. Then Ash had a bit of fish. Then Ash had a bit of chicken. "I think the best lunch is a bit of all of them!" said Ash.
+Ash splits the chicken and rice in half. He hands Seth a big chunk. Seth looks up. "For me?" he asks. Ash nods.
 
-Mum and Dad did a laugh. Mum did pass Ash a bit more fish. Dad did pass Ash a bit more chicken. Ash did munch and munch.
+The two lads munch and chat. Seth tells Ash he can fish. Ash tells Seth he can whistle. They laugh.
 
-When lunch was at an end, Ash had a big, fat tum. "That was such a fun lunch," said Ash. Then Ash had a nap on the bench in the shade.`, "the, Mum, tree, best, said, I, think, all, of, them, more, was, such",
-"Where did they eat lunch?|On a bench in the shade;What did Dad have?|Chicken;What did Ash think was the best lunch?|A bit of everything");
+The next day, Seth has a dish of fish. "My dad got lots of fish," he says, and he gives Ash half. From then on, Ash and Seth share lunch each day.`, "school, Ash, lunch, rice, chicken, his, ground, hungry",
+"What does Ash have for lunch?|Rice and chicken;What did Ash's mum tell him?|When you have a lot, share a bit;What does Seth bring the next day?|Fish to share with Ash");
 
-S(5, "Thick and Thin", `This is a thin stick. That is a thick stick. Which stick will Seth pick?
+S(5, "Thick and Thin", `Seth has a thick stick and Beth has a thin stick. "My thick stick is best," says Seth. "It is strong!" Beth frowns. "My thin stick is best. It can bend!"
 
-Seth must dig a ditch next to the shed. The ditch will catch the rain. Seth picks the thick stick. With it, Seth can chip at the mud. Chip, chip, chip! The ditch gets big.
+They fuss and fuss. Then Dad calls them. "The ditch by the shed is filling with mud. Help me fix it!"
 
-Then Dad gets the thin stick. Dad must fix the shed. The shed has a crack. Dad did wedge the thin stick in the crack. The shed did not shift.
+Seth digs with his thick stick. It is strong, and it chips the hard mud. Then a long weed gets stuck in a crack. Seth cannot get it out.
 
-When the rain did come, the ditch did catch the water. The shed did not get wet. Seth and Dad sat in the shed and did watch the rain.
+Beth sticks her thin stick in the crack. It bends and twists. She pulls the weed out! The water rushes off down the ditch.
 
-"Seth, the thick stick did a big job," said Dad. "And the thin stick did a big job." Seth did a grin. "Thick or thin, both sticks help," said Seth.`, "will, must, the, catch, rain, with, then, wedge, come, water, watch, job, said, or, both, help",
-"What did Seth dig?|A ditch;What did Dad fix with the thin stick?|A crack in the shed;What did the ditch catch?|The rain water");
+Dad grins. "The thick stick did the digging. The thin stick did the twisting," he says. "Which is best?" Seth and Beth look at each other. "Both!" they say. It is better to work as a team than to fuss.`, "Seth, Beth, says, strong, frowns, bend, Dad, calls",
+"What is good about Seth's thick stick?|It is strong and chips the hard mud;What is good about Beth's thin stick?|It bends and twists to get the weed out;Which stick is best?|Both, working as a team");
 
-S(5, "Fish for Supper", `Dad and Chet go to the river with a rod. The sun is up, and the river is still. "We will catch a fish for supper," said Dad.
+S(5, "Fish for Supper", `Dad and Chet go to the river to catch fish for supper. Dad flings the rod. They wait. And wait. No fish.
 
-Dad did fling the rod. Chet sat on a rock. Dad and Chet did wait and wait. No fish. Chet did get a bit sad.
+Chet gets bored. "Dad, this is not fun," he says. "Let's go back." Dad shakes his head. "Fishing is about waiting," he says. "Watch the water."
 
-Then the rod did a big twitch! "Dad, a fish!" said Chet. Dad did tug. Chet did tug. Up came a fish! It was a big, thick fish with a red fin.
+Chet sits on a rock and watches. He sees a fish flash past. He sees a frog on a log. He sees a heron that stands on one leg. He starts to like it.
 
-"Is it a fish for supper?" said Chet. Dad did check the fish. "It is a fish for a big supper!" said Dad.
+Then, the rod twitches! "Dad!" yells Chet. They tug and tug. Up comes a big fish with a red fin!
 
-Chet and Dad got back to the hut. Mum did chop and mix. Mum did fry the fish in a big pan. Chet, Mum and Dad sat on the mat. It was the best fish supper. Chet did lick his lips.`, "go, the, river, still, we, will, catch, for, supper, said, fling, wait, no, then, twitch, came, was, back, Mum, fry, best, his",
-"Where did Dad and Chet go?|To the river;What did the fish have?|A red fin;Who cooked the fish?|Mum");
+At the hut, Mum fries the fish. It is the best supper. "Chet, you did well," says Dad. Chet grins. "Fishing is not just about fish," he says. "It is about being patient."`, "Dad, Chet, river, catch, supper, wait, says, watch",
+"What are Dad and Chet doing?|Fishing for supper;What does Chet see while he waits?|A fish, a frog and a heron;What does Chet learn?|Fishing is about being patient");
 
-S(5, "Shh! The Baby Is Napping", `Mum has a new baby. The baby is Asha. Asha is in the crib, and Asha is napping. "Shh!" said Mum. "Asha is napping."
+S(5, "Shh, the Baby", `Mum has a new baby. Her name is Asha. Asha is so little, and she naps a lot. "Shh," says Mum, again and again.
 
-Shan ran in with a drum. Bang, bang! "Shh!" said Mum. Shan did stop. Then the cat ran in with a bell on its neck. Ding, ding! "Shh!" said Mum. The cat did stop.
+Shan is sad. He cannot bang his drum. He cannot shout. He cannot run in the hut. "I wish we had no baby," he grumbles.
 
-Then Dad got in with a big bag of shopping. The bag fell on the step. Crash! "Shh!" said Mum, Shan and the cat.
+That night, Asha wakes and cries. Mum is so tired. She rocks Asha, but Asha still cries.
 
-Asha did not get up. Asha did a big yawn and did a stretch. Then Asha did sleep on and on.
+Shan gets up. He sits next to the crib. He hums a little song, the song Mum sings to him. Hmm, hmm, hmm. Asha stops crying! She looks at Shan with big eyes. Then she grips his finger.
 
-Mum, Dad, Shan and the cat sat on the rug. "Asha naps much," said Shan. "Shh!" said Mum, but Mum had a grin. "Asha is a champ napper."`, "Mum, new, baby, Asha, crib, said, with, then, its, bell, shopping, crash, yawn, stretch, sleep, much, but, champ",
-"What is the baby's name?|Asha;What did Shan bring in?|A drum;Did the baby wake up?|No, she kept sleeping");
+Mum smiles. "Shan, she likes you," she says. Shan looks at his tiny sister. He feels a warm thing in his chest. "I think I like her, as well," he says.`, "Mum, new, baby, her, name, Asha, little, she",
+"What is the baby's name?|Asha;Why is Shan sad at first?|He has to be quiet all the time;How does Shan help Asha stop crying?|He hums the song Mum sings to him");
 
-S(5, "Chuck and the Chess Set", `Chuck has a chess set. It was a gift from his grandpa. Chuck can play chess with Seth.
+S(5, "Chuck and the Chess Set", `Chuck has a chess set that was his grandpa's. He plays chess with Seth on the bench each day. Chuck wins and wins. He brags a lot. "I am the best!"
 
-Chuck and Seth sit at a bench in the shade. Chuck has the black set. Seth has the white set. Chuck did a move. Seth did a move. Chuck did think and think.
+One day, Seth's little sister, Ruth, wants to play. She is just six. Chuck laughs. "You will not win," he says.
 
-Then a chicken did hop up on the bench! The chicken did peck at the chess set. Peck, peck! The chess bits fell on the mud.
+Ruth moves her bits. Chuck moves his. Then Ruth makes a quick move. "Check!" she says. Chuck gasps. Then, "Checkmate!" Ruth wins!
 
-"Shoo, chicken!" said Chuck. The chicken did flap off. Chuck and Seth did pick up the chess bits. Which bit was which? Chuck did not think it was fun.
+Chuck is red in the face. He wants to stomp off. Then he thinks of what Grandpa said. "Win well, and lose well."
 
-Seth had a laugh. "Chuck, let us have a fresh match," said Seth. Chuck did a grin. Chuck and Seth had a fresh match. Chuck did win. The chicken did watch from the shed.`, "chess, was, gift, from, his, grandpa, play, with, the, black, white, move, think, then, peck, shoo, said, off, fun, laugh, let, us, have, fresh, match, win, watch",
-"Who gave Chuck the chess set?|His grandpa;What knocked over the chess set?|A chicken;Who won the new match?|Chuck");
+Chuck shakes Ruth's hand. "That was a smart move," he says. "Can you teach me?" Ruth grins. From then on, Chuck does not brag. He has a lot to learn, and that is fine.`, "Chuck, chess, his, grandpa's, plays, Seth, wins, brags",
+"Who taught Chuck to play chess?|It was his grandpa's set;Who beats Chuck?|Ruth, Seth's little sister;What did Grandpa say?|Win well, and lose well");
 
-S(5, "Whiz the Fish", `Beth has a fish. The fish is Whiz. Whiz is in a big dish of water on the shelf. Whiz has a red fin and a thick tail.
+S(5, "Whiz the Fish", `Beth has a fish named Whiz in a big dish on the shelf. Whiz has a red fin and swims fast. Each day, Beth gives Whiz a pinch of fish flakes.
 
-Whiz can swim fast. Whiz can whip past a rock. Whiz can dash past a shell. Whiz can flash in the sun.
+One week, Beth goes to her aunt's in the city. She asks her brother, Seth, to feed Whiz. "Just a pinch each day," she says. Seth nods. "Yes, yes."
 
-When Beth gets in, Whiz did swim to the top. Whiz wants a snack. Beth did a pinch of fish flakes. Whiz did munch and munch.
+But Seth forgets. On day three, Whiz is still and sad, at the bottom of the dish. Seth rushes to get the flakes. He drops in a pinch. Whiz swims up, slow, and munches.
 
-When the cat got in, Whiz did dash to the shell. Whiz did hide in the shell. The cat did sit on the shelf and did watch Whiz. Whiz did not budge.
+Seth feels bad. He sets a note on the shelf: "FEED WHIZ!" Each day after, he does not forget.
 
-"Cat, Whiz is not a lunch!" said Beth. Beth did shut the cat out of the den. Whiz did swim out of the shell. Whiz did a flip, and Beth did a laugh.`, "the, water, shelf, tail, swim, shell, flash, sun, wants, to, snack, flakes, hide, watch, budge, lunch, said, out, of, laugh",
-"Where does Whiz live?|In a dish of water on the shelf;What does Whiz eat?|Fish flakes;Where did Whiz hide from the cat?|In a shell");
+When Beth gets back, Whiz is swimming fast. Seth tells her what happened. "I am sorry," he says. "But I fixed it." Beth hugs him. "Thanks for telling me the truth," she says.`, "Beth, named, Whiz, swims, flakes, aunt's, city, asks",
+"Who feeds Whiz while Beth is away?|Her brother Seth;What happens on day three?|Whiz is still and sad because Seth forgot;How does Seth make sure he doesn't forget?|He puts a note on the shelf");
 
-S(5, "The Shed at the Path", `At the end of the path is a shed. The shed is old, with a big crack in the top. "What is in the shed?" said Rosh.
+S(5, "The Shed at the End of the Path", `At the end of the path is an old shed. The kids think it is full of ghosts. "Do not go in," says Chet. "Bad things live in that shed."
 
-Rosh and Beth did go to the shed. The latch is stiff. Rosh did a push. Creak! The shed did open.
+Rosh is scared, but she wants to check. She takes a torch and creeps up the path. The latch is stiff. She pushes. Creak! The shed opens.
 
-In the shed, it was dim. Rosh did see a chest. Beth did see a big shelf. On the shelf was a lot of dust. "What is in the chest?" said Beth.
+In the shed, it is dim. Then something rustles. Rosh jumps! Then she shines the torch. It is a cat with three little kittens, in a nest of old sacks!
 
-Rosh did lift the lid of the chest. In the chest was a tin box. In the tin box was a shell, a brush and a dish. Then Rosh did see a sketch of a ship.
+The kittens mew. They are thin and hungry. Rosh runs to get a dish of milk and a bit of fish.
 
-"It is Grandpa's chest!" said Beth. Rosh and Beth got the chest to Grandpa. Grandpa did a big grin. "Thanks! I lost that chest when I was a kid," said Grandpa.`, "the, old, with, what, said, go, latch, stiff, push, creak, open, was, see, dust, lift, then, sketch, Grandpa, thanks, I, that, when",
-"What was at the end of the path?|An old shed;What was in the tin box?|A shell, a brush and a dish;Whose chest was it?|Grandpa's");
+The next day, she takes Chet to the shed. Chet looks at the kittens. "No ghosts," he says. "Just a mum and her kids." Rosh grins. "The things we fear are not always what they seem," she says.`, "end, path, old, full, ghosts, says, Chet, things",
+"What do the kids think is in the shed?|Ghosts;What is really in the shed?|A cat with three kittens;What does Rosh learn?|Things we fear are not always what they seem");
 
-S(5, "Chili Chips", `Mum did chop a lot of chilis. The chilis are red and hot. Mum did mix the chilis with chips in a big dish.
+S(5, "Chili Chips", `Mum makes chips with chili on them. "Chuck, they are hot," she says. "Just munch a little bit."
 
-"Chuck, the chips are hot," said Mum. "Do not munch a lot." Chuck did not think so. Chuck did grab a big fist of chips. Chuck did munch, munch, munch.
+Chuck does not think so. He grabs a big fist of chips and munches fast. Then his lips get hot! His chin gets hot! His cheeks are red, and his eyes run. "Mum! It is hot, hot, hot!" he yells.
 
-Then Chuck did a gasp! His lips got hot. His chin got hot. His cheeks got red. "Mum! It is hot, hot, hot!" said Chuck.
+Mum gives him a cup of milk. Chuck gulps it. The hot fades a bit.
 
-Mum did pass Chuck a cup of milk. Chuck did gulp and gulp. The milk did help. Chuck did a big puff.
+Chuck sits on the bench. "Mum, why did I not listen?" he asks. Mum smiles. "Sometimes we have to find out for ourselves," she says. "But it is less painful to listen."
 
-"Chuck, which is best: a lot of chips, or a little bit?" said Mum. Chuck did a sheepish grin. "A little bit, Mum," said Chuck. Then Chuck did munch a chip, a little one, with no chili.`, "Mum, chilis, the, are, with, said, do, think, so, grab, fist, then, gasp, his, cheeks, cup, milk, gulp, help, best, or, little, sheepish, one, no",
-"What did Mum mix with the chips?|Chilis;What helped Chuck's hot mouth?|A cup of milk;What did Chuck learn?|Eat just a little bit");
+The next time, Chuck munches one chili chip, slow. It is hot, but it is good. "A little bit is best," he says.`, "Mum, makes, chili, Chuck, they, says, little, think",
+"What did Mum warn Chuck about?|The chips are hot, eat just a little;What happens when Chuck eats a lot?|His mouth, cheeks and eyes burn;What does Chuck do the next time?|Eats one chip slowly");
 
-S(5, "Thump in the Night", `It was dark. Seth was in bed. Then Seth did hear a thump. Thump, thump! What was that thump?
+S(5, "Thump in the Night", `It is dark, and Seth is in bed. Then he hears a thump. Thump, thump! What is that? He shivers under his quilt.
 
-Seth did get up. Seth did grab a torch. Seth did go to the shed. No thump. Seth did go to the hen pen. No thump. Seth did go back to bed.
+Seth wants to shout for Dad. But he thinks, "I am a big lad. I can check." He gets a torch. He creeps to the kitchen.
 
-Thump, thump, thump! Seth did get up with the torch. The thump was in the kitchen! Seth did shine the torch on the kitchen bench.
+Thump, thump! It is on the bench. Seth shines the torch. It is a big black cat with a fish! The cat thumps its tail on the bench.
 
-On the bench was a big black cat with a fish! The cat did thump its tail on the bench. Thump, thump! "Cat, that fish is for lunch!" said Seth.
+Seth laughs. He is not scared now. "Cat, that fish is for lunch!" he says. The cat jumps off and dashes out the hatch.
 
-The cat did jump and dash off with the fish. Seth did not chase it. Seth did shut the kitchen hatch and got back in bed. Shh! No thump.`, "was, dark, then, hear, what, that, grab, torch, go, no, the, back, with, kitchen, shine, black, its, tail, for, lunch, said, jump, off, chase",
-"What did Seth hear?|A thump;Where was the thump coming from?|The kitchen;What was the cat doing?|Thumping its tail with a fish");
+Seth shuts the hatch and goes back to bed. In the morning, he tells Dad. Dad grins. "It is brave to check," he says. "And it is smart to shut the hatch." Seth grins. He feels big.`, "Seth, bed, hears, what, that, quilt, shout, kitchen",
+"What does Seth hear in the night?|A thump;What is making the thump?|A cat with a fish thumping its tail;What does Dad say?|It is brave to check and smart to shut the hatch");
 
-S(5, "Shopping with Mum", `Mum and Ash went to the shops. Mum had a list. "We must get fish, a bag of chick peas, chilis and a big cheese," said Mum.
+S(5, "Shopping with Mum", `Mum and Ash go to the shops with a list: fish, chick peas, chilis and a big cheese. Mum hands Ash the cash. "You can pay," she says.
 
-The fish shop had lots of fish. Mum did pick a thick fish. The man did wrap it in a sheet. Then Ash and Mum went to the next shop.
+At the fish shop, Ash pays. The man gives him change. Ash looks at it. The man has given him too much cash!
 
-"Ash, which bag of chick peas?" said Mum. Ash did pick a big bag. Then Ash did pick six red chilis. Mum did check the list.
+Ash thinks. He can keep it. Mum will not see. He can get sweets with it. Then he thinks again. That is not right.
 
-"Ash, we must get the cheese," said Mum. Ash and Mum went to the cheese shop. The cheese man had a big cheese wheel. He did chop a chunk for Mum.
+Ash goes back to the man. "Sir, you gave me too much change," he says, and hands it back.
 
-Ash did a grin. "Mum, the list is done!" Mum did a check. "Fish, chick peas, chilis and cheese. Ash, you are the best shopping chum," said Mum.`, "Mum, went, the, shops, list, we, must, peas, cheese, said, lots, wrap, sheet, then, next, wheel, he, done, you, are, best",
-"What was first on Mum's list?|Fish;How many chilis did Ash pick?|Six;What did the cheese man cut?|A chunk from a cheese wheel");
+The man is stunned. Then he grins. "Not a lot of lads are so honest," he says. He hands Ash a fish for free. "This is for you." Mum hugs Ash. "Honest hands get the best fish," she says, and they laugh all the way home.`, "Mum, Ash, shops, list, peas, cheese, says, change",
+"What is on Mum's list?|Fish, chick peas, chilis and cheese;What mistake does the fish man make?|Gives Ash too much change;What does the man give Ash for being honest?|A free fish");
 
-S(5, "When the Wind Did Whip", `When the wind did whip, the hut did shake. Whish, whish! The wind did rush past the shed and the hen pen.
+S(5, "When the Wind Whips", `The wind whips past the hut. Whish, whish! The sheets on the line flap and snap. "A storm is coming," says Mum. "Shut the hatch!"
 
-"Seth, the wind is bad!" said Mum. "Shut the hatch!" Seth did shut the hatch. Then Seth did a check on the hens. The hens did huddle in the pen.
+Seth shuts the hatch. Then he sees Mrs. Shah next door. She is old, and she is trying to get her washing in. The wind is too much. A sheet whips off the line!
 
-Then the wind did whip a sheet off the line! The sheet did flap and flap. It went up past the shed. "Mum, the sheet!" said Seth.
+Seth runs out. He chases the sheet and grabs it. Then he helps Mrs. Shah with the rest of the washing. Shirts, sheets and a big shawl. They rush it all in.
 
-Seth did dash and did chase the sheet. The sheet got stuck in a thick bush. Seth did grab it.
+Just then, the rain begins. Drip, drip, then a big rush! Seth gets back in the hut, wet but happy.
 
-When Seth got back, the wind did stop. It was still and hush. Mum did hug Seth. "Seth, you did catch the sheet. You are such a champ." Mum and Seth had a cup of hot chai.`, "the, wind, shake, Mum, said, then, huddle, line, went, up, chase, stuck, bush, grab, back, stop, still, hush, hug, you, catch, are, such, cup, chai",
-"What was the weather like?|Very windy;What did the wind blow away?|A sheet;Where did the sheet get stuck?|In a thick bush");
+The next day, Mrs. Shah brings a dish of hot chapatis. "For the lad who helped," she says. Mum smiles at Seth. "Helping is always worth it," she says.`, "wind, whips, sheets, storm, coming, says, Mum, Mrs. Shah",
+"What is coming?|A storm;Who does Seth help?|Old Mrs. Shah next door;What does Mrs. Shah bring the next day?|A dish of hot chapatis");
 
-S(5, "The Chick That Got Lost", `Mum Hen had ten chicks. Nine chicks did sit with Mum Hen. One chick did not. That chick was Chip.
+S(5, "The Chick That Got Lost", `Mum Hen has ten chicks. Nine chicks stay by Mum Hen. But one chick, Chip, wants to see the world. "I am big!" says Chip. "I can go off on my own!"
 
-Chip did dash off to the path. Chip did hop past the shed. Chip did hop past the well. Then Chip did stop. Where was Mum Hen? Chip did cheep and cheep.
+Chip dashes off past the shed. He hops past the well. He sees a big bush and a long path. It is fun!
 
-A big black cat did see Chip. The cat did sit and watch. Chip did shiver.
+Then Chip stops. Where is Mum Hen? Where is the shed? All the paths look the same. Chip cheeps and cheeps. A big cat is watching from the bush!
 
-Then Beth ran up. Beth did see Chip and the cat. "Shoo, cat!" said Beth. The cat did dash off. Beth did pick up Chip. Chip was soft and fluffy in Beth's hand.
+Then Beth sees Chip. "Shoo, cat!" she yells. The cat runs off. Beth picks up Chip and gets him back to the pen.
 
-Beth got Chip back to the pen. Mum Hen did cluck, cluck, cluck. Chip did hop next to Mum Hen. Ten chicks, all with Mum Hen. "Chip, no more dashing off," said Beth.`, "Mum, ten, nine, with, one, that, was, off, the, path, then, stop, where, cheep, black, see, watch, shiver, shoo, said, soft, fluffy, back, cluck, all, no, more",
-"How many chicks did Mum Hen have?|Ten;Who was watching Chip?|A big black cat;Who saved Chip?|Beth");
+Chip snuggles next to Mum Hen. He is shaking. "Being big is good," says Mum Hen. "But being safe is better." Chip nods. He will wait till he is a bit bigger to see the world.`, "Mum, Hen, ten, chicks, nine, one, Chip, world",
+"Why does Chip run off?|He wants to see the world on his own;Who is watching Chip?|A big cat;What does Mum Hen say?|Being big is good, but being safe is better");
 
-S(5, "Chad Fixes the Chair", `Gran has a chair. It is an old chair, and it has a crack. When Gran sits, the chair does a wobble.
+S(5, "Chad Fixes the Chair", `Gran has an old chair. It has a crack in the leg, and it wobbles when she sits. "Chad, can you fix it?" she asks.
 
-"Gran, I can fix the chair," said Chad. Chad got a box of stuff from the shed. In the box was a big brush, a tub of glue and a thick strap.
+Chad wants to fix it fast so he can go and play. He dabs a bit of glue on the crack and sets the chair back. "Done!" he says, and dashes off.
 
-Chad did brush the glue in the crack. Then Chad did wrap the strap on the chair. The strap did shut the crack. "The glue must set," said Chad. "No sitting on it until lunch."
+That night, Gran sits on the chair. Crack! The leg snaps, and Gran falls on the mat. She is not hurt, but she is shaken.
 
-Gran did sit on the bench. Chad and Gran had chips and chai. Then Chad did check the chair. The glue was set! Chad did snip off the strap.
+Chad feels bad. "I rushed it," he says. "I am sorry, Gran." The next day, Chad does it well. He brushes glue in the crack. He wraps it with a thick strap. He waits for the glue to set, all day.
 
-Gran did sit on the chair. It did not wobble. "Chad, the chair is fixed! You are such a champ," said Gran.`, "chair, old, does, wobble, I, said, stuff, from, the, glue, strap, wrap, then, must, set, no, until, lunch, chai, was, snip, off, you, are, such",
-"What was wrong with Gran's chair?|It had a crack and wobbled;What did Chad use?|Glue and a strap;What did they eat while the glue set?|Chips and chai");
+Then Gran sits. The chair does not wobble. "Chad, a job done well is better than a job done fast," says Gran, and she pats his hand.`, "Gran, old, chair, she, Chad, asks, play, glue",
+"What is wrong with the chair?|It has a crack in the leg and wobbles;What happens the first time Chad fixes it?|He rushes and the leg snaps;What does Gran say?|A job done well is better than a job done fast");
 
-S(5, "The Thrush", `A thrush did sit on a branch. It had a speck on its chest and a fresh song. Shan did hear it from the bench.
+S(5, "The Thrush and the Chicks", `A thrush has a nest in the thick bush by the shed. In the nest are three little chicks. They cheep and cheep for bugs.
 
-Shan did watch the thrush. The thrush did hop and did peck at the mud. It got a fat bug. Then the thrush did fly to a nest in a thick bush.
+Shan watches the nest each day. One day, he sees a lad with a sling. The lad aims at the nest! "Stop!" yells Shan.
 
-In the nest, Shan did see three little chicks. The chicks did cheep, cheep! The thrush did pass the bug to a chick.
+The lad is Josh. He frowns. "It is just a nest," he says. Shan takes Josh to the bush. "Look," he says, softly. Josh peeks. He sees the chicks with their mouths open. Then the thrush lands with a bug.
 
-Then a big cat did stretch on the path. The cat did watch the nest. Shan did not want the cat to get the chicks. Shan did clap. Clap, clap! The cat did dash off.
+Josh is quiet. He puts down the sling. "I did not think of the chicks," he says.
 
-Every day, Shan did check the nest. Then one day, the chicks did flap. The chicks did fly off with the thrush. Shan did wish them well.`, "thrush, branch, its, chest, song, hear, from, watch, the, then, fly, nest, bush, see, three, little, cheep, stretch, path, want, every, day, one, wish, them, well",
-"Where did the thrush have its nest?|In a thick bush;How many chicks were there?|Three;How did Shan scare the cat?|He clapped");
+From then on, Josh and Shan watch the nest as a team. One day, the chicks flap and fly off. Josh grins. "I am glad I did not hit it," he says.`, "thrush, nest, bush, three, little, chicks, cheep, sling",
+"What lives in the bush?|A thrush with three chicks;What is Josh about to do?|Hit the nest with his sling;What changes Josh's mind?|Seeing the chicks with their mouths open");
 
-S(5, "The Chomp Shop", `Dad has a shop. It is the Chomp Shop. At the Chomp Shop, Dad sells hot fish and chips.
+S(5, "The Chomp Shop", `Dad has a shop called the Chomp Shop. He sells hot fish and chips. It is the best shop on the street, and lots of kids rush in.
 
-Lots of kids did rush in at lunch. "Dad, can I get fish and chips?" said Chet. "Dad, can I get a dish of chips?" said Beth. Dad was quick. Dad did fry and fry.
+One day, a big shop opens next door. It has bright lights and a big sign. All the kids go there! The Chomp Shop is empty. Dad sits on a stool and sighs.
 
-Then the fryer did a thud and stop. No fry! The kids did a gasp. "Dad, what is up with the fryer?" said Chet.
+Chet wants to help. He thinks. What can the Chomp Shop do that the big shop cannot? Then he has it. Dad knows each kid by name. He knows Bilal likes extra chili. He knows Ruth likes no salt.
 
-Dad did check the fryer. A bit of shell was stuck in it. Dad did yank it out. The fryer did hum and get hot. Sizzle, sizzle!
+Chet makes a sign: "THE CHOMP SHOP. WE KNOW YOUR NAME." Then he stands on the street and chats with the kids.
 
-The kids did cheer. Dad did pass Chet a fish. Dad did pass Beth a dish of chips. "The Chomp Shop is back!" said Dad. The kids did munch, and Dad did a big grin.`, "shop, the, sells, lots, rush, lunch, I, said, was, quick, fry, fryer, then, thud, stop, no, gasp, what, up, with, shell, stuck, out, sizzle, cheer, back",
-"What does the Chomp Shop sell?|Fish and chips;What stopped the fryer?|A bit of shell;What did the kids do when it worked again?|They cheered");
+The next day, the kids are back. "The big shop is fine," says Ruth, "but Dad knows I like no salt." Dad grins. Kindness is the best thing on the menu.`, "Dad, shop, called, Chomp, sells, street, lots, opens",
+"What does the Chomp Shop sell?|Hot fish and chips;Why is the shop empty?|A big new shop opens next door;What makes the kids come back?|Dad knows each kid's name and what they like");
 
-S(5, "Rich in Shells", `Beth did go to the beach with Mum. The beach had lots of shells. Beth had a bag. "I will be rich in shells!" said Beth.
+S(5, "Rich in Shells", `Beth and her cousin Tash go to the beach. The beach has lots of shells. "I will be rich in shells!" says Beth. She grabs and grabs. Her bag gets full.
 
-Beth did pick up a pink shell. Beth did pick up a thin shell. Beth did pick up a shell with spots. The bag did get full.
+Tash picks just one shell. It is pink and white, with a swirl.
 
-Then Beth did see a shell with a crab in it! The crab did snap at Beth. Snap, snap! Beth did a jump. "Crab, that shell is not for my bag," said Beth.
+Beth laughs. "Tash, you have one shell. I have a hundred!" Tash grins. "I just want the best one," she says.
 
-Beth did sit on a rock and did check the shells. Mum did sit next to Beth. "Beth, which shell is best?" said Mum.
+At home, Beth tips out her bag. Lots of the shells are chipped. Some have crabs in them! A crab runs across the rug. Mum shrieks. Beth has to take all the shells back to the beach.
 
-Beth did pick a shell with a pink flash. "This one," said Beth. Then Beth did tip the rest of the shells back on the beach. "The beach can be rich in shells too," said Beth.`, "go, the, beach, Mum, lots, I, will, be, said, with, full, then, see, crab, snap, jump, that, for, my, best, one, rest, back, too",
-"Where did Beth go?|To the beach;What was in one shell?|A crab;What did Beth do with the rest of the shells?|She put them back on the beach");
+Tash sets her one shell on the shelf. It is the best shell. Beth looks at it. "I think I see," she says. "It is not how much you have. It is what you have."`, "Beth, her, cousin, Tash, beach, lots, says, full",
+"How many shells does Tash pick?|Just one;What is wrong with Beth's shells?|Many are chipped and some have crabs in them;What does Beth learn?|It's not how much you have, it's what you have");
 
-S(5, "Whack the Bat", `Chet has a cricket bat. It is thick and flat. Chet can whack the ball a lot.
+S(5, "Whack the Bat", `Chet has a cricket bat. He can whack the ball a long way. He and Rosh play on the path.
 
-Chet and Rosh had a match on the path. Rosh did fling the ball. Chet did whack it. Smash! The ball did whiz past Rosh. "Chet, that is a six!" said Rosh.
+Chet whacks the ball. Smash! It hits Mr. Shah's shed and makes a big chip in the wood. Chet and Rosh freeze. Then Rosh whispers, "Let's run!"
 
-Rosh did fling the ball. Chet did whack it. The ball did whiz up, up, up. It did smash the top of a shed! Crash!
+Chet wants to run. But he thinks of Mr. Shah. He is old, and he made that shed with his own hands.
 
-Chet did gasp. The shed was Mr Shah's. Chet and Rosh ran to Mr Shah. "Mr Shah, the ball did smash the shed," said Chet.
+Chet goes to Mr. Shah's door. He knocks. "Mr. Shah, I hit your shed with my ball. I am sorry. Can I help fix it?"
 
-Mr Shah did check the shed. It had a big chip in it. "Chet, you did a big whack," said Mr Shah. "Can you help fix the shed?" Chet and Rosh did help Mr Shah all lunch.`, "cricket, flat, ball, match, the, path, fling, said, that, six, up, crash, gasp, was, Mr Shah, you, help, all, lunch",
-"What did Chet hit with the bat?|A ball;What did the ball smash?|The top of Mr Shah's shed;How did Chet fix things?|He helped Mr Shah fix the shed");
+Mr. Shah looks at the shed. Then he looks at Chet. "Most lads run," he says. "You did not. That is worth more than a shed." Chet and Mr. Shah fix the shed with a patch of wood. Then Mr. Shah throws the ball back. "Hit it the other way next time," he says, with a wink.`, "Chet, cricket, ball, long, way, Rosh, play, Mr. Shah's",
+"What does Chet's ball hit?|Mr. Shah's shed;What does Rosh want to do?|Run away;What does Mr. Shah say?|Most lads run, you did not, and that is worth more");
 
-S(5, "Shelf of Things", `Ash has a shelf. On the shelf, Ash has his things. Ash has a shell, a ship, a chess set and a thick quilt.
+S(5, "Shelf of Things", `Ash has a shelf of things he loves: a shell, a ship, a chess set and a fish in a tank.
 
-Then Ash did get a gift from his grandpa. It was a big box of things. In the box was a dish, a torch, a brush and a fish in a tank.
+His little cousin, Ruth, visits. She wants to touch it all. Ash is cross. "Do not touch my things!" he snaps. Ruth's lip wobbles. She sits in the corner.
 
-Ash did put the dish on the shelf. Ash did put the torch on the shelf. Ash did put the brush on the shelf. Then Ash did put the fish tank on the shelf. Crack! The shelf did snap!
+Ash looks at Ruth. She is so little. She is far from her home. He thinks of when he was little and went to visit his aunt.
 
-The shell, the ship, the chess set, the dish, the torch and the brush fell on the rug. The fish tank did not fall. Mum did catch it!
+Ash picks the shell off the shelf. He sits next to Ruth. "Put it on your ear," he says. Ruth does. "I can hear the sea!" she gasps. Ash shows her the ship. Then he shows her the fish.
 
-"Ash, the shelf is not for a fish tank," said Mum. Mum and Ash did fix the shelf. The fish tank went on the bench.`, "his, things, quilt, then, gift, from, grandpa, was, the, torch, tank, put, crack, snap, fell, fall, Mum, catch, said, went",
-"What was in the gift box?|A dish, a torch, a brush and a fish in a tank;What made the shelf snap?|The fish tank;Who caught the fish tank?|Mum");
+At the end of the visit, Ruth hugs Ash. "Thanks for sharing your things," she says. Ash grins. It was much more fun than keeping them to himself.`, "Ash, things, loves, chess, tank, his, little, cousin",
+"What is on Ash's shelf?|A shell, a ship, a chess set and a fish tank;Why is Ruth sad?|Ash snaps at her not to touch his things;What does Ruth hear in the shell?|The sea");
 
-S(5, "Chai for Grandpa", `Every day, Grandpa has chai. Grandpa sits on the bench with a cup of chai. Today, Ash will fix the chai.
+S(5, "Chai for Grandpa", `Each day, Grandpa has a cup of chai on the bench. Today, Ash wants to make it for him.
 
-Ash did fetch the pot. Ash did fill it with water and milk. Ash did put in a pinch of tea and a bit of sugar. Then Ash did put the pot on the fire.
+Ash fills the pot with water and milk. He adds tea and a bit of sugar. He sets it on the fire. Then he goes to fetch the cups.
 
-The chai did get hot. Ash did watch it. Then the chai did froth and rush up! "Grandpa, the chai is rushing up!" said Ash.
+When he gets back, the chai is frothing up and spilling on the fire! Hiss! Ash grabs the pot, but it is hot. He drops it, and the chai spills on the floor.
 
-Grandpa did dash in. Grandpa did lift the pot off the fire. The chai did not spill. "Ash, chai is a quick thing," said Grandpa. "When it froths, it is set."
+Ash sits on the step. He is sad. "I cannot do it," he says. Grandpa sits next to him. "When I was a lad, I spilled a lot of chai," he says. "Do it again, and watch it this time."
 
-Ash did fill a cup for Grandpa. Grandpa did sip. Grandpa did a big grin. "Ash, this is the best chai," said Grandpa.`, "every, day, Grandpa, with, cup, chai, today, will, fetch, fill, water, milk, put, tea, sugar, then, fire, watch, froth, up, said, lift, off, spill, quick, thing, when, set, sip, best",
-"Who drinks chai every day?|Grandpa;What did Ash put in the pot?|Water, milk, tea and sugar;What happened when the chai got hot?|It frothed and rushed up");
+Ash makes a fresh pot. This time, he does not leave it. When it froths, he lifts it off. Grandpa sips. "Ash, this is the best chai," he says. Ash grins. Trying again was worth it.`, "Grandpa, cup, chai, today, Ash, water, milk, tea",
+"What does Ash want to make?|Chai for Grandpa;What goes wrong the first time?|He leaves it and it froths over;What does Ash do the second time?|He watches it and lifts it off when it froths");

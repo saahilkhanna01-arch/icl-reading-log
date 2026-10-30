@@ -1,220 +1,220 @@
-/* Level 3: Short u and e, all short vowels. */
-S(3, "Ben on the Bus", `Ben got on a bus. The bus is red. It is hot on the bus, and the bus is full. Ben sat next to Meg.
+/* Level 3: Short u and e, plus all short vowels. Real little stories with a problem, a fix and something to learn. */
+S(3, "Ben and the Bus", `Ben gets on the red bus to go to his uncle's. The bus is full of men, kids and bags. Ben sits next to an old man with a stick.
 
-The bus went up a hill. The bus hit a big bump. Up went Ben! Up went Meg! Ben's bag fell on the mat. Ben had a bun in the bag. The bun fell out!
+The bus hits a big bump. Up jumps Ben! The old man's bag falls, and ten plums roll on the floor. The man cannot bend to get them. His back is stiff.
 
-"My bun!" said Ben. The bun did a roll, roll, roll. It went past a man and a hen in a box. A pup on the bus got the bun!
+Ben gets down on the floor. He picks up the plums, one by one. He gets the last plum from under a seat. He puts them all back in the bag.
 
-Ben was sad. Meg had a bag. In it, Meg had six buns. "Ben, I can get you a bun," said Meg. Meg got Ben a bun. Ben got the pup a bit of bun.
+"Thank you, son," says the man. He hands Ben a plum. "Not all kids help an old man."
 
-The bus got to the end of the hill. Ben and Meg got off the bus. "Ben, it was a fun bus trip," said Meg.`, "the, went, my, said, out, roll, was, I, you, of, off",
-"What color is the bus?|Red;Who got Ben's bun?|A pup;How many buns did Meg have?|Six");
+At his uncle's, Ben tells the tale. His uncle grins. "Helping is the best thing you can do on a bus," he says. Ben has the plum for lunch. It is the best plum yet.`, "Ben, uncle's, old, falls, roll, floor, one, says",
+"Where is Ben going?|To his uncle's;What falls on the floor?|Ten plums;What does the man give Ben?|A plum");
 
-S(3, "The Red Hen", `Pam has a red hen. The hen is Peg. Peg is a big hen with a red neck.
+S(3, "The Red Hen", `Pam has a red hen named Peg. Peg is fussy. She will not get in the pen at dusk.
 
-Peg sat in a box. Pam fed Peg a bit of bun. Peg sat and sat. Peg did not get up. "Peg, get up and run!" said Pam. Peg did not get up.
+Each dusk, Pam runs after Peg. Peg runs up the hill. Peg runs past the well. Pam gets hot and cross. "Peg, get in the pen!" she yells. It does not help.
 
-Pam ran to get Mum. "Mum, Peg will not get up!" said Pam. Mum and Pam went to the box. Mum did a pat on Peg. Then Peg got up.
+One dusk, Pam does not run. She sits on the step with a cup of grain. She is still. She waits.
 
-In the box was an egg! Then Pam can see ten eggs. Pam had a gasp. "Mum, ten eggs!" Mum had a big grin.
+Peg looks at Pam. Peg looks at the cup. Peg steps up, peck by peck. Then Pam gets up and walks to the pen, with the cup. Peg runs in after her!
 
-"Peg did not get up, but Peg did a big job," said Mum. Pam fed Peg a lot of bun. Peg sat on the ten eggs, and Pam sat next to the box.`, "the, with, said, will, then, was, see, but, job",
-"What is the hen's name?|Peg;Why didn't Peg get up?|She was sitting on eggs;How many eggs were there?|Ten");
+Pam shuts the pen. She grins. "Yelling did not help," she says. "Being calm and patient did." Peg clucks in the pen, snug and safe.`, "Pam, named, Peg, she, fussy, grain, waits, patient",
+"What is the hen's name?|Peg;What did Pam do that didn't work?|Ran after Peg and yelled;What worked?|Sitting still and calm with a cup of grain");
 
-S(3, "Fun in the Sun", `It is a hot sun. Kids run and run on the dusty hill. Gul has a bat. Rob has a net.
+S(3, "Fun in the Sun", `It is a hot day. Gul and Rob want to play cricket. Gul has the bat. Rob has the ball. But they need a lot of kids for a match.
 
-"Gul, can you hit it up?" said Rob. Gul hit the ball. Up, up, up it went! Rob ran and ran. Rob got it in his net. "Yes!" said Rob.
+They ask Ben. They ask Meg. They ask Kim. Then they see a new kid sitting on his own by the wall. His name is Ted. He just got to the village.
 
-Then Rob had the bat, and Gul had the net. Rob hit it. The ball went up and up. It hit a tent! The ball fell in a tub of mud.
+"Let's not ask Ted," says Rob. "He is new." Gul looks at Ted. Ted looks sad. "It is not fun to sit on your own," says Gul.
 
-Gul had a big laugh. "Rob, the ball is in the mud!" Gul got the ball. Gul had mud on his hands and mud on his legs.
+Gul runs to Ted. "Ted, can you play cricket?" Ted's face lights up. "Yes!"
 
-Gul and Rob ran to the pump. Gul did a pump, pump, pump. The pump got Gul wet, and the mud is gone. It is fun to run in the sun.`, "Gul, dusty, you, said, ball, went, his, then, laugh, wet, gone",
-"What does Rob have?|A net;Where did the ball land?|In a tub of mud;How did Gul get clean?|At the pump");
+Ted is the best bowler of them all! He gets Rob out in a jiffy. Rob laughs. "Ted, you are on my team next!" Gul grins. It is good to ask the new kid.`, "Gul, Rob, play, cricket, ball, they, need, new",
+"What game do they want to play?|Cricket;Who is sitting on his own?|Ted, the new kid;What is Ted good at?|Bowling");
 
-S(3, "The Duck and the Bug", `A duck sat in the mud. A bug sat on a red leaf. The duck had a big yen for a bug.
+S(3, "Ken Can Fix It", `Ken has a little shop in the village. He can fix pots and pans, cups and fans. But Ken is very old, and his hands shake a bit.
 
-The duck went to the leaf. Quack! The bug did a hop. The bug went up on a stem. The duck did a jump. The duck fell in the mud!
+One day, Meg's mum has a fan that will not run. Ken tries to fix it. His hands shake. The little bolt falls. He tries a second time. It falls again. Ken sighs.
 
-The duck got up. The duck had mud on its neck. The bug sat on the stem. "Duck, you are a mess!" said the bug.
+Meg sees him. "Ken, can I help?" she asks. "You tell me, and I can do it." Ken grins. "Yes, let us try."
 
-The duck did not get the bug. The duck got wet in the pond. The mud did not stick on the duck.
+Ken tells Meg, step by step. "Get the bolt. Set it in the slot. Twist it." Meg twists it. The fan hums!
 
-The duck sat in the sun. The bug sat on the stem in the sun. The duck had a nap. The bug had a nap. The duck did not get a bug, but the duck did get a fun bath.`, "the, leaf, yen, went, up, quack, jump, its, you, are, said, mess, wet, but, bath",
-"Where did the bug sit?|On a red leaf, then a stem;What happened when the duck jumped?|It fell in the mud;How did the duck get clean?|In the pond");
+Ken pats Meg on the back. "You have good hands," he says. "Come back, and I can tell you lots of tricks." From then on, Meg helps Ken at the shop.`, "Ken, little, shop, village, very, old, Meg's, says",
+"What does Ken fix?|Pots, pans, cups and fans;Why can't Ken fix the fan?|His hands shake;What happens at the end?|Meg helps Ken at the shop");
 
-S(3, "Ten Men and a Bus", `Ten men sat at a bus stop. The bus did not come. The men sat and sat. It is hot!
+S(3, "The Mud Hut", `Gran has a mud hut on the hill. A big storm hits. The rain gets in a crack, and mud drips on Gran's bed.
 
-Then the bus got to the stop. The bus had a flat! "The bus can not run," said the bus man. "It has a flat."
+Gran is sad. "I am too old to fix it," she says. Ben and his sister Jen look at the crack.
 
-The ten men got up. "We can help," said a big man. The men did lift the bus up. Up, up, up! The bus man got a spare and put it on.
+The next day, Ben and Jen get a tub of mud and a bucket of water. They mix it. Ben gets on a box and dabs the mud on the crack. Jen hands him lumps of mud. Dab, dab, dab.
 
-The ten men had red necks and wet hands. "Get on the bus!" said the bus man. "You ten men can sit up at the front."
+It is a messy job. Ben gets mud on his neck. Jen gets mud on her nose. They laugh.
 
-The ten men sat at the front of the bus. The bus went past the hills and past the pond. It was a fun trip!`, "the, stop, come, then, flat, said, we, help, lift, spare, put, wet, you, front, of, went, was",
-"Why couldn't the bus run?|It had a flat tire;How did the men help?|They lifted the bus;Where did the men sit?|At the front");
+The sun gets hot, and the mud sets hard. That night, it rains again. But Gran's bed is dry. "Ben and Jen, you are better than a roof man," says Gran, and she gives them hot milk and buns.`, "Gran, storm, rain, Gran's, too, old, says, sister",
+"What happens to Gran's hut in the storm?|Rain gets in a crack and drips on her bed;How do Ben and Jen fix it?|They dab mud on the crack;What does Gran give them?|Hot milk and buns");
 
-S(3, "Hassan and the Pup", `Hassan has a pup. The pup is tan with a black spot on its leg. The pup is Fudge.
+S(3, "The Best Nest", `A hen must get a nest. She looks at a log. It is wet. She looks at a tub. It is full of mud. She looks at a box. A cat is in it!
 
-Fudge can run. Fudge can dig. Fudge can tug on a sock. Fudge is a lot of fun, but Fudge can be a pest.
+The hen is sad. She has a lot of eggs on the way. She sits in the dust and clucks.
 
-Fudge got in the den. Fudge did tug on Dad's rug. Rip! Fudge did dig in Mum's pot of mint. Dig, dig! Fudge did tug on Hassan's bed. Rip!
+Jen sees the hen. She gets a box and fills it with soft hay. She sets it next to the shed, out of the sun and the wind.
 
-Mum was mad. "Hassan, the pup is a pest!" said Mum. Hassan was sad. Hassan got Fudge, and Hassan sat with Fudge in the sun.
+The hen looks at the box. She steps in. She pecks at the hay. Then she sits, snug and still.
 
-Hassan had a plan. Hassan got a big stick and a ball. Hassan and Fudge ran and ran. Fudge did tug on the stick, not the rug. That got Fudge to stop. Fudge had a big nap.`, "Hassan, with, black, its, sock, be, pest, Mum, was, said, plan, stick, ball, that, stop",
-"What is the pup's name?|Fudge;What did Fudge rip?|Dad's rug and Hassan's bed;What was Hassan's plan?|To play with Fudge with a stick and ball");
+The next week, Jen peeks in the box. The hen has ten eggs! Then, one by one, little chicks pop out. Peep, peep! "Thank you for the nest," the hen seems to say. Jen grins. It is good to help a hen.`, "nest, she, looks, full, eggs, way, soft, hay",
+"Why is the hen sad?|She cannot find a good place for a nest;What does Jen make?|A box nest with soft hay;What happens the next week?|The hen has ten eggs and chicks hatch");
 
-S(3, "The Mud Hut", `Gran has a mud hut. The hut is red, and it has a big mat. Gran's hut is up on a hill.
+S(3, "Ted Gets Lost", `Ted and his mum go to the big bazaar. It is packed with men, carts and stalls. Mum says, "Ted, do not let go of my hand."
 
-It did rain and rain. The rain got in the hut! Drip, drip, drip. The mud on the top of the hut got wet. A bit fell on the rug.
+Ted sees a stall with red and yellow kites. He lets go of Mum's hand to look. When he looks up, Mum is gone!
 
-"Gran, the hut has a gap!" said Ben. Gran and Ben got a big tub of mud. Ben did a dab, dab, dab of mud on the gap. Gran did a pat, pat, pat.
+Ted's eyes get wet. He wants to run. But he thinks. Mum said, "If you get lost, stand still. Tell a shop man."
 
-Then the sun did come up. The sun got the mud hot. The mud set. The gap in the hut was gone!
+Ted goes to the kite man. "I am lost," he says. "My mum has a pink scarf." The kite man yells, "Lost lad! Lost lad at the kite stall!"
 
-Gran and Ben sat in the hut. Gran got Ben a cup of hot milk. "Ben, you did a fab job," said Gran. "The hut is snug."`, "the, rain, drip, wet, said, then, come, set, was, gone, cup, milk, you, fab, job",
-"What is Gran's hut made of?|Mud;What came in through the gap?|Rain;What did Gran give Ben?|A cup of hot milk");
+In a minute, Mum runs up and hugs Ted. "I said do not let go," she says. "But you did the right thing next." Ted holds her hand all the way home.`, "Ted, his, mum, bazaar, says, my, yellow, gone",
+"Why does Ted let go of Mum's hand?|To look at the kites;What did Mum tell him to do if he got lost?|Stand still and tell a shop man;What does Ted do all the way home?|Holds Mum's hand");
 
-S(3, "Pet the Cub", `At the zoo, Meg and Dad met a cub. The cub is a lion cub. It is tan, and it is fat.
+S(3, "Jen and the Pup", `Jen wants a pet pup. "A pup is a lot of work," says Dad. "Can you look after it?"
 
-The cub sat in a pen. The cub had a big bun of hay. The cub did a run and did a jump in the pen. "Dad, can I pet the cub?" said Meg.
+Jen thinks she can. Dad gets her a pup named Fudge. Fudge is fun. But Fudge digs. Fudge tugs on socks. Fudge must get fed and get water and get a run each day.
 
-A man at the zoo had a cap. "You can pet the cub," said the man, "if you can sit still." Meg sat still. The man got the cub.
+After a week, Jen is tired. She wants to sit and rest. But Fudge sits by the dish and whimpers. The dish is empty.
 
-The cub sat next to Meg. Meg did a pet on the cub. The cub did a lick on Meg's hand. Meg had a big grin.
+Jen gets up. She fills the dish. She fills the water. She takes Fudge for a run up the hill. Fudge wags and jumps.
 
-"Dad, the cub is soft!" said Meg. Then the cub had a nap on Meg's lap. Meg did not get up. Meg did not want to.`, "zoo, the, lion, hay, jump, I, said, you, if, still, lick, grin, soft, then, want, to",
-"Where did Meg meet the cub?|At the zoo;What kind of cub was it?|A lion cub;Where did the cub nap?|On Meg's lap");
+That night, Fudge naps on Jen's bed. Jen pets him. "Dad was right," she says. "A pup is a lot of work. But he is worth it."`, "Jen, wants, says, Dad, work, named, Fudge, week",
+"What does Dad say about getting a pup?|It is a lot of work;What does Fudge need each day?|Food, water and a run;What does Jen decide?|The pup is a lot of work but worth it");
 
-S(3, "The Best Nest", `A hen had to get a nest. The hen went to a log. The log is wet. "Not a wet nest," said the hen.
+S(3, "The Lunch Box", `Gus has a red lunch box. In it is a bun, a fig and a cup of milk. He sets it on his desk.
 
-The hen went to a tub. The tub is full of mud. "Not a mud nest," said the hen. The hen went to a box. A cat sat in the box! "Not a cat nest," said the hen.
+At lunch, Gus sees Nell sitting on her own. She has no lunch. Her lunch box is empty. Nell looks at the ground.
 
-The hen went to a hut. In the hut is a big bed with a soft rug. The hen got on the bed. "It is the best nest!" said the hen.
+Gus looks at his bun. He is hungry. He wants it all. Then he looks at Nell again.
 
-Then Gran got in the hut. Gran had a gasp. "A hen in the bed!" Gran got the hen. Gran set a box with soft hay next to the bed.
+Gus gets up and sits next to Nell. He splits the bun in half. He hands her half. He hands her the fig. "We can share," he says.
 
-The hen sat in the box. It was a snug nest, and the hen had six eggs.`, "the, to, went, said, full, soft, best, then, gasp, hay, was",
-"Why didn't the hen like the log?|It was wet;Where did the hen want to make a nest?|On Gran's bed;Where did Gran put the hen?|In a box with soft hay");
+Nell grins. "Thank you, Gus." The next day, Nell has a lunch box. In it are two buns. She hands Gus one. "We can share," she says. Gus and Nell sit and munch. It is the best lunch yet.`, "Gus, lunch, his, Nell, her, own, ground, hungry",
+"What is in Gus's lunch box?|A bun, a fig and a cup of milk;Why is Nell sad?|She has no lunch;What does Nell do the next day?|She brings two buns and shares one with Gus");
 
-S(3, "Ted and the Big Mess", `Ted had a big job. Ted had to get the den spick and span. The den was a mess.
+S(3, "The Big Melon", `Dad has a melon patch. In it is the biggest melon in the village. Dad wants to sell it at the bazaar.
 
-Ted got a bag. Ted put a sock in the bag. Ted put a cup in the bag. Ted put a bun in the bag. Ted put a cap in the bag.
+Ben tugs the melon. It does not budge. Meg tugs it. It does not budge. Dad tugs it. It does not budge! The melon is stuck to the vine.
 
-Ted's pup, Bud, ran in. Bud got the bag! Bud did tug and tug. The bag fell, and the sock, the cup, the bun and the cap fell out on the rug!
+Mum comes with a knife. She cuts the vine. Snip! Then Dad, Ben and Meg lift the melon. Up it goes! They set it on the cart.
 
-"Bud!" said Ted. Bud did a wag. Ted had to get the sock, the cup, the bun and the cap in the bag. Bud got the bun and ran off.
+At the bazaar, a crowd comes to see the big melon. A man wants to get it. A lady wants it. Lots of men want it!
 
-At last, the den was not a mess. Mum had a peek in the den. "Ted, it is spick and span!" said Mum. Ted had a grin. Bud had the bun.`, "job, to, spick and span, was, mess, put, sock, cup, out, said, wag, off, at last, Mum, peek",
-"What was Ted's job?|To tidy the den;Who knocked over the bag?|Bud the pup;What did Bud take?|The bun");
+Dad sells the melon for a lot of cash. Then he gets six buns, a bag of nuts and a red ribbon for Meg. "Hard work and teamwork," says Dad, "make a sweet melon."`, "Dad, melon, village, sell, bazaar, Mum, knife, they",
+"Why won't the melon budge?|It is stuck to the vine;How do they get it loose?|Mum cuts the vine;What does Dad say made the melon sweet?|Hard work and teamwork");
 
-S(3, "Up the Hill to Nell", `Nell is Ben's pal. Nell lives up on a hill. Ben has a gift for Nell. It is a red hen in a box.
+S(3, "Fred Tells a Fib", `Fred kicks his ball in the yard. It hits Mum's pot of mint. Crack! The pot is in bits. The mint is in the dust.
 
-Ben went up the hill. The hill is big, and the box is not light. Ben had to rest on a rock. The hen did a cluck. "Hen, it is not a lot yet," said Ben.
+Fred is scared. When Mum asks, "Who did this?" Fred says, "The cat did it."
 
-Ben went up and up. Then the hen did a jump and got out! The hen ran and ran. Ben ran and ran. The hen ran up to Nell's hut.
+Mum looks at the cat. The cat is napping on the step. It did not get up all day. Mum looks at Fred. Fred looks at his feet. His neck is red.
 
-Nell got the hen. "Ben, is it a hen for me?" said Nell. Ben was hot and red, but Ben had a big grin. "Yes, it is a gift," said Ben.
+That night, Fred cannot sleep. He feels bad in his tummy. At last, he gets up and goes to Mum.
 
-Nell and Ben sat on the step. The hen sat next to Nell. Nell said, "Ben, the hen got up the hill fast!"`, "Nell, lives, gift, went, light, rest, cluck, yet, said, then, jump, out, for, me, was, but, yes",
-"Where does Nell live?|Up on a hill;What was the gift?|A red hen;Who got to Nell first?|The hen");
+"Mum, the cat did not do it. I did. I am sorry." Mum hugs him. "Thank you for telling me," she says. "A pot can get fixed. A fib is harder to fix." The next day, Fred and Mum get a new pot and plant the mint again.`, "Fred, his, ball, Mum's, mint, scared, asks, says",
+"What does Fred break?|Mum's pot of mint;Who does Fred blame?|The cat;What does Mum say is harder to fix?|A fib");
 
-S(3, "The Lunch Box", `Gus has a lunch box. In the box, Gus has a bun, a fig and a cup of milk. Gus put the box on his desk.
+S(3, "Up the Steps", `Gran lives at the top of a lot of steps. Her legs are stiff, so she cannot get to the shop.
 
-At the end of class, Gus got the box. The box is not full! The bun is gone. The fig is gone. The cup of milk is still in the box.
+Every Friday, Jen runs up the steps with a bag. In the bag is milk, buns, eggs and a bit of jam. It is a hard run. The steps are steep, and the bag is heavy.
 
-"Who got my lunch?" said Gus. Gus is sad, and Gus is hungry. Gus did look at Jen. Jen had no bun. Gus did look at Ned. Ned had no fig.
+One Friday, it rains. The steps are wet. Jen thinks, "I can skip it this week." Then she thinks of Gran, waiting at the top.
 
-Then Gus did see a cat on the steps. The cat had bun on its lips! The cat had a fig next to it.
+Jen gets her umbrella. She runs up the steps, slow and careful. At the top, Gran is at the window. Her face lights up.
 
-"Cat, you got my lunch!" said Gus. Jen had a laugh. Ned had a laugh. Jen and Ned did split a lunch with Gus.`, "lunch, the, cup, milk, put, his, class, full, gone, still, who, my, said, hungry, look, no, then, see, its, lips, you, laugh, split, with",
-"What was in the lunch box?|A bun, a fig and a cup of milk;Who took the lunch?|A cat;How did Gus get lunch?|Jen and Ned shared theirs");
+"Jen, you came in the rain!" says Gran. She hugs Jen. They sit and have hot tea and buns. "You are the best gift," says Gran.`, "Gran, lives, her, legs, shop, every, Friday, heavy",
+"Why can't Gran get to the shop?|Her legs are stiff and there are lots of steps;What does Jen bring every Friday?|Milk, buns, eggs and jam;What does Jen almost do when it rains?|Skip the trip");
 
-S(3, "Get Well, Mum", `Mum is sick in bed. Mum has a red neck and a hot head. Ben and Pen want to help.
+S(3, "The Lost Pen", `Meg has a red pen. It was a gift from her dad in the city. She uses it at school each day.
 
-Ben got a cup of hot milk. Pen got a wet rag for Mum's head. "Mum, can we help?" said Pen. Mum did a nod.
+One day, the pen is gone. Meg is upset. She checks her bag. She checks her desk. Then she sees Ben. Ben has a red pen!
 
-Ben and Pen did a lot. Ben did the dishes. Pen did fix the beds. Ben fed the hens. Pen did sweep the steps. Then Ben and Pen sat on Mum's bed.
+"Ben, you took my pen!" yells Meg. Ben is stunned. "No, Meg. It is my pen." The class looks at them.
 
-"Mum, is it better?" said Ben. Mum did a little grin. "It is a bit better," said Mum. "Ben and Pen are the best."
+Miss Bushra steps up. "Meg, let us check the bus," she says. They go to the bus. On a seat, there is a red pen. It is Meg's!
 
-The next day, Mum got up. Mum was well! Mum did a big hug on Ben and Pen. "I am well, and the hut is spotless!" said Mum.`, "Mum, head, want, to, help, cup, milk, said, we, nod, dishes, sweep, then, better, little, are, best, next, day, was, well, hug, I, spotless",
-"What was wrong with Mum?|She was sick;What did Pen bring Mum?|A wet rag for her head;What did Ben do for the hens?|He fed them");
+Meg is red in the face. She goes back to Ben. "I am sorry, Ben," she says. "I did not check, and I blamed you." Ben grins. "We both have red pens. We can be the red pen club!"`, "Meg, her, dad, city, school, uses, Ben, sorry",
+"Who gave Meg her pen?|Her dad in the city;Where was Meg's pen?|On a seat on the bus;What does Ben say at the end?|They can be the red pen club");
 
-S(3, "The Sled", `It is the top of a hill in the north. It has snow on it. Jen and Bud have a sled.
+S(3, "The Gift for Gran", `It is Gran's big day. Jen and Ben want to get her a gift. They have ten rupees.
 
-Jen sat on the front of the sled. Bud sat on the back. "Bud, hold on!" said Jen. The sled went, and it went fast!
+They go to the bazaar. A man has red cups. A man has pens. A man has a fan. All the things cost lots of rupees.
 
-The sled went past a big rock. The sled went past a hut. The sled hit a bump. Up went Jen and up went Bud! Jen and Bud fell in the snow.
+Ben is sad. "Ten rupees cannot get a gift," he says. Jen thinks. Then she sees a man with eggs. "Ben! We can make Gran a cake!"
 
-Bud got up. Bud had snow on his cap. Jen got up. Jen had snow on her nose. Jen had a big laugh. "Bud, you look like a snowman!" said Jen.
+Jen and Ben get eggs and a bit of sugar. At the hut, Mum helps them mix and bake. The cake is lumpy. It is a bit flat. But it smells good.
 
-Bud and Jen got the sled. Up the hill went Jen and Bud. "Can we do it a lot?" said Bud. "Yes!" said Jen.`, "the, north, snow, have, front, back, hold, said, went, his, her, nose, laugh, you, look, like, snowman, do, we, yes",
-"What did Jen and Bud ride on?|A sled;What made them fall off?|A bump;Who had snow on her nose?|Jen");
+Gran gets the cake. She looks at the lumps and grins. "This is the best cake," says Gran, "because it was made with love." She cuts it, and they all have a big slice.`, "Gran's, day, Jen, Ben, rupees, bazaar, things, cost",
+"How much money do they have?|Ten rupees;What do they make for Gran?|A cake;Why does Gran love the cake?|It was made with love");
 
-S(3, "Bud Gets Lost", `Bud is a pup. Bud and Mum went to the bazaar. The bazaar is big, and it is full of men, kids, carts and stuff.
+S(3, "The Den", `Ben and Jen want to make a den. They get sticks, a big rug and a lot of string.
 
-Bud sat next to a cart of figs. Bud did a sniff. Then Bud did a sniff at a bun cart. Bud did not see Mum. Mum did not see Bud!
+Ben sets up the sticks. Jen puts on the rug. The den falls. They set it up again. It falls again! Ben is cross. "This is a bad den," he says, and he kicks a stick.
 
-Bud ran and ran. Bud did not see Mum. Bud was sad. Bud sat next to a man with a big pot of tea. The man had a cup and a lot of buns.
+Jen sits next to him. "Let's think," she says. They look at the den. The sticks are not in the ground.
 
-"Pup, are you lost?" said the man. The man got Bud a bit of bun. Then the man did yell, "Is it your pup?"
+They dig six pits. They set the sticks in the pits and pack the mud. Then they put on the rug and tie it with string. The den stands!
 
-Mum ran up. "Bud!" Mum did hug Bud. Mum got the man a big fig. "The bazaar is fun, but Bud must not get lost," said Mum.`, "Mum, went, the, bazaar, full, carts, stuff, sniff, then, see, was, with, tea, cup, are, you, said, yell, your, hug, must",
-"Where did Bud get lost?|At the bazaar;Who helped Bud?|A man with a pot of tea;What did Mum give the man?|A big fig");
+Ben and Jen sit in the den and munch buns. "We did not get it the first time," says Ben. "But we did not quit." Jen grins. The best dens take a bit of trying.`, "Ben, Jen, string, again, says, cross, ground, first",
+"What do Ben and Jen use for the den?|Sticks, a rug and string;Why does the den keep falling?|The sticks are not in the ground;How do they fix it?|They dig pits for the sticks");
 
-S(3, "The Bell", `At the end of the lane, Gran has a bell. It is a big red bell. Gran can ring it, and the bell can be heard on the hill.
+S(3, "Sunset at the Well", `Every dusk, the kids in the village go to the well to fill jugs. It is a long walk, and the jugs are heavy.
 
-Gran will ring the bell for lunch. Ding, dong! Ben, Meg and Dad run to the hut. It is lunch! Gran has hot buns and dal in a pot.
+Little Hina is just six. Her jug is too big. She cannot lift it when it is full. She tips it, and the water spills in the dust. Hina sobs.
 
-On a wet day, Ben did ring the bell. Ding, dong! Dad ran in from the hill. Meg ran in from the pond. "Is it lunch?" said Dad. "It is not lunch," said Gran. "It is Ben!"
+Ted sees her. He has his own jug. He fills Hina's jug half full. "Half is not as heavy," he says. Hina lifts it. She can do it!
 
-Ben had a red neck. "I did ring it," said Ben. "I did not mean to."
+Ted fills his jug and walks next to Hina. At the hut, Hina's mum is glad. "Half a jug is better than no jug," she says.
 
-Gran had a laugh. "Ben, it is not lunch, but it is tea!" Gran got a pot of tea, and Ben, Meg and Dad sat with Gran.`, "the, lane, ring, be, heard, will, for, lunch, run, dal, wet, day, from, said, I, mean, to, laugh, but, tea, with",
-"What color is the bell?|Red;Why does Gran ring the bell?|To call everyone for lunch;Who rang the bell on the wet day?|Ben");
+The next dusk, Hina and Ted go to the well again. Hina fills her jug half full. She walks a bit faster. Each week, she gets a bit stronger.`, "every, dusk, village, well, jugs, long, walk, heavy",
+"Why can't Hina carry her jug?|It is too heavy when full;How does Ted help?|He fills it half full;What happens each week?|Hina gets a bit stronger");
 
-S(3, "Ken Can Fix It", `Ken has a shop. In the shop, Ken can fix pots and pans, cups and fans. Ken is a big help.
+S(3, "The Duck in the Net", `Ben and his dad go to the pond to fish. They set a net in the pond. Then they sit and wait.
 
-Meg had a fan. The fan did not run. Meg got the fan to Ken's shop. "Ken, can you fix it?" said Meg. "I can fix it," said Ken.
+After a bit, the net jerks! "A fish!" says Ben. He tugs the net up. But it is not a fish. It is a duck! The duck is stuck in the net.
 
-Ken got his kit. Ken did a tap and a twist. Ken did a bend and a fix. Ken did a test. The fan did run! It did hum, hum, hum.
+The duck quacks and flaps. It is scared. Ben wants to grab it. "Gently," says Dad. "If you grab, it will flap and get hurt."
 
-Then Gus ran in. Gus had a pot with a big dent. "Ken, can you fix a dent?" Ken did a tap, tap, tap on the pot. The dent was gone!
+Ben is calm. He holds the duck still. Dad cuts the net, bit by bit. At last, the duck is free! It flaps its wings and swims off.
 
-Then Ken's cat ran in. The cat had a cut on its leg. Ken got a bandage. "Ken can fix a cat!" said Meg.`, "shop, cups, fans, help, you, said, I, his, twist, bend, test, hum, then, dent, was, gone, its, bandage",
-"What does Ken fix?|Pots, pans, cups and fans;What was wrong with Gus's pot?|It had a dent;What did Ken use for the cat?|A bandage");
+Ben and Dad do not get a fish. But Ben does not mind. "We got a duck out of a net," he says. "That is better than a fish."`, "Ben, his, dad, pond, wait, says, quacks, gently",
+"What is caught in the net?|A duck;What does Dad tell Ben?|Be gentle or the duck will get hurt;How does Ben feel at the end?|Happy, saving the duck is better than a fish");
 
-S(3, "The Big Melon", `Dad has a melon patch. In the patch is a melon. It is big. It is the biggest melon in the land!
+S(3, "The Hen Who Got Up First", `In Gran's yard, there is a red hen named Bet. Bet gets up first, at sunup. She clucks and clucks.
 
-"Dad, can I get the melon?" said Ben. Ben did tug. The melon did not budge. Meg did tug. The melon did not budge. Dad did tug. The melon did not budge!
+The pup, Rex, hates it. "Bet, you get us up!" he grumbles. The cat hates it as well. "Hush, Bet!"
 
-Mum ran up. Mum, Dad, Ben and Meg did tug and tug. Then the melon got loose. Mum, Dad, Ben and Meg fell in the mud!
+One day, Bet has a sore neck. She does not cluck. The sun comes up, but no one gets up. Gran naps. Dad naps. The kids nap.
 
-The melon did a roll, roll, roll. It went past the hens and hit a log. Thud! The melon did split.
+Then the kids get up late. They miss the bus to school! Dad is late to the fields. The milk man gets no cash, as Gran naps.
 
-"Dad, the melon is in bits," said Ben. Dad had a laugh. "It is a melon for lunch," said Dad. Ben, Meg, Mum and Dad had a lot of melon. It was red and wet and fab.`, "melon, patch, the, biggest, land, I, said, budge, Mum, then, loose, roll, went, thud, split, laugh, for, lunch, was, fab",
-"What did Dad grow?|A big melon;What happened when they pulled hard?|They fell in the mud;Why did the melon split?|It hit a log");
+The next day, Bet is well. At sunup, she clucks. Rex jumps up. "Bet, I am glad you can cluck," he says. "I did not know you got us all up!" Bet just clucks.`, "Gran's, there, named, Bet, sunup, Rex, comes, school",
+"What does Bet do every morning?|Clucks at sunup and wakes everyone;What happens when Bet can't cluck?|Everyone sleeps late and misses things;What does Rex learn?|Bet's clucking helps everyone");
 
-S(3, "Jen and the Hens", `Jen has ten hens. Jen must get the hens in the pen at sunset. The hens do not want to get in.
+S(3, "Peg and the Bucket", `Peg's mum has a big job. She has to fill the tub with water from the well. It takes ten trips with the bucket.
 
-Jen ran at the hens. The hens ran at the pond. Jen ran at the pond. The hens ran at the hut. Jen is hot and red. "Hens! Get in the pen!" said Jen.
+Peg wants to help. But the bucket is too big. She tips it, and it spills. Peg is upset. "I am too little to help," she says.
 
-Then Jen had a plan. Jen got a big cup of corn. Jen did a rattle, rattle, rattle with the cup. The hens did stop. The hens did look at Jen.
+Mum hands Peg a cup. "Then help with a cup," she says. Peg runs to the well with the cup. She fills it. She runs back and tips it in the tub. Then again. And again.
 
-Jen went in the pen with the cup. Jen did drop the corn in the pen. The ten hens ran in the pen! Peck, peck, peck. Jen shut the pen.
+It is just a bit of water. But Peg runs and runs. She tips in lots of cups.
 
-"Ten hens in the pen," said Jen. Jen did a grin. "The plan did the trick."`, "must, the, sunset, do, want, to, said, then, plan, cup, corn, rattle, with, stop, look, went, drop, peck, shut, trick",
-"How many hens does Jen have?|Ten;When must the hens go in the pen?|At sunset;What got the hens into the pen?|Corn rattling in a cup");
+At the end, Mum looks at the tub. "Peg, you got a whole bucket of water in it with your cup!" she says. Peg grins. Little hands can help, as well.`, "Peg's, mum, water, well, trips, bucket, too, little",
+"What does Peg's mum have to do?|Fill the tub with water from the well;Why can't Peg use the bucket?|It is too big and spills;What does Peg use instead?|A cup");
 
-S(3, "The Gift for Gran", `It is Gran's big day. Meg and Ben want to get Gran a gift. Meg has ten rupees. Ben has six.
+S(3, "The Hut on the Hill", `Next to the village, there is an old hut on a hill. The kids think it is spooky. "A ghost lives in it," says Gus.
 
-Meg and Ben went to the bazaar. A man had cups. A man had pens. A man had buns. "Ben, Gran will not want a pen," said Meg.
+Meg is not sure. One day, she and Ben go up the hill. They peek in the hut. It is dim. Then something rustles. Ben jumps!
 
-Then Meg did see a man with a cat. It is a little kitten. It is black with a white spot. "Ben, Gran has a lot of rats in the shed," said Meg.
+It is not a ghost. It is an old man. He is very thin, and he looks lonely. "Hello," he says. "No kids come up the hill."
 
-Meg and Ben got the kitten. Meg and Ben ran to Gran's hut. "Gran! It is a gift for you," said Ben.
+Meg and Ben sit with him. His name is Uncle Jabbar. He tells them about the village when he was a lad. He tells them about the big flood and the cricket match he won.
 
-Gran had the kitten on her lap. The kitten did purr. Gran did a big grin. "It is the best gift," said Gran. "Rats, get set to run!"`, "day, want, to, gift, rupees, went, the, bazaar, cups, pens, said, will, then, see, with, little, kitten, black, white, shed, for, you, her, purr, best, set, run",
-"What did Meg and Ben buy for Gran?|A kitten;Why is a kitten useful for Gran?|There are rats in her shed;What did the kitten do on Gran's lap?|Purr");
+From then on, Meg and Ben go up the hill each week with buns and milk. The hut is not spooky. It just had a lonely man in it.`, "village, there, old, spooky, ghost, lives, says, Gus",
+"What do the kids think lives in the hut?|A ghost;Who is really in the hut?|A lonely old man, Uncle Jabbar;What do Meg and Ben do each week?|Visit him with buns and milk");

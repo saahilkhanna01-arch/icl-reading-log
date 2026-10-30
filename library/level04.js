@@ -1,222 +1,220 @@
-/* Level 4: Double letters (ff, ll, ss, zz) and ck. */
-S(4, "Jack and the Duck", `Jack has a duck. The duck is Buff. Buff is a fat duck with a black neck and a quick quack.
+/* Level 4: Double letters (ff, ll, ss, zz) and ck. Real little stories with a problem, a fix and something to learn. */
+S(4, "Jack and the Duck", `Jack has a duck named Buff. Buff is plump, with a black neck and a loud quack. Each day, Jack lets Buff out to swim in the pond by the mill.
 
-Buff got in the mud next to the well. Buff sat and sat. Buff will not get up. "Buff, get up!" said Jack. Quack! Buff will not budge.
+One day, Buff will not get back in the pen. He sits in the mud by the well and will not budge. Jack yells. He claps. He picks up a stick and taps a rock. Buff just quacks.
 
-Jack got a stick. Jack did a tick, tick on a rock. Buff did not look. Jack got a bell. Ding, ding! Buff did not look. Jack did a whistle. Buff did not look.
+Jack is cross. Then he stops and thinks. What does Buff like best? Corn!
 
-Then Jack had an idea. Jack got a sack of corn. He did a shake of the sack. Buff got up fast! Buff ran back to Jack, quack, quack, quack.
+Jack gets a sack of corn. He sits on a rock and is still. He drops a bit of corn. Buff looks. He waddles up, peck by peck. Jack drops the corn all the way back to the pen. Buff hops in.
 
-Jack did pick up the duck. Buff had mud on his neck and mud on his back. "Buff, you are a mess!" said Jack. Buff did not fuss. Buff had corn.`, "the, said, will, budge, look, whistle, then, idea, he, shake, his, you, are",
-"What is the duck's name?|Buff;What did Jack try first?|Tapping a stick on a rock;What finally got Buff to move?|A sack of corn");
+Jack locks the pen and grins. "Yelling did not work," he says. "A bit of thinking did."`, "Jack, named, Buff, swim, budge, yells, thinks, waddles",
+"What is the duck's name?|Buff;What did Jack try first?|Yelling, clapping and tapping a stick;What worked in the end?|A trail of corn back to the pen");
 
-S(4, "Up the Hill", `Bilal and his cat, Tess, go up the hill. It is a big, steep hill with lots of rocks. Bilal will not miss the top!
+S(4, "Up the Hill", `Bilal and his cat, Tess, go up the big hill by the mill. It is steep, with lots of rocks and moss.
 
-Tess runs fast. Bilal is not so quick. Bilal huffs and puffs. "Tess, it is a big hill," said Bilal. Tess sits on a rock and licks her leg.
+Tess is quick. She runs up and sits on a rock at the top. Bilal is not so quick. He huffs and puffs. His legs ache. "I will never get to the top," he says.
 
-Bilal gets to a spot with lots of moss. Bilal sits on the moss to rest. The moss is soft. Tess sits on Bilal's lap.
+Then he sees an old man on the path. The man has a stick and a big sack. He is going up the hill as well, step by step, slow and still.
 
-Then Bilal and Tess go up and up. At last, Bilal is at the top! Bilal can see the well, the mill and the hills. It is still and calm.
+"How do you do it?" asks Bilal. The man grins. "Do not look at the top," he says. "Just look at the next step."
 
-Bilal yells, "Hello!" The hills yell back, "Hello, hello!" Tess did not like the yell. Tess ran back to Bilal and hid in his jacket.`, "Bilal, his, go, the, steep, lots, so, said, her, soft, rest, then, at last, see, calm, hello, like, jacket",
-"What is the cat's name?|Tess;Where did Bilal rest?|On the soft moss;What did the hills do when Bilal yelled?|They yelled back, an echo");
+Bilal does just that. Step, step, step. At last, he is at the top! Tess licks his hand. Bilal looks back at the path. It was not so bad, one step at a time.`, "Bilal, his, Tess, so, says, never, old, asks",
+"Who gets to the top first?|Tess the cat;What does the old man tell Bilal?|Don't look at the top, just look at the next step;How does Bilal get to the top?|One step at a time");
 
-S(4, "Kick and Pass", `Zack can kick. Kick, kick, kick! Zack can kick the ball up the hill. Mick can pass the ball back.
+S(4, "Kick and Pass", `Zack is the best kicker in the class. He kicks the ball so hard it zips past all the kids. But Zack never passes the ball. He wants to get all the goals.
 
-Zack and Mick have a match on the grass. Zack kicks the ball. It hits a rock and gets stuck in a log. Zack picks it up.
+In the big match, Zack kicks and kicks. The other team blocks him. He kicks again. Blocked! His team is losing.
 
-Then Zack kicks it at the well. Mick does a quick pass. The ball hits a bucket. Clang! The bucket did a spin and fell in the well!
+At the half, Mick sits next to Zack. "Zack, you are a big kicker," says Mick. "But we are a team. If you pass, we can all help."
 
-Zack and Mick ran to the well. The bucket is in the well. Mick had a rope. Mick did a tug, tug, tug. The bucket did not come up.
+In the second half, Zack gets the ball. Three kids run at him. He sees Mick, all on his own. Zack passes. Mick kicks. Goal!
 
-Dad ran up. Dad did a big tug. Up came the bucket! It was full of water. Dad had a sip. "Zack and Mick, kick on the grass, not at the well!" said Dad.`, "ball, the, have, match, grass, then, does, bucket, clang, spin, rope, come, came, was, full, water, said",
-"What did Zack kick?|A ball;What fell in the well?|A bucket;Who got the bucket out?|Dad");
+Then Mick passes back to Zack. Zack kicks. Goal! The team wins. Zack grins at Mick. "Passing is the best trick of all," he says.`, "Zack, kicker, class, ball, so, goals, other, team",
+"What is Zack good at?|Kicking the ball hard;What is Zack doing wrong?|He never passes the ball;What helps the team win?|Zack passes to Mick");
 
-S(4, "Miss Bell's Class", `Miss Bell has a class of kids. The class is in a hut with a big hill at the back. Miss Bell has a bell on her desk.
+S(4, "Miss Bell's Class", `Miss Bell has a bell on her desk. When she rings it, the class is still. But today, the class will not be still. Russ is tossing a ball. Jill and Tess are chatting. Bill is drumming on his desk.
 
-Ring, ring! Miss Bell rang the bell. The kids sat still. "Class, it is spelling," said Miss Bell. "Get a pencil and a pad."
+Miss Bell rings the bell. Ring, ring! The class still fusses.
 
-Jill got a pencil. Russ got a pencil. Bill had no pencil! Bill did a check in his bag. No pencil. Bill had a fuss.
+Then Miss Bell sits down. She does not yell. She picks up a book and starts to tell a tale, in a soft voice. It is a tale of a lost duck and a hill full of snakes.
 
-Jill had a spare pencil. Jill did pass it to Bill. "Thanks, Jill," said Bill.
+Russ stops tossing. Jill and Tess stop chatting. Bill stops drumming. They all want to hear. Soon, the class is as still as a rock.
 
-Miss Bell did a spell. "Spell, bell!" The kids did spell it. "Spell, hill!" The kids did spell it. "Spell, kiss!" The kids did spell it.
+At the end, Miss Bell grins. "When I yell, you yell back," she says. "When I am still, you listen." The class laughs. They will not forget that lesson.`, "Miss Bell, her, class, today, ring, book, voice, listen",
+"What does Miss Bell use to get quiet?|A bell;What does she do when the bell doesn't work?|Sits down and quietly tells a story;What is the lesson?|When she is calm and quiet, the class listens");
 
-At the end, Miss Bell did a check. "All of the class got all of the spelling. Well done!" said Miss Bell.`, "Miss, the, her, ring, rang, said, spelling, pencil, no, his, spare, thanks, all, of, done",
-"What does Miss Bell have on her desk?|A bell;Who had no pencil?|Bill;Who gave Bill a pencil?|Jill");
+S(4, "The Lost Doll", `Nell has a rag doll named Molly. Molly has a red dress and a blue hat. Nell will not go to bed with no Molly.
 
-S(4, "The Lost Doll", `Nell has a doll. It is a rag doll with a red dress. The doll is Molly. Nell will not go to bed with no Molly.
+One night, Molly is lost. Nell checks the bed. She checks the hall. She checks the shed. No Molly! Nell sobs.
 
-Nell did a check of her bed. No Molly. Nell did a check of the hall. No Molly. Nell did a check of the shed. No Molly.
+Her little brother, Jack, looks at his feet. He knows where Molly is. He had Molly at the well, and he left her on the wall.
 
-Nell had a sob. "Mum, I lost Molly!" Mum did a hug on Nell. "Molly is not lost. Molly is just hid," said Mum.
+Jack wants to keep still. If he tells, Nell will be cross. But Nell is sobbing so much. Jack gets the lamp and runs to the well. Molly is on the wall, a bit wet.
 
-Mum and Nell did a check of the back. In the grass, the pup, Buzz, had a nap. Buzz had Molly! Molly had a rip in the red dress.
+Jack hands Molly to Nell. "I am sorry," he says. "I had her and I left her." Nell hugs Molly. Then she hugs Jack. "Thank you for telling," she says. "Next time, just ask."`, "Nell, doll, named, Molly, dress, blue, night, sorry",
+"What is the doll's name?|Molly;Where was Molly?|On the wall by the well;Why does Nell thank Jack?|For telling the truth and bringing Molly back");
 
-"Buzz, Molly is not a pup toy!" said Nell. Buzz did lick Nell's hand. Mum got a stitch kit. Mum did fix the rip. Nell and Molly went to bed.`, "Nell, doll, the, dress, go, her, sob, I, said, just, back, grass, toy, lick, stitch, went",
-"What is the doll's name?|Molly;Who had the doll?|Buzz the pup;How did Mum fix the doll?|With a stitch kit");
+S(4, "The Rock Shop", `Rick has a little shop in the bazaar. He sells rocks. Some have pink flecks. Some are black and glossy. Kids come in to look, but no one buys.
 
-S(4, "The Rock Shop", `Rick has a rock shop. In it, Rick sells rocks. Rick has red rocks, black rocks and rocks with a pink fleck.
+Rick is sad. "Rocks are dull to kids," he sighs.
 
-A lad, Jack, got in the shop. Jack had ten rupees. "Rick, can I get a rock?" said Jack. Rick did pick up a rock with a lot of specks. It is a fab rock.
+His sister, Jess, has a plan. She gets a pot of paint. She paints a rock like a ladybug. She paints a rock like a fish. She paints a rock with a smile.
 
-Jack did check it. Then Jack did a sniff. "The rock is a bit dull," said Jack. Rick got a rag. Rick did a buff, buff, buff on the rock. The rock is not dull! The rock had a gloss.
+Rick sets the painted rocks in the window. The next day, kids rush in. "Can I get the ladybug rock?" "I want the fish!" By lunch, the painted rocks are gone.
 
-Jack had a gasp. "It is the best rock!" Jack did pass Rick the rupees.
+Rick hugs Jess. "You are a whizz!" Jess grins. "Rocks are not dull," she says. "You just had to look at them in a new way." From then on, Rick and Jess paint rocks together.`, "Rick, little, shop, bazaar, sells, some, Jess, paint",
+"What does Rick sell?|Rocks;What is Jess's plan?|Paint the rocks to look like things;What does Jess say?|You just had to look at them in a new way");
 
-Jack ran to his mum with the rock. "Mum, I got a rock," said Jack. His mum did a laugh. "Jack, we have lots of rocks in the back!"`, "shop, sells, the, with, fleck, lad, rupees, I, said, specks, fab, then, sniff, dull, gloss, gasp, best, his, laugh, we, have, lots",
-"What does Rick sell?|Rocks;What did Rick do to make the rock shiny?|He buffed it with a rag;Why did Mum laugh?|They had lots of rocks at home");
+S(4, "Fluff Spills the Milk", `Fluff is a white kitten. She is soft and fun, but she is a pest. She spills the milk, she tugs on socks and she naps on the clean washing.
 
-S(4, "Fluff the Kitten", `Fluff is a kitten. Fluff is white, and Fluff is soft. Fluff can sit on a lap and purr.
+One day, Fluff spills a full jug of milk on the rug. Mum is cross. "That kitten is a mess! She must go!" Jill is upset. She sits with Fluff and pets her.
 
-Fluff can be a pest. Fluff did a sniff at the milk. Fluff did a lick of the milk. Fluff did spill the milk on the rug! Mum was cross. "Fluff, that is the last of the milk!" said Mum.
+That night, Jill hears a sniff and a scuffle in the kitchen. A rat is in the sack of rice! Jill gets up. Then she sees Fluff. Fluff jumps at the rat. The rat runs off!
 
-Fluff ran off. Fluff hid in a sock. Fluff hid in a hat. Fluff hid in the doll box. Then Fluff got stuck in a sack!
+The next day, Jill tells Mum. Mum looks at Fluff. She looks at the rice. It is safe.
 
-Jill did hear a mew. Mew, mew! Jill did a check of the sack. Fluff was in it. Jill did pick up Fluff and did kiss Fluff on the neck.
+"I was too quick to be cross," says Mum. "Fluff can stay." She gets Fluff a dish of milk. Fluff laps it up, and this time she does not spill it.`, "Fluff, white, kitten, she, soft, milk, washing, Mum",
+"What does Fluff spill?|A full jug of milk;What does Fluff do that night?|Chases a rat away from the rice;What does Mum learn?|She was too quick to be cross");
 
-"Fluff, no milk for you," said Jill. Fluff did purr. Mum did not stay cross. Mum let Fluff sit in her lap.`, "kitten, white, soft, purr, be, pest, milk, the, Mum, was, said, that, off, sock, then, stuck, hear, mew, no, for, you, stay, her",
-"What color is Fluff?|White;What did Fluff spill?|Milk;Where did Fluff get stuck?|In a sack");
+S(4, "Bill and the Hill Fox", `Bill has a flock of hens. At dusk, he hears a fuss. Cluck, cluck! A fox is at the pen, digging at the back.
 
-S(4, "Bill and the Hill Fox", `Bill has a flock of hens. The hens sit in a pen at the back of Bill's hut, next to the hill.
+Bill grabs a pot and a stick. Clang, clang! The fox runs off up the hill. But Bill knows it will be back.
 
-At dusk, Bill did hear a fuss. Cluck, cluck, cluck! The hens were in a flap. Bill ran to the back with a lamp. A fox was at the pen!
+Bill's dad wants to set a trap. Bill thinks of the fox. It has a red back and a black tip on its tail. It is just hungry.
 
-The fox had a red back and a black tip on its tail. The fox did sniff at the pen. The fox did a dig. Bill did yell, "Fox! Off! Go back to the hill!"
+"Dad, can we just fix the pen?" asks Bill. Dad nods. They get big rocks and set them at the back of the pen. They pack the gaps with sticks and mud.
 
-The fox did not quit. Bill got a pot and a stick. Clang, clang, clang! The fox ran off up the hill.
+That night, the fox comes back. It sniffs. It digs. But the rocks are too big. The fox gives up and runs off to hunt mice. Bill grins. The hens are safe, and the fox is safe, as well.`, "Bill, flock, hens, dusk, hears, its, tail, hungry",
+"What is at the pen?|A fox;What does Dad want to do?|Set a trap;What do they do instead?|Fix the pen with big rocks so the fox can't dig in");
 
-Bill did a check of the hens. All ten hens were fine. Bill got a big rock. Bill put it at the spot where the fox did dig. "Fox, you will not get in," said Bill.`, "flock, the, back, dusk, hear, were, lamp, was, its, tail, sniff, yell, off, go, quit, clang, all, fine, put, where, you, will, said",
-"What does Bill keep in the pen?|Hens;What did Bill use to scare the fox?|A pot and a stick;What did Bill put where the fox dug?|A big rock");
+S(4, "The Buzz in the Hut", `Buzz, buzz! Russ hears a buzz in the hut. A big wasp is on the window! Russ's little sister, Bess, screams and hides.
 
-S(4, "The Buzz in the Hut", `Buzz, buzz, buzz! Russ did hear a buzz in the hut. It was a big buzz.
+Russ wants to swat it with a book. Then he stops. Gran told him, "If you swat a wasp, it can sting. Just help it out."
 
-Russ did a check of his bed. No buzz. Russ did a check of the shelf. No buzz. Then Russ did a check of the hall. Buzz, buzz! A big wasp was on the doll box!
+Russ gets a glass and a bit of card. He sets the glass on the window, with the wasp in it. Then he slips the card under. The wasp is stuck in the glass. Buzz, buzz!
 
-Russ did a gasp. Russ did not want a sting. Russ did not swat the wasp. Russ got a cup and a bit of a card.
+Russ walks out to the yard, slow and still. He lifts the card. The wasp zips off to the hills.
 
-Russ did set the cup on top of the wasp. Then he did slip the card under the cup. The wasp was stuck in the cup. Buzz, buzz!
+Bess peeks out. "Did it sting you?" she asks. Russ grins. "No. It just wanted to get out, the same as us." Bess is not scared now.`, "Russ, hears, window, sister, Bess, screams, Gran, told",
+"What is on the window?|A big wasp;What does Gran say about wasps?|If you swat one, it can sting, so just help it out;How does Russ get the wasp out?|With a glass and a card");
 
-Russ ran to the back with the cup. Russ did lift the cup. The wasp did zip off to the hills. "Well done, Russ," said Mum. "The wasp is not a pest, but the hut is not a wasp nest!"`, "hear, was, his, shelf, then, wasp, the, want, sting, swat, cup, card, set, he, slip, under, stuck, back, with, lift, zip, off, well done, said, Mum, pest, but",
-"What was buzzing?|A wasp;How did Russ catch the wasp?|With a cup and a card;Did Russ hurt the wasp?|No, he let it go");
+S(4, "Puff the Hen", `Puff is a red hen. Each day, Puff hops on the fence and runs off up the hill. Jill must run after her. It takes ages!
 
-S(4, "Puff the Hen", `Puff is a hen. Puff is a fluff of red. Puff can cluck, and Puff can peck.
+"Puff, why do you run off?" Jill asks. Puff just clucks.
 
-Puff did not like the pen. Puff did hop on the fence. Puff did a quick jump, and Puff was off! Puff ran past the well. Puff ran past the mill. Puff ran up the hill.
+One day, Jill does not run after Puff. She follows her, slow and quiet. Puff hops up the hill. She stops at a big rock. Under the rock, in a soft nest of moss, are six eggs!
 
-Jill ran up the hill. "Puff, back to the pen!" said Jill. Puff did not stop. Puff got to a big rock and sat on top.
+Jill gasps. Puff has a secret nest! She did not like the pen. It was full of fuss and pecking.
 
-Jill did huff and puff. Jill got to the rock. Puff did a cluck. Puff had an egg next to her on the rock! It was a big egg.
+Jill gets a box. She fills it with moss. She sets it in a quiet spot in the shed, away from the rest of the hens. She puts the eggs in it. Puff hops in and sits. From then on, Puff does not run off. She just wanted a quiet spot.`, "Puff, fence, Jill, ages, why, asks, follows, quiet",
+"Why does Puff run off?|She has a secret nest of eggs up the hill;What does Jill find under the rock?|Six eggs in a nest of moss;What does Puff really want?|A quiet spot for her nest");
 
-Jill had a laugh. "Puff, you did not want to be in the pen. You want a rock!" Jill got the egg and the hen and went back to the pen.`, "fluff, like, fence, jump, was, off, stop, the, her, laugh, you, want, to, be, went",
-"What color is Puff?|Red;Where did Puff go?|Up the hill to a big rock;What did Jill find next to Puff?|An egg");
+S(4, "Tick, Tock", `Gran has an old clock on a shelf in the hall. It was a gift from her mum. Tick, tock, tick, tock. Gran loves it.
 
-S(4, "Tick, Tock", `Gran has a clock. It is an old clock with a big bell. It is on a shelf in the hall. Tick, tock, tick, tock.
+One day, the clock stops. Gran is sad. "The clock man is in the city," she says. "It is a long trip."
 
-The clock did stop! No tick. No tock. "The clock is still," said Gran. "It will not tick." Gran was sad. The clock was a gift from Gran's mum.
+Jack wants to help. He gets the clock off the shelf, with care. He checks the back. A bit of fluff is stuck in a cog!
 
-Jack got the clock off the shelf. Jack did a check of the back. A bit of fluff was stuck in the clock! Jack got a pin. Jack did pick at the fluff.
+Jack does not rush. He gets a thin pin. He picks at the fluff, bit by bit. It takes a long time. His hands get stiff. At last, the fluff is out.
 
-The fluff got loose. Tick, tock, tick, tock! The clock did run! Then, ding, dong! The bell did ring.
+Tick, tock! The clock runs again! Gran hugs Jack. "You did not rush, and you did it well," she says. "That is the best way to fix a thing." Jack sets the clock back on the shelf.`, "Gran, old, clock, shelf, hall, her, mum, loves",
+"Who gave Gran the clock?|Her mum;What was stuck in the clock?|A bit of fluff in a cog;What does Gran say is the best way to fix a thing?|Don't rush and do it well");
 
-Gran did a big hug on Jack. "Jack, you are a whizz!" said Gran. Jack put the clock back on the shelf. Tick, tock.`, "clock, old, the, shelf, hall, stop, no, said, will, was, gift, from, mum, back, stuck, loose, run, then, ring, hug, you, are, whizz, put",
-"Where is Gran's clock?|On a shelf in the hall;What was stuck in the clock?|A bit of fluff;What did Gran call Jack?|A whizz");
+S(4, "The Stuck Truck", `Dad's truck is full of sacks of wheat for the mill. On the hill path, a big rock is in the way. The truck cannot pass.
 
-S(4, "A Mess in the Pass", `Dad and Jill went in the truck. The truck had a big load of sacks. The sacks had wheat.
+Dad and Jill get out. They push the rock. It does not budge. Dad is cross. "The mill shuts at six," he says.
 
-The truck got to a pass in the hills. The pass is a thin track with rocks on the sides. A big rock was on the track! The truck did stop.
+A man on a donkey stops. He has a long rope. "My donkey can tug it," he says. He ties the rope on the rock. The donkey tugs. The rock rolls off the path!
 
-"Dad, the truck can not pass," said Jill. Dad got out. Dad did a push on the rock. It did not budge. Jill got out. Jill did a push. It did not budge.
+Dad thanks the man. He wants to pay him, but the man shakes his head. "I just did what you will do for the next man," he says, and he goes off.
 
-A man on a donkey ran up. The man had a rope. The man did tie the rope on the rock. The donkey did tug, tug, tug. The rock did a roll off the track!
+At the mill, Dad gets a sack of wheat for the man on the donkey. Jill grins. "Next time, we will help the next man," she says.`, "Dad's, truck, full, wheat, mill, push, says, rope",
+"What is blocking the path?|A big rock;Who moves the rock?|A man with a donkey and rope;What does the man ask instead of money?|To help the next person");
 
-"Well done, donkey!" said Jill. Dad did pass the man a sack of wheat. The truck went on up the pass.`, "went, the, truck, load, wheat, thin, sides, was, stop, said, out, push, budge, donkey, rope, tie, roll, off, well done, on",
-"What was in the sacks?|Wheat;What blocked the pass?|A big rock;Who moved the rock?|A donkey");
+S(4, "Will and the Bell", `Will has a job at the mill. At the end of the day, he must ring the big bell so the men can stop and go back to the huts.
 
-S(4, "Will and the Bell", `Will has a job at the mill. The mill grinds wheat. Will must ring the bell at the end of the day.
+One day, Will tugs the rope. The bell does not ring. He checks the bell. A little bird has a nest in it! Six eggs sit in the nest.
 
-Will did a check of the clock. It is the end of the day! Will ran to the bell. Will did a tug on the rope. The bell did not ring. Will did a big tug. Still no ring!
+The mill boss is cross. "Get that nest out!" he says. Will thinks. If he gets the nest out, the eggs will smash.
 
-Will did a check of the bell. A nest was in the bell! A bird sat in the nest with six little eggs. "Bird, I can not ring the bell," said Will.
+"Can I yell at the end of the day?" asks Will. The boss grumbles, but he nods.
 
-Will did yell, "Mill men, it is the end of the day!" The men did hear. The men did stop and go back to the huts.
+Each day, Will yells, "Stop!" at the end of the day. His throat gets sore. But in a few weeks, the eggs hatch. The little birds flap off. Ding, dong! Will rings the bell. The boss grins. "Will, you have a kind heart," he says.`, "Will, mill, day, ring, little, bird, boss, throat",
+"What is Will's job?|To ring the bell at the end of the day;What is in the bell?|A bird's nest with six eggs;What does Will do instead?|Yells stop at the end of the day");
 
-Will did not ring the bell for six days. Then the little birds left the nest. Ding, dong! Will did ring the bell, and Will was glad.`, "job, the, mill, grinds, wheat, must, ring, day, clock, rope, still, no, was, bird, with, little, eggs, I, said, yell, hear, go, for, days, then, left, glad",
-"Where does Will work?|At the mill;Why wouldn't the bell ring?|A bird's nest was in it;How long did Will wait?|Six days");
+S(4, "The Spill", `Jess has a jug of milk. She trips on the rug, and the milk spills all over the hall. Splash!
 
-S(4, "The Spill", `Jess had a jug of milk. Jess did trip on the rug. The jug fell. Splash! The milk did spill on the hall rug!
+Jess is scared. Mum will be cross. She gets a rag and dabs the spill. The rug is still wet. She thinks of hiding it with a mat.
 
-"Mum will be cross," said Jess. Jess got a rag. Jess did press the rag on the spill. Jess did dab and dab. The rug is still wet.
+Then she stops. That is not right. If Mum steps on the wet rug, she can slip.
 
-Jess got a big fan. Jess did set the fan next to the spill. The fan did buzz and buzz. The rug did not dry.
+Jess goes to Mum. "Mum, I spilled the milk on the rug. I am sorry." Mum looks at the rug. She looks at Jess.
 
-Then the cat ran in. The cat did a sniff. The cat did lick, lick, lick at the rug! "Cat, you can help," said Jess.
+"Thank you for telling me," says Mum. "A spill is not a big deal. Hiding it is." Mum and Jess hang the rug in the sun. By dusk, it is dry. Jess gets a fresh jug of milk, and this time she walks with care.`, "Jess, milk, she, all, over, hall, Mum, scared",
+"What does Jess spill?|Milk on the rug;What does Jess almost do?|Hide the wet rug under a mat;What does Mum say is the big deal?|Hiding a spill, not the spill itself");
 
-Mum got in. Mum did see the cat on the rug. "Jess, is the cat in a mess?" said Mum. Jess did tell Mum the truth. Mum did a hug on Jess. "A spill is not a big deal, Jess."`, "jug, milk, trip, the, hall, Mum, will, be, said, press, still, wet, set, dry, then, sniff, lick, you, help, see, tell, truth, hug, deal",
-"What did Jess spill?|Milk;What did Jess use to dry it?|A rag and a fan;What did Mum say?|A spill is not a big deal");
+S(4, "Zigzag Snacks", `Gran has a snack stall at the bazaar. She sells hot pakoras. Jack helps her. He mixes the batter and fills the bags.
 
-S(4, "Zigzag Snack", `Gran has a snack stall at the bazaar. Gran sells hot pakoras. The pakoras smell fab. Lots of kids zigzag in to get a snack.
+One day, a little lad stops at the stall. He looks at the pakoras. He has no cash. His tummy rumbles.
 
-Gran did fill a big pan with oil. Jack did help. Jack did mix the batter. Jack did not spill it. Gran did a drop of batter in the oil. Sizzle! Sizzle!
+Jack looks at Gran. Gran looks at the lad. Then she fills a bag and hands it to him. "Take it," she says.
 
-Lots of kids got in a line. "Gran, can I get a pakora?" said Bill. "Gran, can I get six?" said Jill.
+The lad grins and runs off. Jack is puzzled. "Gran, he did not pay," he says. Gran nods. "Not all cash is in coins," she says.
 
-Gran did fill a bag for Bill. Jack did fill a bag for Jill. The pakoras did sell fast! At the end of the day, the pan was empty.
+The next day, the lad is back. He has a big sack of potatoes for the pakoras. "My dad grows them," he says. "This is for the snack." Gran grins at Jack. "You see?" she says. Kindness comes back to you.`, "Gran, snack, stall, bazaar, sells, pakoras, little, says",
+"What does Gran sell?|Hot pakoras;What does Gran do for the little lad?|Gives him a bag of pakoras free;What does the lad bring the next day?|A sack of potatoes");
 
-Gran did sit on a stool. Jack sat next to Gran. Gran did pass Jack the last pakora. "Jack, you are a big help," said Gran.`, "snack, stall, the, bazaar, sells, pakoras, smell, fab, lots, oil, help, batter, sizzle, line, I, said, for, sell, day, was, empty, stool, last, you, are",
-"What does Gran sell?|Hot pakoras;What did Jack mix?|The batter;Who got the last pakora?|Jack");
+S(4, "The Lost Puck", `Rick and Tess play hockey on the grass with sticks and a flat rock for a puck. Rick smacks the puck. It zips into a thick bush full of thorns!
 
-S(4, "The Lost Puck", `Rick and Tess have a game. It is like hockey, but on grass. Rick has a stick. Tess has a stick. The puck is a flat rock.
+"I will get it," says Rick. He grabs at the bush. "Ouch!" A thorn sticks in his hand. He is cross and kicks the bush.
 
-Rick did smack the puck. The puck did skid on the grass. Tess did a quick dash and did whack it back. Clack!
+Tess does not grab. She looks at the bush. She gets a long stick with a hook on the end. She pokes it in, slow and still. She flicks the puck out!
 
-Then Rick did a big smack. The puck did a zip off the grass and into a thick bush. "The puck is lost!" said Tess.
+Rick looks at his sore hand. He looks at the puck. "That was smart," he says.
 
-Rick and Tess did check the bush. It had lots of thorns. "Ouch!" said Rick. The puck was stuck in the back of the bush.
+Tess grins. "When a thing is hard, a bit of thinking is better than a lot of grabbing," she says. Rick sucks his thumb, and then they get back to the match.`, "Rick, Tess, play, hockey, grass, flat, says, thorn",
+"Where does the puck go?|Into a thick bush full of thorns;What happens when Rick grabs?|A thorn sticks in his hand;How does Tess get the puck?|With a long stick with a hook");
 
-Tess got a long stick. Tess did a poke and a flick. The puck did pop out! "Tess, you are the best!" said Rick. Rick and Tess did go on with the game until dusk.`, "have, game, like, hockey, but, grass, the, flat, skid, quick, dash, whack, then, zip, off, into, thick, bush, said, lots, thorns, ouch, was, stuck, long, poke, flick, out, you, are, best, go, until, dusk",
-"What did they use as a puck?|A flat rock;Where did the puck go?|Into a thick bush;Who got the puck out?|Tess");
+S(4, "Mick Is Sick", `Mick is sick. He has a cough and a sniff. He must stay in bed, but he wants to go to the big cricket match. He is cross.
 
-S(4, "Fuzz and the Bag of Wool", `Gran has a bag of wool. Gran will knit a hat for Russ. The wool is soft and red.
+His sister, Tess, gets him a cup of hot milk. Mick pushes it off. "I do not want milk. I want cricket!"
 
-Fuzz, the kitten, did a sniff at the bag. Fuzz did tug at the wool. The wool did a roll on the rug. Fuzz did chase it! The wool went past the bed, past the shelf and into the hall.
+Tess is upset, but she does not get cross. She sits on his bed. "If you rest, you will get well," she says. "Then you can play in the next match."
 
-Russ did see the wool. "Fuzz, the wool is for my hat!" said Russ. Russ did chase Fuzz. Fuzz did chase the wool. The wool got in a big mess on the rug.
+Mick sulks. Then he looks at Tess. She is missing the match to sit with him. He feels bad.
 
-Gran did a laugh. Gran sat and did pick up the wool. Russ did help. It was a long job.
+"I am sorry, Tess," he says. He has the milk. Then Tess tells him the match, step by step, as Bilal yells it from the window. Mick grins. It is not as good as being there. But it is good to have a kind sister.`, "Mick, cough, stay, cricket, match, his, sister, Tess",
+"Why can't Mick go to the match?|He is sick;What does Tess give Mick?|A cup of hot milk;Why does Mick say sorry?|Tess missed the match to sit with him and he was rude");
 
-At last, Gran did knit the red hat. It was a fab hat. Gran had a bit of wool left. Gran did knit a little hat for Fuzz.`, "wool, will, knit, for, soft, kitten, sniff, roll, chase, went, shelf, into, see, my, said, laugh, help, long, job, at last, fab, left, little",
-"What was Gran knitting?|A hat for Russ;Who made a mess with the wool?|Fuzz the kitten;What did Gran knit with the last bit?|A little hat for Fuzz");
+S(4, "Back to the Well", `Each day, Nell walks to the well to fill a big jug. It is a long walk, on a path full of rocks.
 
-S(4, "The Lock on the Shed", `Dad has a shed. In the shed, Dad has a lot of stuff: a mill, a cart, sacks of wheat and tools. The shed has a big lock.
+One day, a big black dog runs at her, barking. Nell stops. She wants to run. But if she runs, the jug will spill, and the dog will chase her.
 
-Dad lost the lock key! Dad did a check of his pocket. No key. Dad did a check of the truck. No key. Dad did a check of the well. No key.
+Nell stands still. She does not look at the dog's eyes. She does not yell. The dog sniffs her legs. Then it stops barking. It wags its tail!
 
-"I must get in the shed," said Dad. "I must get the wheat for the mill." Dad was cross.
+"You are not cross," says Nell. "You are just a pup on your own." She gets a bit of bread from her pocket and hands it to the dog.
 
-Jill did think. "Dad, you had the key at lunch." Jill ran to the mat where Dad had lunch. The key was in Dad's cup!
+From then on, the dog walks with Nell to the well each day. It sits by her as she fills the jug. Nell has a new pal, all because she did not panic.`, "Nell, walks, well, long, walk, black, barking, chase",
+"Where does Nell walk each day?|To the well;What does Nell do when the dog runs at her?|Stands still and doesn't panic;What happens from then on?|The dog walks with Nell to the well");
 
-Dad did a big grin. Dad did click the lock. The shed was not locked. "Jill, you are the best!" said Dad. Dad and Jill got the wheat to the mill.`, "stuff, the, mill, cart, wheat, tools, key, his, pocket, no, truck, I, must, said, was, think, you, lunch, where, cup, grin, best",
-"What is on the shed?|A big lock;What did Dad lose?|The key;Where was the key?|In Dad's cup");
+S(4, "Bess and the Bull", `Bess lives on a farm with a big black bull. The bull is called Duff. All the kids are scared of Duff. He stamps and snorts.
 
-S(4, "Mick Is Sick", `Mick is sick. Mick has a cough and a sniff. Mick must stay in bed. Mick is not glad. Mick wants to kick a ball.
+One day, Bess sees Duff by the fence. He is not stamping. He is limping. He has a thick thorn stuck in his leg.
 
-Mick's sis, Tess, did a check on Mick. Tess got Mick a cup of hot milk with honey. Tess did fluff his pillow. Tess got Mick a big quilt.
+Bess runs to get Dad. Dad gets the vet. The vet is calm. She talks to Duff in a soft voice and pats his neck. Then, quick as a click, she pulls the thorn out.
 
-"Tess, I want to kick a ball," said Mick. "Mick, you must rest," said Tess. Mick did huff. Tess had an idea.
+Duff licks the vet's hand! Bess is amazed. "He is not bad," she says. "He was hurt."
 
-Tess got a sock. Tess did stuff the sock with wool. Tess did tie it. It was a sock ball! "Mick, you can toss it," said Tess.
+From then on, Bess brings Duff a bit of grass each day. She does not get too close. But she is not scared. "Duff is not a bad bull," she tells the kids. "He just needs a bit of kindness."`, "Bess, lives, farm, called, Duff, scared, vet, voice",
+"What is the bull's name?|Duff;Why is Duff limping?|A thorn is stuck in his leg;What does Bess learn about Duff?|He was hurt, not bad, and needs kindness");
 
-Mick did toss the sock ball to Tess. Tess did toss it back. Toss, toss, toss! Mick did a big laugh. Then Mick did a cough and had a nap.`, "cough, sniff, must, stay, glad, wants, to, ball, sis, cup, milk, with, honey, his, pillow, quilt, I, want, said, you, rest, idea, sock, stuff, wool, tie, was, toss, laugh, then",
-"Why was Mick in bed?|He was sick;What did Tess make?|A sock ball;What did Mick do with the sock ball?|He tossed it to Tess");
+S(4, "The Pass Ball Club", `At school, Russ has no pals. He is new, and he is shy. At lunch, he sits on the wall on his own.
 
-S(4, "Back to the Well", `Every day, Nell must go to the well. Nell must fill a big jug. It is a long walk on a track with lots of rocks.
+Tess sees him. She has an idea. She gets a ball and a stick. She sets up a game called Pass Ball. You must pass the ball to a kid you do not know yet.
 
-Nell did fill the jug. The jug was full. Nell did lift the jug on her head. Nell did walk back. The jug did not spill.
+Tess passes the ball to Russ. Russ is stunned. He passes it back. Then Tess passes it to Bill. Bill passes to Jack. Jack passes to Russ!
 
-Then a big black dog did run up. The dog did bark and bark! Nell did stop. Nell did not run. If Nell did run, the jug will spill.
+Soon, ten kids are in the game. They pass and laugh and chat. Russ is in the middle of it all.
 
-Nell did stand still. The dog did a sniff of Nell's leg. Then the dog did a lick. The dog did a wag! "Dog, you are not cross. You are just a pup," said Nell.
-
-The dog did walk back with Nell. Nell got the jug to the hut. Not a drop did spill. The dog got a big drink.`, "every, day, must, go, the, fill, jug, long, walk, lots, was, full, lift, her, head, back, spill, then, black, run, bark, stop, if, will, stand, still, sniff, lick, wag, you, are, just, said, drop, drink",
-"Where does Nell go every day?|To the well;What did Nell carry on her head?|A jug of water;What did the dog get at the end?|A big drink");
+At the end of lunch, Russ grins at Tess. "Thanks," he says. "I have lots of pals now." Tess grins back. "That is the best thing about Pass Ball," she says. "No one is left on the wall."`, "school, Russ, pals, new, shy, lunch, own, Tess",
+"Why does Russ sit on his own?|He is new and shy;What is the rule of Pass Ball?|Pass to a kid you don't know yet;What does Tess say is the best thing about it?|No one is left out");
