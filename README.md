@@ -86,10 +86,15 @@ Edit or replace a file on GitHub (open the file, click the pencil, save). Vercel
 - **Stories stop working one day**: Groq may have retired the model. In Vercel, add `GROQ_MODEL` set to a current model name from console.groq.com/docs/models, then redeploy.
 - **Supabase project paused**: free projects pause after about a week with no use. Log in to Supabase and click **Restore**. Using the site every Sunday keeps it awake.
 
+## Google sign-in
+
+Tutors sign in with Google. The first time, they type their name and wait; you approve them on the Admin page (or add them yourself with their name and Google email), and from then on they go straight in. Only the Google account(s) listed in `setup-signin.sql` can open Admin.
+
+To turn it on: switch on Google in Supabase (Authentication > Providers), put your Google email in `setup-signin.sql`, and run it in the SQL Editor. Once that's run, nobody can read or change the log without signing in and being approved.
+
 ## Good to know
 
-- There are no logins. Anyone with the link can see and change the log, so share it only with your tutors and use kids' first names (plus a last initial if two share a name).
-- The admin password keeps casual visitors out of Admin, but it isn't real security.
+- Use kids' first names (plus a last initial if two share a name).
 - The library has 240 stories, 20 per level, each with 3 questions. They're in the `library` folder, one file per level.
 - Tutors can also make an AI practice story built around a kid's missed words. These show up in the kid's story list and can be deleted from Admin.
 - Story levels follow the UFLI Foundations order. The lesson ranges are approximate, so check them against your UFLI manual.

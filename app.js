@@ -34,6 +34,10 @@ const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2
 
 /* ---------- data store: Supabase when configured, this device otherwise ---------- */
 const D = Object.fromEntries(COLS.map(c => [c, []]));
+/* Google sign-in through Supabase. Tutors sign in, the program lead approves them once in Admin. */
+const Auth = { on: false, user: null, isAdmin: null, email: "" };
+const myRecord = () => Auth.email ? D.tutors.find(t => (t.email || "").toLowerCase() === Auth.email && t.active !== false) : null;
+const isApproved = () => Auth.isAdmin === true || myRecord()?.approved === true;
 const Store = {
   sb: null, live: false, ready: false, err: "",
   local() { try { return JSON.parse(lsGet("icl-local") || "{}"); } catch { return {}; } },
@@ -43,12 +47,42 @@ const Store = {
     if (CFG.supabaseUrl && CFG.supabaseAnonKey && window.supabase) {
       this.sb = window.supabase.createClient(CFG.supabaseUrl, CFG.supabaseAnonKey);
       this.live = true;
-      await this.loadAll();
-      try {
-        this.sb.channel("records").on("postgres_changes", { event: "*", schema: "public", table: "records" }, p => this.apply(p)).subscribe();
-      } catch {}
-      setInterval(() => this.loadAll(), 60000);
+      Auth.on = CFG.googleSignIn !== false;
+      if (Auth.on) {
+        const { data } = await this.sb.auth.getSession();
+        this.setUser(data?.session?.user || null);
+        this.sb.auth.onAuthStateChange((_ev, session) => {
+          const u = session?.user || null;
+          if ((u?.id || null) === (Auth.user?.id || null)) return;
+          this.setUser(u);
+          if (u) this.afterLogin(); else { COLS.forEach(c => D[c] = []); render(); }
+        });
+        if (!Auth.user) { this.ready = true; render(); return; }
+      }
+      await this.afterLogin();
+      return;
     } else this.loadLocal();
+    this.ready = true; render();
+  },
+  setUser(u) { Auth.user = u; Auth.email = (u?.email || "").toLowerCase(); Auth.isAdmin = null; },
+  async afterLogin() {
+    await this.loadAll();
+    if (Auth.on) {
+      const { data, error } = await this.sb.rpc("is_admin");
+      Auth.isAdmin = error ? null : !!data;
+      const rec = myRecord();
+      if (!rec && Auth.isAdmin) {
+        const name = Auth.user.user_metadata?.full_name || Auth.user.user_metadata?.name || Auth.email.split("@")[0];
+        const id = await this.add("tutors", { name, email: Auth.email, approved: true, active: true, at: Date.now() }).catch(() => null);
+        if (id) S.me = id;
+      }
+      if (myRecord() && isApproved()) { S.me = myRecord().id; lsSet("icl-me", S.me); S.signedToday = lsGet("icl-day") === TODAY && lsGet("icl-day-who") === S.me; loadSessions(); }
+    }
+    if (!this.subscribed) {
+      this.subscribed = true;
+      try { this.sb.channel("records").on("postgres_changes", { event: "*", schema: "public", table: "records" }, p => this.apply(p)).subscribe(); } catch {}
+      setInterval(() => { if (!Auth.on || Auth.user) this.loadAll(); }, 60000);
+    }
     this.ready = true; render();
   },
   async loadAll() {
@@ -71,7 +105,9 @@ const Store = {
     } else {
       const r = p.new; if (!r || !D[r.col]) return;
       const id = r.id.slice(r.col.length + 1);
+      const wasApproved = isApproved();
       D[r.col] = D[r.col].filter(x => x.id !== id).concat({ ...r.data, id });
+      if (Auth.on && r.col === "tutors" && !wasApproved && isApproved()) { this.afterLogin(); return; }
     }
     sortAll(); scheduleRender();
   },
@@ -224,7 +260,7 @@ function render() {
   let h = "";
   if (Store.ready && !Store.live) h += `<div class="banner">Trying it out: the database isn't connected yet, so everything is saved on this computer only. Add your Supabase details to config.js to share the log with every tutor.</div>`;
   if (Store.err) h += `<div class="banner">Can't reach the class log right now (${esc(Store.err)}). Your screen may be out of date.</div>`;
-  h += ({ class: classHTML, kids: kidsHTML, kid: kidHTML, admin: adminHTML })[S.screen]();
+  h += gateHTML() ?? ({ class: classHTML, kids: kidsHTML, kid: kidHTML, admin: adminHTML })[S.screen]();
   $("#main").innerHTML = h;
   if (fid) { const el = document.getElementById(fid); if (el) { el.focus(); try { if (ss != null) el.setSelectionRange(ss, se); } catch {} } }
   tickTimers();
@@ -245,14 +281,43 @@ function sideHTML() {
   const me = tutor(S.me);
   return `<div class="brand">${MARK}<div><b>Interschool Corner of Learning</b><span>Sunday reading log</span></div></div>
   ${navHTML()}
-  ${me && S.signedToday ? `<div class="me"><span class="muted small">Teaching today as</span><b>${esc(me.name)}</b><button class="linkish" data-act="signout">Not you?</button></div>` : ""}`;
+  ${Auth.on && Auth.user ? `<div class="me"><span class="muted small">Signed in as</span><b>${esc(myRecord()?.name || Auth.email)}</b><span class="muted small" style="display:block;overflow-wrap:anywhere">${esc(Auth.email)}</span><button class="linkish" data-act="signout">Sign out</button></div>`
+    : me && S.signedToday ? `<div class="me"><span class="muted small">Teaching today as</span><b>${esc(me.name)}</b><button class="linkish" data-act="signout">Not you?</button></div>` : ""}`;
 }
 function topHTML() { return `${MARK}<b style="font-size:14px">Corner of Learning</b>${navHTML()}`; }
 function tile(k, v, c, unit = "") { return `<div class="tile s3"><span class="k">${k}</span><span class="v">${v}${unit ? `<small>${unit}</small>` : ""}</span><span class="c">${esc(c)}</span></div>`; }
 
+/* ---------- Google sign-in gate ---------- */
+const GOOGLE_G = '<svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.2-.1-2.3-.4-3.5z"/></svg>';
+function gateHTML() {
+  if (!Auth.on) return null;
+  if (!Store.ready) return `<div class="col"><p class="muted"><span class="spin"></span> Loading…</p></div>`;
+  if (!Auth.user) return `<div class="col"><div class="title-row"><div><h1 class="greet">Welcome, tutors.</h1>
+      <p class="sub">Interschool Corner of Learning · Sunday reading log</p></div></div>
+    <section class="panel s6"><h2 style="font-size:16px;margin-bottom:6px">Sign in to start</h2>
+      <p class="muted" style="margin-bottom:16px">Use your Google account. The first time, the program lead approves you, then you're in every week.</p>
+      <button class="btn google" data-act="google">${GOOGLE_G}Sign in with Google</button>
+      <p class="muted small" style="margin-top:14px">School accounts sometimes block outside sign-ins. If yours does, use a personal Gmail.</p></section></div>`;
+  const rec = myRecord();
+  if (!rec && Auth.isAdmin !== true) {
+    if (S.regName == null) S.regName = Auth.user.user_metadata?.full_name || Auth.user.user_metadata?.name || "";
+    return `<div class="col"><div class="title-row"><div><h1 class="greet">Nice to meet you.</h1><p class="sub">Signed in as ${esc(Auth.email)}</p></div></div>
+      <section class="panel s6"><form class="stack" data-form="register" style="gap:12px">
+        <div class="field"><label for="regname">Your name, as the kids and other tutors know you</label><input type="text" id="regname" data-input="regName" value="${esc(S.regName)}" autocomplete="name" required></div>
+        <div class="inline"><button class="btn primary" type="submit">Ask to join</button><button class="btn quiet" type="button" data-act="signout">Use a different account</button></div>
+      </form></section></div>`;
+  }
+  if (rec && rec.approved !== true && Auth.isAdmin !== true) return `<div class="col"><div class="title-row"><div><h1 class="greet">Almost there, ${esc(first(rec.name))}.</h1><p class="sub">Signed in as ${esc(Auth.email)}</p></div></div>
+    <section class="panel s6"><h2 style="font-size:16px;margin-bottom:6px">Waiting for approval</h2>
+      <p class="muted">The program lead needs to approve you once. This page opens by itself as soon as they do, so you can leave it open.</p>
+      <div class="inline" style="margin-top:16px"><button class="btn quiet" data-act="signout">Sign out</button></div></section></div>`;
+  return null;
+}
+
 /* ---------- Today's class: sign in > pick kids > lesson > notes ---------- */
 function classHTML() {
   const me = tutor(S.me);
+  if (Auth.on && (!me || !S.signedToday)) return startClassHTML(myRecord() || me);
   if (!me || !S.signedToday) return signInHTML(me);
   if (S.step === "done") return doneHTML(me);
   if (S.step === "summary") return summaryHTML(me);
@@ -260,6 +325,15 @@ function classHTML() {
   return pickHTML(me);
 }
 
+function startClassHTML(me) {
+  const here = hereToday();
+  return `<div class="col">
+    <div class="title-row"><div><h1 class="greet">Hello, ${esc(first(me?.name || ""))}.</h1>
+      <p class="sub">${fmtDayLong(TODAY)} · ${plural(here.length, "tutor")} in class so far</p></div></div>
+    <section class="panel s6"><h2 style="font-size:16px;margin-bottom:6px">Teaching today?</h2>
+      <p class="muted" style="margin-bottom:16px">This marks you as here for today's class, then you choose your kids.</p>
+      <button class="btn primary big" data-act="signin" data-id="${me?.id || ""}" ${me ? "" : "disabled"}>Start today's class</button></section></div>`;
+}
 function signInHTML(me) {
   const q = S.signQ.trim().toLowerCase();
   const list = activeTutors().filter(t => !q || t.name.toLowerCase().includes(q));
@@ -895,6 +969,8 @@ function attendanceHTML() {
 
 /* ---------- Admin ---------- */
 function adminHTML() {
+  if (Auth.on && Auth.isAdmin === true) S.adminOk = true;
+  if (Auth.on && Auth.isAdmin === false) return `<div class="col"><div class="title-row"><div><h1 class="h1">Admin</h1><p class="sub">Only the program lead's Google account can open Admin.</p></div></div></div>`;
   if (!S.adminOk) return `<div class="col"><div class="title-row"><div><h1 class="h1">Admin</h1><p class="sub">Attendance, stories, tutors and downloads.</p></div></div>
     <section class="panel s6"><form class="stack" data-form="admin"><label for="apw" class="muted small">Admin password</label>
       <div class="inline"><input type="password" id="apw" autocomplete="current-password" placeholder="Password"><button class="btn primary" type="submit">Open admin</button></div>
@@ -921,9 +997,13 @@ function adminHTML() {
     <section class="panel s6"><div class="panel-head"><h2>Kids missing lately <span class="count">${missing.length}</span></h2></div>
       <div class="stack">${missing.map(s => { const a = kidAttendance(s.id); const lastDay = D.picks.filter(p => p.studentId === s.id).map(p => p.date).sort().reverse()[0]; return `<div class="row"><div class="grow"><div class="t">${esc(s.name)}</div><div class="m">Missed the last 2 classes · last came ${fmtDay(lastDay)} · ${a.came} of ${a.of} overall</div></div><button class="btn small quiet" data-act="kid" data-id="${s.id}">Progress</button></div>`; }).join("") || `<div class="empty">Everyone has come to at least one of the last two classes.</div>`}</div>
     </section>
-    <section class="panel s6"><div class="panel-head"><h2>Tutors <span class="count">${activeTutors().length}</span></h2></div>
-      <form class="inline" data-form="adminTutor" style="margin-bottom:12px"><input type="text" id="atutor" data-input="newTutor" placeholder="Tutor's full name" value="${esc(S.newTutor)}" aria-label="Tutor's full name"><button class="btn" type="submit">Add tutor</button></form>
-      <div class="stack">${activeTutors().map(t => `<div class="row"><div class="grow"><div class="t">${esc(t.name)}</div><div class="m">${plural(D.attendance.filter(a => a.tutorId === t.id).length, "class", "classes")} taught</div></div><button class="btn small quiet" data-act="rmtutor" data-id="${t.id}">Remove</button></div>`).join("") || `<div class="empty">No tutors yet.</div>`}</div>
+    ${Auth.on ? (() => { const pending = activeTutors().filter(t => t.email && t.approved !== true); return `<section class="panel ${pending.length ? "pending-panel" : ""}"><div class="panel-head"><h2>Waiting for approval <span class="count">${pending.length}</span></h2></div>
+      ${pending.length ? `<div class="stack">${pending.map(t => `<div class="row"><div class="grow"><div class="t">${esc(t.name)}</div><div class="m">${esc(t.email)} · asked ${fmtShort(dayKey(new Date(t.at || Date.now())))}</div></div><button class="btn small primary" data-act="approve" data-id="${t.id}">Approve</button><button class="btn small quiet" data-act="decline" data-id="${t.id}">Decline</button></div>`).join("")}</div>`
+        : `<div class="empty">No one is waiting. When a new tutor signs in with Google, they show up here.</div>`}</section>`; })() : ""}
+    <section class="panel s6"><div class="panel-head"><h2>Tutors <span class="count">${activeTutors().filter(t => !Auth.on || t.approved === true || !t.email).length}</span></h2></div>
+      ${Auth.on ? `<form class="inline" data-form="adminTutor" style="margin-bottom:12px"><input type="text" id="atutor" data-input="newTutor" placeholder="Tutor's name" value="${esc(S.newTutor)}" aria-label="Tutor's name"><input type="email" id="atutoremail" data-input="newTutorEmail" placeholder="Their Google email" value="${esc(S.newTutorEmail || "")}" aria-label="Tutor's Google email"><button class="btn" type="submit">Add and approve</button></form>`
+        : `<form class="inline" data-form="adminTutor" style="margin-bottom:12px"><input type="text" id="atutor" data-input="newTutor" placeholder="Tutor's full name" value="${esc(S.newTutor)}" aria-label="Tutor's full name"><button class="btn" type="submit">Add tutor</button></form>`}
+      <div class="stack">${activeTutors().filter(t => !Auth.on || t.approved === true || !t.email).map(t => `<div class="row"><div class="grow"><div class="t">${esc(t.name)}</div><div class="m">${t.email ? `${esc(t.email)} · ` : Auth.on ? "No Google account linked · " : ""}${plural(D.attendance.filter(a => a.tutorId === t.id).length, "class", "classes")} taught</div></div><button class="btn small quiet" data-act="rmtutor" data-id="${t.id}">Remove</button></div>`).join("") || `<div class="empty">No tutors yet.</div>`}</div>
     </section>
     <section class="panel s6"><div class="panel-head"><h2>Kids <span class="count">${activeStudents().length}</span></h2></div>
       <div class="stack">${activeStudents().map(s => `<div class="row"><div class="grow"><div class="t">${esc(s.name)}</div><div class="m">${s.level ? `Level ${s.level}` : "No level"} · ${plural(readingsOf(s.id).length, "story", "stories")}</div></div><button class="btn small quiet" data-act="rmkid" data-id="${s.id}">Remove</button></div>`).join("") || `<div class="empty">No kids yet.</div>`}</div>
@@ -938,9 +1018,9 @@ function adminHTML() {
         ${S.mergeConfirm && S.mergeFrom && S.mergeInto ? `<button class="btn small danger" data-act="merge">Yes, merge ${esc(student(S.mergeFrom)?.name)} into ${esc(student(S.mergeInto)?.name)}</button><button class="btn small quiet" data-act="cancelmerge">Cancel</button>`
           : `<button class="btn small" data-act="merge" ${S.mergeFrom && S.mergeInto && S.mergeFrom !== S.mergeInto ? "" : "disabled"}>Merge</button>`}
       </div></section>
-    <section class="panel"><div class="panel-head"><h2>Admin password</h2><button class="btn small quiet" data-act="lock">Lock admin</button></div>
+    ${Auth.on && Auth.isAdmin === true ? "" : `<section class="panel"><div class="panel-head"><h2>Admin password</h2><button class="btn small quiet" data-act="lock">Lock admin</button></div>
       <form class="inline" data-form="pw"><input type="password" id="newpw" autocomplete="new-password" placeholder="New password, 6 or more characters" aria-label="New password"><button class="btn" type="submit">Change password</button></form>
-    </section>
+    </section>`}
   </div>`;
 }
 function csvOf(rows) { return rows.map(r => r.map(v => { const s = String(v ?? ""); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; }).join(",")).join("\n"); }
@@ -956,7 +1036,7 @@ function exportCsv(kind) {
 /* ---------- actions ---------- */
 async function signIn(id) {
   if (S.me !== id) { S.sessions = {}; S.activeKid = null; }
-  S.me = id; lsSet("icl-me", id); loadSessions(); S.signedToday = true; lsSet("icl-day", TODAY); S.screen = "class";
+  S.me = id; lsSet("icl-me", id); lsSet("icl-day-who", id); loadSessions(); S.signedToday = true; lsSet("icl-day", TODAY); S.screen = "class";
   if (!["lesson", "summary", "done"].includes(S.step) || !myKids().length) setStep("pick");
   render();
   if (!hereToday().find(a => a.tutorId === id)) await safe(Store.set("attendance", `${TODAY}_${id}`, { date: TODAY, tutorId: id, at: Date.now() }));
@@ -995,7 +1075,17 @@ document.addEventListener("click", async e => {
   switch (act) {
     case "go": S.screen = b.dataset.v; S.adminMsg = ""; window.scrollTo(0, 0); break;
     case "signin": return signIn(id);
-    case "signout": S.signedToday = false; lsSet("icl-day", null); S.screen = "class"; S.summary = null; break;
+    case "signout":
+      S.signedToday = false; lsSet("icl-day", null); S.screen = "class"; S.summary = null;
+      if (Auth.on && Store.sb) { S.me = null; lsSet("icl-me", null); S.sessions = {}; S.activeKid = null; S.adminOk = false; await Store.sb.auth.signOut(); }
+      break;
+    case "google": {
+      const { error } = await Store.sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: location.origin + location.pathname } });
+      if (error) toast("Google sign-in isn't working yet. Check the Google setup in Supabase.");
+      return;
+    }
+    case "approve": await safe(Store.update("tutors", id, { approved: true }), "Approved"); break;
+    case "decline": await safe(Store.update("tutors", id, { active: false }), "Request declined"); break;
     case "pick": return pick(id);
     case "unpick": { const p = pickOf(id); if (p && p.tutorId === S.me) await safe(Store.remove("picks", p.id)); delete S.sessions[id]; break; }
     case "startlesson": setStep("lesson"); window.scrollTo(0, 0); break;
@@ -1113,6 +1203,19 @@ document.addEventListener("change", async e => {
 document.addEventListener("submit", async e => {
   e.preventDefault();
   const f = e.target, kind = f.dataset.form;
+  if (kind === "register") {
+    const name = (S.regName || "").trim().replace(/\s+/g, " "); if (!name) return;
+    await safe(Store.add("tutors", { name, email: Auth.email, approved: false, active: true, at: Date.now() }), "Request sent");
+    render(); return;
+  }
+  if (kind === "adminTutor" && Auth.on) {
+    const name = S.newTutor.trim().replace(/\s+/g, " "), email = (S.newTutorEmail || "").trim().toLowerCase();
+    if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { toast("Add a name and their Google email."); return; }
+    const ex = D.tutors.find(t => (t.email || "").toLowerCase() === email);
+    if (ex) await safe(Store.update("tutors", ex.id, { name, approved: true, active: true }), `${name} approved`);
+    else await safe(Store.add("tutors", { name, email, approved: true, active: true, at: Date.now() }), `${name} added. They can sign in with that Google account.`);
+    S.newTutor = ""; S.newTutorEmail = ""; render(); return;
+  }
   if (kind === "newTutor" || kind === "adminTutor") {
     const name = S.newTutor.trim().replace(/\s+/g, " "); if (!name) return;
     const existing = D.tutors.find(t => t.name.toLowerCase() === name.toLowerCase());
