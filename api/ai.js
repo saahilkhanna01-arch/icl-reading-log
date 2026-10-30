@@ -1,7 +1,7 @@
-// AI helper for the reading log. Runs on Netlify so the Groq key never reaches the browser.
-// Set GROQ_API_KEY (required) and GROQ_MODEL (optional) in Netlify: Site configuration > Environment variables.
+// AI helper for the reading log. Runs on Vercel so the Groq key never reaches the browser.
+// Set GROQ_API_KEY (required) and GROQ_MODEL (optional) in Vercel: Project > Settings > Environment Variables.
 
-export const config = { path: "/api/ai" };
+export const config = { runtime: "edge" };
 
 const LEVELS = {
   1:  { name: "Short a", pattern: "short a in three-letter words (cat, map, sad, fan) with consonants m, s, t, p, f, n, d, c, h, b, g, r, l", words: [60, 90] },
@@ -111,7 +111,7 @@ async function callGroq(key, model, prompt, withReasoning) {
 export default async (req) => {
   if (req.method !== "POST") return json({ error: "Use POST." }, 405);
   const key = process.env.GROQ_API_KEY;
-  if (!key) return json({ error: "The AI isn't set up yet. Add GROQ_API_KEY in Netlify's environment variables, then redeploy." }, 500);
+  if (!key) return json({ error: "The AI isn't set up yet. Add GROQ_API_KEY in Vercel's environment variables, then redeploy." }, 500);
   let b;
   try { b = await req.json(); } catch { return json({ error: "Bad request." }, 400); }
   const prompt = build(b);
@@ -125,7 +125,7 @@ export default async (req) => {
       try { r = await callGroq(key, model, prompt, withReasoning); } catch { last = "Couldn't reach Groq."; continue; }
       const j = await r.json().catch(() => null);
       if (r.status === 429) return json({ error: "The free AI limit is used up for the moment. Wait a minute and try again." }, 429);
-      if (r.status === 401) return json({ error: "The Groq key isn't valid. Check GROQ_API_KEY in Netlify." }, 500);
+      if (r.status === 401) return json({ error: "The Groq key isn't valid. Check GROQ_API_KEY in Vercel." }, 500);
       if (!r.ok) { last = j?.error?.message || `Groq error ${r.status}`; continue; }
       try { return json(tidy(b.task, JSON.parse(j.choices[0].message.content))); }
       catch { last = "The AI reply couldn't be read. Try again."; }

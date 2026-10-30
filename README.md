@@ -7,7 +7,7 @@ This folder is the whole website. Putting it online takes about 30 minutes the f
 | Supabase | Saves tutors, kids and reading results so every tutor sees the same log | Free |
 | Groq | The AI that writes stories, questions and end-of-lesson notes | Free |
 | GitHub | Holds these files | Free |
-| Netlify | Puts the website online and keeps the Groq key hidden | Free |
+| Vercel | Puts the website online and keeps the Groq key hidden | Free |
 
 Want to look around first? Double-click `index.html`. It opens in your browser and saves to that computer only. The AI only works once the site is online.
 
@@ -42,23 +42,22 @@ window.ICL_CONFIG = {
 1. Go to **github.com** and create an account.
 2. Click the **+** at the top right, then **New repository**. Name it `icl-reading-log`, choose **Private**, and click **Create repository**.
 3. On the next page, click **uploading an existing file**.
-4. Open this folder on your computer, select **everything inside it** (including the `netlify` and `vendor` folders), and drag it all onto the GitHub page.
+4. Open this folder on your computer, select **everything inside it** (including the `api` and `vendor` folders), and drag it all onto the GitHub page.
 5. Wait for the uploads to finish, then click **Commit changes**.
 
-Check that the repository shows `index.html`, `netlify.toml` and the `netlify` folder at the top level, not inside another folder.
+Check that the repository shows `index.html` and the `api` folder at the top level, not inside another folder.
 
-## Step 4: Put it online (Netlify)
+## Step 4: Put it online (Vercel)
 
-1. Go to **netlify.com** and sign up with your GitHub account.
-2. Click **Add new site** (or **Add new project**), then **Import an existing project**, then **GitHub**. Allow access and pick `icl-reading-log`.
-3. Leave the build settings as they are. This folder's `netlify.toml` sets them.
-4. Find **Environment variables** (on the same page, or after deploying under **Site configuration > Environment variables**) and add:
+1. Go to **vercel.com** and sign up with your GitHub account (choose the free **Hobby** plan).
+2. Click **Add New**, then **Project**. Find `icl-reading-log` and click **Import**.
+3. Leave **Framework Preset** as **Other** and the other build settings empty.
+4. Open **Environment Variables** and add:
    - Key: `GROQ_API_KEY`
    - Value: the `gsk_` key from Step 2
-5. Click **Deploy**. After a minute you get a link like `random-name-123.netlify.app`.
-6. To get a nicer link, go to **Site configuration > Change site name** and type something like `cornerlearning`. The link becomes `cornerlearning.netlify.app`.
+5. Click **Deploy**. After a minute you get a link like `icl-reading-log.vercel.app`.
 
-If you added the key after the first deploy, go to **Deploys** and click **Trigger deploy** so the site picks it up.
+If you added the key after the first deploy, go to **Deployments**, open the **⋯** menu on the latest one and click **Redeploy** so the site picks it up.
 
 ## Step 5: First visit
 
@@ -78,15 +77,15 @@ If you added the key after the first deploy, go to **Deploys** and click **Trigg
 
 ## Changing something later
 
-Edit or replace a file on GitHub (open the file, click the pencil, save). Netlify updates the website on its own within a minute.
+Edit or replace a file on GitHub (open the file, click the pencil, save). Vercel updates the website on its own within a minute.
 
 ## If something goes wrong
 
 - **"Trying it out: the database isn't connected"**: `config.js` is still empty on GitHub. Fill it in (Step 1, part 6) and upload it again.
 - **"Can't reach the class log"**: the Supabase URL or key in `config.js` has a typo, or `setup.sql` wasn't run.
-- **"The AI isn't set up yet"**: add `GROQ_API_KEY` in Netlify, then trigger a deploy.
+- **"The AI isn't set up yet"**: add `GROQ_API_KEY` in Vercel, then redeploy.
 - **"The free AI limit is used up"**: Groq's free plan allows roughly 30 requests a minute and 1,000 a day. Wait a minute and try again.
-- **Stories stop working one day**: Groq may have retired the model. In Netlify, add `GROQ_MODEL` set to a current model name from console.groq.com/docs/models, then trigger a deploy.
+- **Stories stop working one day**: Groq may have retired the model. In Vercel, add `GROQ_MODEL` set to a current model name from console.groq.com/docs/models, then redeploy.
 - **Supabase project paused**: free projects pause after about a week with no use. Log in to Supabase and click **Restore**. Using the site every Sunday keeps it awake.
 
 ## Good to know
