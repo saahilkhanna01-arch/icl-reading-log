@@ -153,6 +153,16 @@ function warmupDeck(k) {
   }
   return words.slice(0, 12);
 }
+function struggling(s) {
+  if (!s.level || s.level <= 1) return false;
+  const atLevel = readingsOf(s.id).filter(r => r.level === s.level).slice(0, 2);
+  return atLevel.length === 2 && atLevel.every(r => r.accuracy < 0.85);
+}
+function levelHint(k, inResult) {
+  if (readyToMoveUp(k)) return `<div class="moveup" ${inResult ? 'style="margin:0 0 16px"' : ""}><span>Two stories in a row at 95% or more on Level ${k.level}. Ready for Level ${k.level + 1}: ${esc(levelOf(k.level + 1).name)}.</span><div><button class="btn small primary" data-act="levelup" data-id="${k.id}">Move up to Level ${k.level + 1}</button></div></div>`;
+  if (struggling(k)) return `<div class="movedown" ${inResult ? 'style="margin:0 0 16px"' : ""}><span>The last two Level ${k.level} stories were under 85%. Level ${k.level - 1} (${esc(levelOf(k.level - 1).name)}) may help build confidence.</span><div class="inline"><button class="btn small" data-act="leveldown" data-id="${k.id}">Move to Level ${k.level - 1}</button><button class="btn small quiet" data-act="dismisshint" data-id="${k.id}">Keep Level ${k.level}</button></div></div>`;
+  return "";
+}
 function readyToMoveUp(s) {
   if (!s.level || s.level >= 12) return false;
   const atLevel = readingsOf(s.id).filter(r => r.level === s.level).slice(0, 2);
@@ -174,6 +184,34 @@ const S = {
   summary: null, libLevel: "", openStory: null,
 };
 const sess = kid => (S.sessions[kid] ||= { mode: "home", browse: null });
+/* Lesson progress is saved on this computer as the tutor works, so a reload or crash doesn't lose marked words or the timer. */
+const SESS_KEY = "icl-sess-" + TODAY;
+function saveSessions() {
+  try {
+    const out = {};
+    for (const [kid, x] of Object.entries(S.sessions)) {
+      out[kid] = { ...x, writing: false, marked: x.marked ? [...x.marked] : undefined,
+        check: x.check ? { ...x.check, miss: x.check.miss.map(m => [...m]) } : undefined,
+        q: x.q && x.q.loading ? { reload: true } : x.q };
+    }
+    lsSet(SESS_KEY, JSON.stringify({ me: S.me, activeKid: S.activeKid, savedAt: Date.now(), sessions: out }));
+  } catch {}
+}
+function loadSessions() {
+  try {
+    const o = JSON.parse(lsGet(SESS_KEY) || "null");
+    if (!o || o.me !== S.me) return;
+    const stale = Date.now() - (o.savedAt || 0) > 30 * 60000;
+    for (const [kid, x] of Object.entries(o.sessions || {})) {
+      if (x.marked) x.marked = new Set(x.marked);
+      if (x.check) x.check.miss = x.check.miss.map(m => new Set(m));
+      if (x.running && stale) { x.acc = (x.acc || 0) + Math.max(0, (o.savedAt || 0) - (x.startedAt || 0)); x.running = false; }
+      S.sessions[kid] = x;
+    }
+    S.activeKid = o.activeKid || null;
+    for (const [kid, x] of Object.entries(S.sessions)) if (x.mode === "questions" && x.q?.reload) setTimeout(() => loadQuestions(kid), 0);
+  } catch {}
+}
 function setStep(step) { S.step = step; lsSet("icl-step-" + TODAY, step); }
 
 /* ---------- rendering ---------- */
@@ -190,6 +228,7 @@ function render() {
   $("#main").innerHTML = h;
   if (fid) { const el = document.getElementById(fid); if (el) { el.focus(); try { if (ss != null) el.setSelectionRange(ss, se); } catch {} } }
   tickTimers();
+  saveSessions();
 }
 const ICON = {
   class: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M2 6.5h12M5.5 1.5v3M10.5 1.5v3"/></svg>',
@@ -320,7 +359,7 @@ function catchupHTML(k) {
       ${words.length ? `<div><div class="k">Words to practise</div><div class="words">${words.map(w => `<span class="chip">${esc(w)}</span>`).join("")}</div></div>` : ""}
       ${att.of > 1 ? `<div><div class="k">Attendance</div><div class="v">Came ${att.came} of the last ${att.of} classes</div></div>` : ""}
     </div>
-    ${readyToMoveUp(k) ? `<div class="moveup"><span>Two stories in a row at 95% or more. Ready for Level ${k.level + 1}.</span><button class="btn small primary" data-act="levelup" data-id="${k.id}">Move up</button></div>` : ""}
+    ${sess(k.id).hideHint === k.level ? "" : levelHint(k, false)}
     <div class="inline" style="margin-top:16px"><button class="btn small quiet" data-act="check" data-id="${k.id}">Re-test level</button></div>
   </section>`;
 }
@@ -413,9 +452,12 @@ function readerHTML(k, s) {
         <button class="btn small quiet" data-act="size" data-d="-1" aria-label="Smaller text">A−</button>
         <button class="btn small quiet" data-act="size" data-d="1" aria-label="Bigger text">A+</button>
         <span class="timer" data-timer="${k.id}">${fmtTime(elapsed(s))}</span>
-        <button class="btn ${s.running ? "" : "primary"}" data-act="timer" data-id="${k.id}">${s.running ? "Pause" : elapsed(s) ? "Resume" : "Start timer"}</button>
+        <button class="btn ${s.running ? "" : "primary"} ${!s.running && !elapsed(s) ? "nudge" : ""}" data-act="timer" data-id="${k.id}">${s.running ? "Pause" : elapsed(s) ? "Resume" : "Start timer"}</button>
       </div>
     </div>
+    ${!s.running && !elapsed(s) && s.marked.size ? `<p class="timer-hint">The timer isn't running. Tap <b>Start timer</b> so we can measure reading speed.</p>` : ""}
+    ${s.askTime ? `<div class="asktime"><div><b>The timer wasn't started.</b> <span class="muted">About how long did ${esc(first(k.name))} take to read it?</span></div>
+      <div class="inline">${[1, 2, 3, 4, 5, 6].map(m => `<button class="btn small" data-act="settime" data-id="${k.id}" data-m="${m}">${m} min</button>`).join("")}<button class="btn small quiet" data-act="settime" data-id="${k.id}" data-m="0">Not sure, save without speed</button></div></div>` : ""}
     <div class="story" style="--size:${size}px"><h2>${esc(st.title)}</h2>${storyBody(st.text, s.marked, k.id)}</div>
     <div class="reader-foot">
       <div class="stack">
@@ -479,17 +521,19 @@ function resultHTML(k, s) {
       ${qs.length ? `<div class="tile"><span class="k">Questions</span><span class="v">${qs.filter(q => q.ok).length}<small>of ${qs.length}</small></span></div>` : ""}
     </div>
     ${r.missed.length ? `<p class="muted small">Missed</p><div class="words" style="margin-bottom:16px">${r.missed.map(w => `<span class="chip bad">${esc(w)}</span>`).join("")}</div>` : `<p style="margin-bottom:16px">No words missed. Well done!</p>`}
-    ${readyToMoveUp(k) ? `<div class="moveup" style="margin:0 0 16px"><span>Two stories in a row at 95% or more on Level ${k.level}. Ready to move up to Level ${k.level + 1}: ${esc(levelOf(k.level + 1).name)}.</span><div><button class="btn small primary" data-act="levelup" data-id="${k.id}">Move up to Level ${k.level + 1}</button></div></div>` : ""}
+    ${s.hideHint === k.level ? "" : levelHint(k, true)}
     <div class="field" style="margin-bottom:16px;max-width:640px"><label for="rnote-${k.id}">Anything to remember about this story? (optional)</label>
       <div class="inline"><input type="text" id="rnote-${k.id}" data-input-sess="rnote" data-id="${k.id}" value="${esc(s.rnote ?? r.note ?? "")}" placeholder="e.g. Guessed from pictures, needs help with sh"><button class="btn" data-act="savernote" data-id="${k.id}">Save</button></div></div>
     <div class="inline"><button class="btn primary" data-act="home" data-id="${k.id}">Choose the next story</button>
-      <button class="btn" data-act="read" data-id="${k.id}" data-story="${r.storyId}">Read it again</button></div>`;
+      <button class="btn" data-act="read" data-id="${k.id}" data-story="${r.storyId}">Read it again</button></div>
+    <div class="undo-line">${s.confirmDel ? `<span>Delete this reading? It will be removed from ${esc(first(k.name))}'s progress.</span><button class="btn small danger" data-act="delresult" data-id="${k.id}">Yes, delete it</button><button class="btn small quiet" data-act="canceldel" data-id="${k.id}">Keep it</button>`
+      : `<button class="linkish muted-link" data-act="askdel" data-id="${k.id}">Saved by mistake? Delete this reading</button>`}</div>`;
 }
 
 /* ---------- placement test ---------- */
 const CHECK_STEPS = ["Letter sounds", "Made-up words", "Short story"];
 function checkHTML(k, s) {
-  const c = s.check, step = c.step;
+  const c = s.check, step = c.step, PLACEMENT = PLACEMENTS[c.v || 0];
   let body = "", hint = "";
   if (step === 0) { hint = "Ask them to say the sound each letter makes, left to right. Start the timer as they begin. Tap any sound they get wrong."; body = `<div class="grid-items letters">${PLACEMENT.letters.map((l, i) => `<button class="gi ${c.miss[0].has(i) ? "miss" : ""}" data-act="cmark" data-id="${k.id}" data-i="${i}" aria-pressed="${c.miss[0].has(i)}">${l}</button>`).join("")}</div>`; }
   if (step === 1) { hint = "These are made-up words, so they have to sound them out. Tap any word read wrong. No timer needed."; let i = -1; body = `<div class="grid-items nwords">${PLACEMENT.bands.map(b => `<span class="band-label">${esc(b.label)}</span>${b.words.map(w => { i++; return `<button class="gi ${c.miss[1].has(i) ? "miss" : ""}" data-act="cmark" data-id="${k.id}" data-i="${i}" aria-pressed="${c.miss[1].has(i)}">${w}</button>`; }).join("")}`).join("")}</div>`; }
@@ -498,7 +542,7 @@ function checkHTML(k, s) {
   return `<div class="reader">
     <div class="reader-bar">
       <div><button class="linkish" data-act="home" data-id="${k.id}">Cancel test</button>
-        <div class="ttl">Placement test for ${esc(k.name)}</div>
+        <div class="ttl">Placement test for ${esc(k.name)} <span class="muted small" style="font-weight:400">· version ${(c.v || 0) + 1} of 3</span></div>
         <div class="steps" style="margin-top:6px">${CHECK_STEPS.map((n, i) => `<span class="chip ${i === step ? "accent" : i < step ? "good" : ""}">${n}</span>`).join("")}</div></div>
       ${timed ? `<div class="inline"><span class="timer" data-timer="${k.id}">${fmtTime(elapsed(s))}</span><button class="btn ${s.running ? "" : "primary"}" data-act="timer" data-id="${k.id}">${s.running ? "Pause" : elapsed(s) ? "Resume" : "Start timer"}</button></div>` : ""}
     </div>
@@ -510,6 +554,7 @@ function checkHTML(k, s) {
   </div>`;
 }
 function scoreCheck(c) {
+  const PLACEMENT = PLACEMENTS[c.v || 0];
   const lettersRight = PLACEMENT.letters.length - c.miss[0].size;
   const lpm = c.secs[0] ? lettersRight / (c.secs[0] / 60) : null;
   const bandScores = PLACEMENT.bands.map((b, bi) => b.words.filter((_, wi) => !c.miss[1].has(bi * 5 + wi)).length);
@@ -531,7 +576,7 @@ function checkResultHTML(k, s) {
   return `<div class="panel-head"><h2>Placement test for ${esc(k.name)}</h2></div>
     <div class="result-nums">
       <div class="tile"><span class="k">Letter sounds</span><span class="v">${r.lettersRight}<small>of ${r.lettersTotal}</small></span><span class="c">${r.lpm != null ? `${Math.round(r.lpm)} correct a minute` : "Not timed"}</span></div>
-      <div class="tile"><span class="k">Made-up words</span><span class="v">${r.bandScores.reduce((a, b) => a + b, 0)}<small>of 20</small></span><span class="c">${PLACEMENT.bands.map((b, i) => `${b.label} ${r.bandScores[i]}/5`).join(" · ")}</span></div>
+      <div class="tile"><span class="k">Made-up words</span><span class="v">${r.bandScores.reduce((a, b) => a + b, 0)}<small>of 20</small></span><span class="c">${BAND_INFO.map((b, i) => `${b.label} ${r.bandScores[i]}/5`).join(" · ")}</span></div>
       <div class="tile"><span class="k">Short story</span><span class="v">${Math.round(r.pacc * 100)}<small>%</small></span><span class="c">${r.pwcpm != null ? `${Math.round(r.pwcpm)} words correct a minute` : "Not timed"}</span></div>
     </div>
     <p style="margin-bottom:12px"><b>Suggested start: Level ${r.level}, ${esc(levelOf(r.level).name)}.</b> <span class="muted">${esc(r.why)}.</span></p>
@@ -551,6 +596,7 @@ function factsFor(k) {
   rs.slice().reverse().forEach(r => lines.push(`Read "${r.title}" (Level ${r.level}): ${Math.round(r.accuracy * 100)}% accuracy${r.seconds ? `, ${Math.round(r.wcpm)} words correct a minute` : ""}${r.missed.length ? `, missed ${r.missed.slice(0, 8).join(", ")}` : ", no words missed"}${r.questions?.length ? `, understood ${r.questions.filter(q => q.ok).length} of ${r.questions.length} questions` : ""}${r.note ? `. Tutor's note: ${r.note}` : ""}.`));
   if (!rs.length && !w && !c) lines.push("No stories were recorded today.");
   if (readyToMoveUp(k)) lines.push(`Ready to move up to Level ${k.level + 1}.`);
+  if (struggling(k)) lines.push(`Found Level ${k.level} hard; the last two stories were under 85%.`);
   return lines.join("\n");
 }
 function templateNote(k) {
@@ -630,8 +676,15 @@ function kidHTML() {
       </div></section>
     ${notes.length ? `<section class="panel"><div class="panel-head"><h2>Tutor notes <span class="count">${notes.length}</span></h2></div><div class="stack">${notes.map(n => `<div class="row"><div class="grow"><div class="m">${fmtDay(n.date)} · ${esc(tutor(n.tutorId)?.name || "Tutor")}</div><div>${esc(n.text)}</div></div></div>`).join("")}</div></section>` : ""}
     <section class="panel"><div class="panel-head"><h2>Every story <span class="count">${rs.length}</span></h2></div>
-      ${rs.length ? `<div class="table-wrap"><table><thead><tr><th>Date</th><th>Story</th><th>Tutor</th><th class="n">Accuracy</th><th class="n">Words a minute</th><th class="n">Questions</th><th>Missed</th></tr></thead><tbody>
-      ${rs.map(r => `<tr><td style="white-space:nowrap">${fmtDay(r.date)}</td><td>${esc(r.title)} <span class="muted">· L${r.level}</span></td><td>${esc(tutor(r.tutorId)?.name || "–")}</td><td class="n">${pct(r.accuracy)}</td><td class="n">${r.seconds ? Math.round(r.wcpm) : "–"}</td><td class="n">${r.questions?.length ? `${r.questions.filter(q => q.ok).length}/${r.questions.length}` : "–"}</td><td>${(r.missed || []).map(esc).join(", ") || '<span class="muted">None</span>'}</td></tr>`).join("")}
+      ${rs.length ? `<div class="table-wrap"><table><thead><tr><th>Date</th><th>Story</th><th>Tutor</th><th class="n">Accuracy</th><th class="n">Words a minute</th><th class="n">Questions</th><th>Missed</th><th><span class="sr">Fix</span></th></tr></thead><tbody>
+      ${rs.map(r => `<tr><td style="white-space:nowrap">${fmtDay(r.date)}</td><td>${esc(r.title)} <span class="muted">· L${r.level}</span></td><td>${esc(tutor(r.tutorId)?.name || "–")}</td><td class="n">${pct(r.accuracy)}</td><td class="n">${r.seconds ? Math.round(r.wcpm) : "–"}</td><td class="n">${r.questions?.length ? `${r.questions.filter(q => q.ok).length}/${r.questions.length}` : "–"}</td><td>${(r.missed || []).map(esc).join(", ") || '<span class="muted">None</span>'}</td><td><button class="btn small quiet" data-act="fixrow" data-id="${r.id}" aria-expanded="${S.fixRow === r.id}">Fix</button></td></tr>
+      ${S.fixRow === r.id ? `<tr class="fix"><td colspan="8"><div class="inline">
+        <label class="muted small" for="move-${r.id}">Saved for the wrong kid? Move it to</label>
+        <select id="move-${r.id}"><option value="">Choose a kid</option>${activeStudents().filter(x => x.id !== k.id).map(x => `<option value="${x.id}">${esc(x.name)}</option>`).join("")}</select>
+        <button class="btn small" data-act="fixmove" data-id="${r.id}">Move</button>
+        <span class="muted small">or</span>
+        <button class="btn small ${S.fixDel ? "danger" : "quiet"}" data-act="fixdel" data-id="${r.id}">${S.fixDel ? "Yes, delete this reading" : "Delete it"}</button>
+      </div></td></tr>` : ""}`).join("")}
       </tbody></table></div>` : `<div class="empty"><b>No stories yet</b>Stories read in lessons show up here.</div>`}
     </section>
   </div>`;
@@ -654,6 +707,56 @@ function chartHTML(rs) {
     ${lastW ? `<circle cx="${lastW[0]}" cy="${lastW[1]}" r="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.5"/>` : ""}
     ${rs.map((r, i) => i % step === 0 || i === rs.length - 1 ? `<text class="axis" x="${x(i)}" y="${H - 8}" text-anchor="middle">${fmtShort(r.date)}</text>` : "").join("")}
   </svg></div>`;
+}
+
+
+/* ---------- tutor attendance calendar ---------- */
+function attendanceHTML() {
+  const days = classDays();
+  const now = new Date(); const [cy, cm] = (S.calMonth || `${now.getFullYear()}-${now.getMonth()}`).split("-").map(Number);
+  const firstDay = new Date(cy, cm, 1), daysIn = new Date(cy, cm + 1, 0).getDate(), lead = firstDay.getDay();
+  const byDay = {}; D.attendance.forEach(a => (byDay[a.date] ||= new Set()).add(a.tutorId));
+  const maxN = Math.max(1, ...Object.values(byDay).map(x => x.size));
+  const monthName = firstDay.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+  const cells = [];
+  for (let i = 0; i < lead; i++) cells.push(`<div class="cal-cell blank"></div>`);
+  for (let d = 1; d <= daysIn; d++) {
+    const key = `${cy}-${pad2(cm + 1)}-${pad2(d)}`, n = byDay[key]?.size || 0, isSun = new Date(cy, cm, d).getDay() === 0;
+    const tint = n ? Math.round(18 + 62 * (n / maxN)) : 0;
+    cells.push(`<button class="cal-cell ${n ? "has" : ""} ${isSun ? "sun" : ""} ${S.calDay === key ? "sel" : ""} ${key === TODAY ? "today" : ""}" data-act="calday" data-v="${key}" ${n ? `style="--tint:${tint}%"` : ""} aria-label="${fmtDayLong(key)}: ${plural(n, "tutor")}">
+      <span class="d">${d}</span>${n ? `<span class="n">${n}</span><span class="l">${n === 1 ? "tutor" : "tutors"}</span>` : ""}</button>`);
+  }
+  const sel = S.calDay && byDay[S.calDay] ? S.calDay : days.find(d => byDay[d]);
+  let detail = `<div class="empty"><b>No classes yet</b>Days light up here once tutors sign in.</div>`;
+  if (sel) {
+    const here = [...(byDay[sel] || [])].map(tutor).filter(Boolean), hereIds = new Set(here.map(t => t.id));
+    const away = activeTutors().filter(t => !hereIds.has(t.id) && (t.at || 0) <= new Date(sel + "T23:59").getTime());
+    const kids = new Set(D.picks.filter(p => p.date === sel).map(p => p.studentId)).size, stories = D.readings.filter(r => r.date === sel).length;
+    detail = `<h3 class="cal-h">${fmtDayLong(sel)}</h3>
+      <p class="muted small" style="margin-bottom:12px">${plural(here.length, "tutor")} · ${plural(kids, "kid")} · ${plural(stories, "story", "stories")} read</p>
+      <div class="k small muted">Came</div><div class="words" style="margin:4px 0 12px">${here.map(t => `<span class="chip good">${esc(t.name)}</span>`).join("") || "–"}</div>
+      ${away.length ? `<div class="k small muted">Didn't come</div><div class="words" style="margin-top:4px">${away.map(t => `<span class="chip">${esc(t.name)}</span>`).join("")}</div>` : ""}`;
+  }
+  const recent = days.filter(d => byDay[d]).slice(0, 8).reverse();
+  const rows = activeTutors().map(t => {
+    const came = recent.filter(d => byDay[d].has(t.id)).length;
+    const all = D.attendance.filter(a => a.tutorId === t.id).map(a => a.date).sort();
+    return { t, came, total: new Set(all).size, last: all[all.length - 1] };
+  }).sort((a, b) => b.came - a.came || b.total - a.total);
+  return `<section class="panel"><div class="panel-head"><h2>Tutor attendance</h2>
+      <div class="inline"><button class="btn small quiet" data-act="calmove" data-d="-1" aria-label="Previous month">Previous</button><b style="min-width:140px;text-align:center">${monthName}</b><button class="btn small quiet" data-act="calmove" data-d="1" aria-label="Next month">Next</button></div></div>
+    <div class="cal-wrap">
+      <div class="cal">
+        ${["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(d => `<div class="cal-dow">${d}</div>`).join("")}
+        ${cells.join("")}
+      </div>
+      <div class="cal-detail">${detail}</div>
+    </div>
+    ${recent.length ? `<h3 class="group-h" style="margin-top:22px">Each tutor, last ${plural(recent.length, "class", "classes")}</h3>
+    <div class="table-wrap"><table class="att"><thead><tr><th>Tutor</th>${recent.map(d => `<th class="c">${fmtShort(d)}</th>`).join("")}<th class="n">Came</th><th class="n">All time</th><th>Last seen</th></tr></thead><tbody>
+      ${rows.map(r => `<tr><td><b style="font-weight:500">${esc(r.t.name)}</b></td>${recent.map(d => `<td class="c">${byDay[d].has(r.t.id) ? '<span class="dot yes" title="Came"></span>' : '<span class="dot" title="Not there"></span>'}</td>`).join("")}<td class="n">${r.came} of ${recent.length}</td><td class="n">${r.total}</td><td>${r.last ? fmtDay(r.last) : '<span class="muted">Never</span>'}</td></tr>`).join("")}
+    </tbody></table></div>` : ""}
+  </section>`;
 }
 
 /* ---------- Admin ---------- */
@@ -680,11 +783,7 @@ function adminHTML() {
         <button class="btn small quiet" data-act="preview" data-id="${st.id}">${S.openStory === st.id ? "Close" : "Read"}</button><button class="btn small quiet" data-act="rmstory" data-id="${st.id}">Delete</button></div>${S.openStory === st.id ? `<div class="storyprev">${esc(st.text)}${(st.questions || []).length ? `\n\nQuestions:\n${st.questions.map(q => `• ${q.q} (${q.a})`).join("\n")}` : ""}</div>` : ""}`).join("") || `<div class="empty"><b>No practice stories yet</b>Tutors can make one for a kid during a lesson. The ${STORIES.length} library stories are always there.</div>`}
       ${libShown.length > 40 ? `<p class="muted small">Showing the newest 40. Filter by level to see more.</p>` : ""}</div>
     </section>
-    <section class="panel s6"><div class="panel-head"><h2>Classes <span class="count">${days.length}</span></h2></div>
-      ${days.length ? `<div class="table-wrap"><table><thead><tr><th>Date</th><th>Tutors there</th><th class="n">Kids</th><th class="n">Stories</th></tr></thead><tbody>
-      ${days.slice(0, 16).map(d => { const t = D.attendance.filter(a => a.date === d).map(a => first(tutor(a.tutorId)?.name)).filter(Boolean); return `<tr><td style="white-space:nowrap">${fmtDay(d)}</td><td>${esc(t.join(", ")) || "–"}</td><td class="n">${new Set(D.picks.filter(p => p.date === d).map(p => p.studentId)).size}</td><td class="n">${D.readings.filter(r => r.date === d).length}</td></tr>`; }).join("")}
-      </tbody></table></div>` : `<div class="empty"><b>No classes yet</b>Each Sunday appears here once tutors sign in.</div>`}
-    </section>
+    ${attendanceHTML()}
     <section class="panel s6"><div class="panel-head"><h2>Kids missing lately <span class="count">${missing.length}</span></h2></div>
       <div class="stack">${missing.map(s => { const a = kidAttendance(s.id); const lastDay = D.picks.filter(p => p.studentId === s.id).map(p => p.date).sort().reverse()[0]; return `<div class="row"><div class="grow"><div class="t">${esc(s.name)}</div><div class="m">Missed the last 2 classes · last came ${fmtDay(lastDay)} · ${a.came} of ${a.of} overall</div></div><button class="btn small quiet" data-act="kid" data-id="${s.id}">Progress</button></div>`; }).join("") || `<div class="empty">Everyone has come to at least one of the last two classes.</div>`}</div>
     </section>
@@ -695,6 +794,16 @@ function adminHTML() {
     <section class="panel s6"><div class="panel-head"><h2>Kids <span class="count">${activeStudents().length}</span></h2></div>
       <div class="stack">${activeStudents().map(s => `<div class="row"><div class="grow"><div class="t">${esc(s.name)}</div><div class="m">${s.level ? `Level ${s.level}` : "No level"} · ${plural(readingsOf(s.id).length, "story", "stories")}</div></div><button class="btn small quiet" data-act="rmkid" data-id="${s.id}">Remove</button></div>`).join("") || `<div class="empty">No kids yet.</div>`}</div>
     </section>
+    <section class="panel"><div class="panel-head"><h2>Merge duplicate kids</h2></div>
+      <p class="muted small" style="margin-bottom:12px">If the same kid was added twice, move everything from one into the other. Stories, tests, notes and attendance all come across.</p>
+      <div class="inline">
+        <label class="muted small" for="mfrom">Merge</label>
+        <select id="mfrom" data-input="mergeFrom"><option value="">Choose the duplicate</option>${activeStudents().map(x => `<option value="${x.id}" ${S.mergeFrom === x.id ? "selected" : ""}>${esc(x.name)} · ${plural(readingsOf(x.id).length, "story", "stories")}</option>`).join("")}</select>
+        <label class="muted small" for="minto">into</label>
+        <select id="minto" data-input="mergeInto"><option value="">Choose the kid to keep</option>${activeStudents().filter(x => x.id !== S.mergeFrom).map(x => `<option value="${x.id}" ${S.mergeInto === x.id ? "selected" : ""}>${esc(x.name)} · ${plural(readingsOf(x.id).length, "story", "stories")}</option>`).join("")}</select>
+        ${S.mergeConfirm && S.mergeFrom && S.mergeInto ? `<button class="btn small danger" data-act="merge">Yes, merge ${esc(student(S.mergeFrom)?.name)} into ${esc(student(S.mergeInto)?.name)}</button><button class="btn small quiet" data-act="cancelmerge">Cancel</button>`
+          : `<button class="btn small" data-act="merge" ${S.mergeFrom && S.mergeInto && S.mergeFrom !== S.mergeInto ? "" : "disabled"}>Merge</button>`}
+      </div></section>
     <section class="panel"><div class="panel-head"><h2>Admin password</h2><button class="btn small quiet" data-act="lock">Lock admin</button></div>
       <form class="inline" data-form="pw"><input type="password" id="newpw" autocomplete="new-password" placeholder="New password, 6 or more characters" aria-label="New password"><button class="btn" type="submit">Change password</button></form>
     </section>
@@ -712,7 +821,8 @@ function exportCsv(kind) {
 
 /* ---------- actions ---------- */
 async function signIn(id) {
-  S.me = id; lsSet("icl-me", id); S.signedToday = true; lsSet("icl-day", TODAY); S.screen = "class";
+  if (S.me !== id) { S.sessions = {}; S.activeKid = null; }
+  S.me = id; lsSet("icl-me", id); loadSessions(); S.signedToday = true; lsSet("icl-day", TODAY); S.screen = "class";
   if (!["lesson", "summary", "done"].includes(S.step) || !myKids().length) setStep("pick");
   render();
   if (!hereToday().find(a => a.tutorId === id)) await safe(Store.set("attendance", `${TODAY}_${id}`, { date: TODAY, tutorId: id, at: Date.now() }));
@@ -724,7 +834,7 @@ async function saveReading(kid) {
   const toks = tokens(st.text).filter(isWord), total = toks.length;
   const missed = [...s.marked].sort((a, b) => a - b).map(i => clean(toks[i])).filter(Boolean);
   const seconds = Math.round((s.acc || 0) / 1000);
-  const rec = { date: TODAY, studentId: kid, tutorId: S.me, storyId: st.id, title: st.title, level: st.level, total, errors: missed.length, missed, seconds, accuracy: (total - missed.length) / total, wcpm: seconds ? (total - missed.length) / (seconds / 60) : 0, note: "", at: Date.now() };
+  const rec = { estimatedTime: !!s.estimated, date: TODAY, studentId: kid, tutorId: S.me, storyId: st.id, title: st.title, level: st.level, total, errors: missed.length, missed, seconds, accuracy: (total - missed.length) / total, wcpm: seconds ? (total - missed.length) / (seconds / 60) : 0, note: "", at: Date.now() };
   let id = null;
   try { id = await Store.add("readings", rec); } catch { toast("That didn't save. Check the internet connection and try again."); render(); return; }
   Object.assign(s, { mode: "questions", result: rec, resultId: id, rnote: null });
@@ -760,13 +870,14 @@ document.addEventListener("click", async e => {
     case "browse": sess(id).browse = Number(b.dataset.n); break;
     case "toggleread": sess(id).showRead = !sess(id).showRead; break;
     case "scrollstories": $("#stories")?.scrollIntoView({ behavior: "smooth", block: "start" }); return;
-    case "read": Object.assign(sess(id), { mode: "read", storyId: b.dataset.story, marked: new Set(), acc: 0, running: false, startedAt: 0 }); window.scrollTo(0, 0); break;
+    case "read": Object.assign(sess(id), { mode: "read", storyId: b.dataset.story, marked: new Set(), acc: 0, running: false, startedAt: 0, askTime: false, timeAsked: false, estimated: false }); window.scrollTo(0, 0); break;
     case "home": Object.assign(sess(id), { mode: "home", running: false }); break;
     case "restart": Object.assign(s, { marked: new Set(), acc: 0, running: false }); break;
-    case "mark": { const i = Number(b.dataset.i); s.marked.has(i) ? s.marked.delete(i) : s.marked.add(i); b.classList.toggle("miss"); b.setAttribute("aria-pressed", s.marked.has(i)); const c = $("#misscount"); if (c) c.textContent = s.marked.size; return; }
+    case "mark": { const i = Number(b.dataset.i); s.marked.has(i) ? s.marked.delete(i) : s.marked.add(i); saveSessions(); if (!s.running && !elapsed(s) && s.marked.size === 1) break; b.classList.toggle("miss"); b.setAttribute("aria-pressed", s.marked.has(i)); const c = $("#misscount"); if (c) c.textContent = s.marked.size; return; }
     case "timer": if (s.running) { s.acc = elapsed(s); s.running = false; } else { s.startedAt = Date.now(); s.running = true; } break;
     case "size": S.textSize = Math.max(-3, Math.min(4, S.textSize + Number(b.dataset.d))); lsSet("icl-size", S.textSize); break;
-    case "finish": return saveReading(id);
+    case "finish": if (!s.running && !elapsed(s) && !s.timeAsked) { s.askTime = true; break; } return saveReading(id);
+    case "settime": { const m = Number(b.dataset.m); s.acc = m * 60000; s.askTime = false; s.timeAsked = true; s.estimated = m > 0; return saveReading(id); }
     case "newstory": return writeStoryFor(id);
     case "warmup": { const k = student(id); Object.assign(sess(id), { mode: "warmup", warm: { words: warmupDeck(k), res: [], i: 0 } }); break; }
     case "wcard": {
@@ -774,6 +885,12 @@ document.addEventListener("click", async e => {
       if (w.i >= w.words.length) safe(Store.add("warmups", { date: TODAY, studentId: id, tutorId: S.me, right: w.words.filter((_, j) => w.res[j]), wrong: w.words.filter((_, j) => w.res[j] === false), at: Date.now() }));
       break;
     }
+    case "askdel": s.confirmDel = true; break;
+    case "canceldel": s.confirmDel = false; break;
+    case "delresult": { await safe(Store.remove("readings", s.resultId), "Reading deleted"); Object.assign(s, { mode: "home", confirmDel: false, result: null, resultId: null }); break; }
+    case "fixrow": S.fixRow = S.fixRow === id ? null : id; S.fixDel = false; break;
+    case "fixdel": if (!S.fixDel) { S.fixDel = true; break; } await safe(Store.remove("readings", id), "Reading deleted"); S.fixRow = null; S.fixDel = false; break;
+    case "fixmove": { const to = $(`#move-${id}`)?.value; if (!to) { toast("Choose a kid to move it to."); return; } await safe(Store.update("readings", id, { studentId: to }), `Moved to ${student(to)?.name}`); S.fixRow = null; break; }
     case "qmark": s.q.marks[Number(b.dataset.i)] = b.dataset.ok === "1"; break;
     case "qshow": s.q.show = !s.q.show; break;
     case "qretry": loadQuestions(id); return;
@@ -784,9 +901,11 @@ document.addEventListener("click", async e => {
       s.mode = "result"; break;
     }
     case "savernote": await safe(Store.update("readings", s.resultId, { note: (s.rnote || "").trim() }), "Note saved"); break;
+    case "leveldown": { const k = student(id); if (k && k.level > 1) { await safe(Store.update("students", id, { level: k.level - 1 }), `${k.name} moved to Level ${k.level - 1}`); Object.assign(sess(id), { browse: null, mode: "home" }); } break; }
+    case "dismisshint": sess(id).hideHint = student(id)?.level; break;
     case "levelup": { const k = student(id); if (k && k.level < 12) { await safe(Store.update("students", id, { level: k.level + 1 }), `${k.name} moved up to Level ${k.level + 1}`); Object.assign(sess(id), { browse: null, mode: "home" }); } break; }
-    case "check": Object.assign(sess(id), { mode: "check", check: { step: 0, miss: [new Set(), new Set(), new Set()], secs: [0, 0, 0] }, acc: 0, running: false }); break;
-    case "cmark": { const c = s.check, i = Number(b.dataset.i), m = c.miss[c.step]; m.has(i) ? m.delete(i) : m.add(i); b.classList.toggle("miss"); b.setAttribute("aria-pressed", m.has(i)); const w = $("#cwrong"); if (w) w.textContent = `${m.size} wrong`; return; }
+    case "check": { const v = D.checks.filter(c => c.studentId === id).length % PLACEMENTS.length; Object.assign(sess(id), { mode: "check", check: { step: 0, v, miss: [new Set(), new Set(), new Set()], secs: [0, 0, 0] }, acc: 0, running: false }); break; }
+    case "cmark": { const c = s.check, i = Number(b.dataset.i), m = c.miss[c.step]; m.has(i) ? m.delete(i) : m.add(i); saveSessions(); b.classList.toggle("miss"); b.setAttribute("aria-pressed", m.has(i)); const w = $("#cwrong"); if (w) w.textContent = `${m.size} wrong`; return; }
     case "cstep": {
       const c = s.check; c.secs[c.step] = Math.round(elapsed(s) / 1000); s.acc = 0; s.running = false;
       if (Number(b.dataset.d) > 0 && c.step === 2) { s.checkResult = scoreCheck(c); s.chosen = s.checkResult.level; s.mode = "checkResult"; }
@@ -795,7 +914,7 @@ document.addEventListener("click", async e => {
     }
     case "savecheck": {
       const r = s.checkResult, lvl = Number(s.chosen || r.level);
-      await safe(Store.add("checks", { date: TODAY, studentId: id, tutorId: S.me, lettersRight: r.lettersRight, lettersTotal: r.lettersTotal, lettersPerMin: r.lpm, wordsRight: r.bandScores.reduce((a, b) => a + b, 0), bandScores: r.bandScores, passageAccuracy: r.pacc, passageWcpm: r.pwcpm, suggested: r.level, level: lvl, at: Date.now() }));
+      await safe(Store.add("checks", { date: TODAY, studentId: id, tutorId: S.me, lettersRight: r.lettersRight, lettersTotal: r.lettersTotal, lettersPerMin: r.lpm, wordsRight: r.bandScores.reduce((a, b) => a + b, 0), bandScores: r.bandScores, passageAccuracy: r.pacc, passageWcpm: r.pwcpm, suggested: r.level, level: lvl, version: (s.check?.v || 0) + 1, at: Date.now() }));
       await safe(Store.update("students", id, { level: lvl }), `Saved. Starting at Level ${lvl}`);
       Object.assign(s, { mode: "home", browse: null }); break;
     }
@@ -813,6 +932,21 @@ document.addEventListener("click", async e => {
     case "rmtutor": await safe(Store.update("tutors", id, { active: false }), "Tutor removed. Their past classes stay in the log."); break;
     case "rmkid": await safe(Store.update("students", id, { active: false }), "Kid removed. Their past stories stay in the log."); break;
     case "lock": S.adminOk = false; break;
+    case "calday": S.calDay = b.dataset.v; break;
+    case "calmove": { const now = new Date(); const [y, m] = (S.calMonth || `${now.getFullYear()}-${now.getMonth()}`).split("-").map(Number); const d = new Date(y, m + Number(b.dataset.d), 1); S.calMonth = `${d.getFullYear()}-${d.getMonth()}`; break; }
+    case "cancelmerge": S.mergeConfirm = false; break;
+    case "merge": {
+      const from = S.mergeFrom, into = S.mergeInto;
+      if (!from || !into || from === into) break;
+      if (!S.mergeConfirm) { S.mergeConfirm = true; break; }
+      const a = student(from), z = student(into);
+      let ok = true;
+      for (const c of ["readings", "checks", "warmups", "notes", "picks"]) for (const d of D[c].filter(x => x.studentId === from)) ok = (await safe(Store.update(c, d.id, { studentId: into }))) && ok;
+      for (const d of D.stories.filter(x => x.forKid === from)) await safe(Store.update("stories", d.id, { forKid: into }));
+      if (!z.level && a.level) await safe(Store.update("students", into, { level: a.level }));
+      if (ok) await safe(Store.update("students", from, { active: false, mergedInto: into }), `${a.name} merged into ${z.name}`);
+      S.mergeFrom = ""; S.mergeInto = ""; S.mergeConfirm = false; break;
+    }
   }
   render();
 });
@@ -826,13 +960,14 @@ document.addEventListener("keydown", e => {
 document.addEventListener("input", e => {
   const t = e.target;
   if (t.dataset.input) { S[t.dataset.input] = t.value; if (["signQ", "pickerQ", "kidsQ"].includes(t.dataset.input)) render(); }
-  if (t.dataset.inputSess) sess(t.dataset.id)[t.dataset.inputSess] = t.value;
+  if (t.dataset.inputSess) { sess(t.dataset.id)[t.dataset.inputSess] = t.value; saveSessions(); }
   if (t.dataset.sum && S.summary?.[t.dataset.sum]) S.summary[t.dataset.sum].text = t.value;
 });
 document.addEventListener("change", async e => {
   const t = e.target;
   if (t.dataset.actChange === "setlevel") { await safe(Store.update("students", t.dataset.id, { level: t.value ? Number(t.value) : null }), t.value ? `Level set to ${t.value}` : null); sess(t.dataset.id).browse = null; render(); return; }
   if (t.dataset.input === "libLevel") { S.libLevel = t.value; render(); return; }
+  if (t.dataset.input === "mergeFrom" || t.dataset.input === "mergeInto") { S[t.dataset.input] = t.value; S.mergeConfirm = false; if (S.mergeFrom === S.mergeInto) S.mergeInto = ""; render(); return; }
   if (t.dataset.inputSess) sess(t.dataset.id)[t.dataset.inputSess] = t.value;
 });
 document.addEventListener("submit", async e => {
@@ -863,5 +998,6 @@ document.addEventListener("submit", async e => {
   if (kind === "pw") { const v = $("#newpw").value; if (v.length < 6) { toast("Use 6 or more characters."); return; } const h = await sha(v); if (h) await safe(Store.set("config", "admin", { hash: h, at: Date.now() }), "Password changed"); render(); }
 });
 
+loadSessions();
 Store.init();
 })();

@@ -27,14 +27,28 @@ function S(level, title, text, tricky, questions) {
   });
 }
 
-/* Placement check, our own, inspired by DIBELS: letter sounds, made-up words, a short passage. */
-const PLACEMENT = {
-  letters: "m a s t p f i n o d c u g b e h r l k w j y v x z q t s m a d n i p o f c e u g r b l h".split(" "),
-  bands: [
-    { level: 2,  label: "Short vowels",        words: ["zat", "mip", "fot", "lun", "ped"] },
-    { level: 4,  label: "sh, th, ch, blends",  words: ["shom", "thip", "chab", "flet", "grum"] },
-    { level: 7,  label: "Silent e",            words: ["bame", "tipe", "rofe", "mune", "zade"] },
-    { level: 9,  label: "Vowel teams and r",   words: ["feep", "goam", "tair", "sork", "lurt"] },
-  ],
-  passage: { title: "The Market", text: "On Saturday, Sana went to the market with her mother. The market was busy and loud. They bought rice, eggs and six red apples. Sana saw a man selling bright kites. She asked her mother if she could have one. Her mother smiled and said yes. On the way home, Sana held the kite high in the wind. It was the best day of the week." },
-};
+/* Placement test, our own, inspired by DIBELS: letter sounds, made-up words, a short passage.
+   Three versions so a kid who is re-tested doesn't see the same one twice in a row. */
+const BAND_INFO = [
+  { level: 2, label: "Short vowels" },
+  { level: 4, label: "sh, th, ch, blends" },
+  { level: 7, label: "Silent e" },
+  { level: 9, label: "Vowel teams and r" },
+];
+const PLACEMENTS = [
+  {
+    letters: "m a s t p f i n o d c u g b e h r l k w j y v x z q t s m a d n i p o f c e u g r b l h".split(" "),
+    words: [["zat", "mip", "fot", "lun", "ped"], ["shom", "thip", "chab", "flet", "grum"], ["bame", "tipe", "rofe", "mune", "zade"], ["feep", "goam", "tair", "sork", "lurt"]],
+    passage: { title: "The Market", text: "On Saturday, Sana went to the market with her mother. The market was busy and loud. They bought rice, eggs and six red apples. Sana saw a man selling bright kites. She asked her mother if she could have one. Her mother smiled and said yes. On the way home, Sana held the kite high in the wind. It was the best day of the week." },
+  },
+  {
+    letters: "s t a m f p n i d o g c b u r e l h w k y j x v q z p m t a s f d i n c o b g e u h l r".split(" "),
+    words: [["vop", "jit", "nug", "seb", "daf"], ["shub", "thep", "chog", "slom", "grap"], ["lume", "pobe", "kibe", "tade", "vone"], ["boap", "heeb", "darp", "morb", "lirt"]],
+    passage: { title: "The Rainy Day", text: "It rained all morning, so Bilal and his sister could not play outside. They sat by the window and watched the drops run down the glass. Their mother made hot tea and a plate of pakoras. Bilal counted the puddles in the yard. When the rain stopped, the sun came out and a rainbow spread over the hills. The children ran outside and jumped in every puddle they could find." },
+  },
+  {
+    letters: "a p t s i m o f n c d u b g e r l w h k j v y z x q m s a t p n f i d o g c u b r e h l".split(" "),
+    words: [["bim", "tox", "rud", "fep", "gac"], ["chun", "whep", "thib", "plok", "frim"], ["fope", "dute", "jine", "sabe", "pome"], ["taip", "roat", "keem", "porf", "nirb"]],
+    passage: { title: "The New Goat", text: "Hamid's uncle gave him a little brown goat with a white face. Hamid named her Coco. Every morning, he took Coco to the field to eat grass. One day, Coco ran away and hid behind the old well. Hamid looked everywhere. At last he heard a soft bleat and found her chewing a flower. He laughed, picked her up and carried her home for supper." },
+  },
+].map(v => ({ letters: v.letters, passage: v.passage, bands: BAND_INFO.map((b, i) => ({ ...b, words: v.words[i] })) }));

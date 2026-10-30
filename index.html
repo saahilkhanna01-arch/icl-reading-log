@@ -268,6 +268,44 @@ a.btn { text-decoration: none; }
 .group-toggle { display: flex; align-items: center; gap: 8px; width: 100%; margin: 18px 0 8px; padding: 10px 14px; border: 1px dashed var(--control); border-radius: var(--r-row); background: none; color: var(--muted); font-size: 13px; font-weight: 500; cursor: pointer; text-align: left; }
 .group-toggle:hover { color: var(--text); border-color: var(--muted); }
 @media (max-width: 760px) { .ai-card { flex-direction: column; align-items: stretch; } }
+
+/* Fixes and hints */
+.movedown { background: var(--warn-bg); color: var(--warn-ink); border-radius: 14px; padding: 12px 14px; display: grid; gap: 8px; margin-top: 16px; }
+.nudge { animation: nudge 1.6s ease-in-out infinite; }
+@keyframes nudge { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+.timer-hint { margin-top: 12px; padding: 10px 14px; border-radius: 12px; background: var(--warn-bg); color: var(--warn-ink); font-size: 13px; }
+.asktime { margin-top: 12px; padding: 14px 16px; border-radius: 14px; background: var(--warn-bg); color: var(--warn-ink); display: grid; gap: 10px; }
+.asktime .muted { color: inherit; opacity: .85; }
+.undo-line { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; }
+.muted-link { color: var(--muted); }
+.btn.danger { background: var(--neg-bg); color: var(--neg-ink); }
+.btn.danger:hover { filter: brightness(.97); }
+tr.fix td { background: var(--raised); border-top: 0; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .nudge { animation: none; } }
+
+/* Attendance calendar */
+.cal-wrap { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.cal-dow { font-size: 12px; color: var(--muted); text-align: center; padding-bottom: 2px; }
+.cal-cell { aspect-ratio: 1 / .82; border-radius: 12px; border: 1px solid var(--border); background: var(--raised); display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; padding: 6px 8px; cursor: pointer; font: inherit; color: var(--text); text-align: left; min-width: 0; }
+.cal-cell.blank { border: 0; background: none; cursor: default; }
+.cal-cell .d { font-size: 12px; color: var(--muted); }
+.cal-cell.sun .d { color: var(--text); font-weight: 600; }
+.cal-cell .n { font-size: 20px; line-height: 1; font-variant-numeric: tabular-nums; }
+.cal-cell .l { font-size: 11px; color: var(--muted); margin-top: -4px; }
+.cal-cell.has { background: color-mix(in srgb, var(--accent) var(--tint), var(--raised)); border-color: transparent; }
+.cal-cell.has .d, .cal-cell.has .l { color: inherit; opacity: .8; }
+.cal-cell.sel { outline: 2px solid var(--text); outline-offset: 1px; }
+.cal-cell.today { border-color: var(--accent); }
+.cal-cell:not(.blank):hover { border-color: var(--muted); }
+.cal-detail { background: var(--raised); border: 1px solid var(--border); border-radius: 16px; padding: 16px; min-width: 0; }
+.cal-h { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+table.att th.c, table.att td.c { text-align: center; padding-left: 6px; padding-right: 6px; }
+.dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--control); }
+.dot.yes { background: var(--accent); border-color: var(--accent); }
+@media (max-width: 760px) { .cal-wrap { grid-template-columns: 1fr; } .cal-cell { padding: 4px 5px; border-radius: 8px; } .cal-cell .n { font-size: 15px; } .cal-cell .l { display: none; } }
+
 @media (prefers-reduced-motion: reduce) { .spin { animation-duration: 2s; } }
 </style>
 </head>
