@@ -331,7 +331,22 @@ function planHTML(k, s) {
   const qd = today.some(r => r.questions && r.questions.length);
   const n = s.browse || k.level, lv = levelOf(n);
   const done = new Map(); readingsOf(k.id).forEach(r => { if (!done.has(r.storyId)) done.set(r.storyId, r); });
-  const list = storiesAt(n).sort((a, b) => (!!done.get(a.id) - !!done.get(b.id)) || ((b.at || 0) - (a.at || 0)));
+  const list = storiesAt(n).filter(st => !st.forKid || st.forKid === k.id);
+  const practice = list.filter(st => st.forKid && !done.get(st.id)).sort((a, b) => (b.at || 0) - (a.at || 0));
+  const unread = list.filter(st => !st.forKid && !done.get(st.id));
+  const read = list.filter(st => done.get(st.id)).sort((a, b) => (done.get(b.id).at || 0) - (done.get(a.id).at || 0));
+  const libTotal = list.filter(st => !st.forKid).length, libRead = list.filter(st => !st.forKid && done.get(st.id)).length;
+  const pw = practiceWords(k.id), name = esc(first(k.name));
+  const storyRow = (st, kind) => {
+    const r = done.get(st.id);
+    if (kind === "read") return `<div class="row done"><div class="grow"><div class="t">${esc(st.title)}</div><div class="m">${wordCount(st.text)} words${st.forKid ? " · practice story" : ""}</div></div>
+      <span class="chip ${r.accuracy >= .95 ? "good" : r.accuracy >= .9 ? "" : "warn"}">Read ${fmtShort(r.date)} · ${pct(r.accuracy)}</span>
+      <button class="btn small quiet" data-act="read" data-id="${k.id}" data-story="${st.id}">Read again</button></div>`;
+    const next = kind === "next";
+    return `<div class="row ${next ? "upnext" : ""}"><div class="grow"><div class="t">${esc(st.title)}</div><div class="m">${wordCount(st.text)} words${st.forKid ? ` · practice story for ${name}` : ""}</div></div>
+      ${next ? `<span class="chip accent">Up next</span>` : ""}
+      <button class="btn small ${next || st.forKid ? "primary" : ""}" data-act="read" data-id="${k.id}" data-story="${st.id}">Read</button></div>`;
+  };
   return `<div class="s9 stack" style="gap:var(--gap);align-content:start">
     <section class="panel"><div class="panel-head"><h2>Today with ${esc(first(k.name))}</h2><span class="muted small">About an hour: warm-up, a story with questions, then a second story</span></div>
       <div class="plan">
@@ -341,18 +356,24 @@ function planHTML(k, s) {
         <button class="step ${today.length > 1 ? "done" : ""}" data-act="scrollstories">${today.length > 1 ? TICK : ""}Second story</button>
       </div></section>
     <section class="panel" id="stories">
-      <div class="panel-head"><h2>Level ${n} stories <span class="count">${list.length}</span> <span class="muted" style="font-weight:400">${esc(lv.name)} · about UFLI ${lv.ufli}</span></h2>
+      <div class="panel-head"><h2>Level ${n} stories <span class="muted" style="font-weight:400">${esc(lv.name)} · about UFLI ${lv.ufli}</span></h2>
         <div class="inline"><button class="btn small quiet" data-act="browse" data-id="${k.id}" data-n="${n - 1}" ${n <= 1 ? "disabled" : ""}>Easier</button>
         <button class="btn small quiet" data-act="browse" data-id="${k.id}" data-n="${n + 1}" ${n >= 12 ? "disabled" : ""}>Harder</button></div></div>
-      ${n !== k.level ? `<p class="muted small" style="margin:-6px 0 12px">${esc(first(k.name))} is on Level ${k.level}. <button class="linkish" data-act="browse" data-id="${k.id}" data-n="${k.level}">Back to their level</button></p>` : ""}
-      <div class="stack">${list.map(st => {
-        const r = done.get(st.id);
-        return `<div class="row"><div class="grow"><div class="t">${esc(st.title)}</div><div class="m">${wordCount(st.text)} words${st.forKid ? ` · practice story${st.forKid === k.id ? ` for ${esc(first(k.name))}` : ""}` : ""}</div></div>
-          ${r ? `<span class="chip ${r.accuracy >= .95 ? "good" : r.accuracy >= .9 ? "" : "warn"}">Read ${fmtShort(r.date)} · ${pct(r.accuracy)}</span>` : ""}
-          <button class="btn small ${r ? "" : "primary"}" data-act="read" data-id="${k.id}" data-story="${st.id}">Read</button></div>`;
-      }).join("")}</div>
-      <div class="row" style="margin-top:14px;background:var(--surface);border-style:dashed"><div class="grow"><div class="t">Extra: practice story for ${esc(first(k.name))}</div><div class="m">${s.writing ? "Writing… this takes a few seconds" : practiceWords(k.id).length ? `AI writes a short Level ${n} story using words ${esc(first(k.name))} keeps missing: ${practiceWords(k.id).slice(0, 5).map(esc).join(", ")}` : `AI writes a short Level ${n} story. It uses ${esc(first(k.name))}'s missed words once they have read a story.`}</div></div>
-        <button class="btn small" data-act="newstory" data-id="${k.id}" ${s.writing ? "disabled" : ""}>${s.writing ? '<span class="spin"></span>' : "Make practice story"}</button></div>
+      ${n !== k.level ? `<p class="muted small" style="margin:-6px 0 12px">${name} is on Level ${k.level}. <button class="linkish" data-act="browse" data-id="${k.id}" data-n="${k.level}">Back to their level</button></p>` : ""}
+      <div class="ai-card">
+        <div class="grow"><div class="t">Practice story made for ${name}</div>
+          <div class="m">${s.writing ? "Writing a new story… this takes a few seconds" : pw.length ? `AI writes a new Level ${n} story using the words ${name} keeps missing` : `AI writes a brand new Level ${n} story. After ${name} reads a story, it will use the words they miss.`}</div>
+          ${pw.length && !s.writing ? `<div class="words" style="margin-top:8px">${pw.slice(0, 6).map(w => `<span class="chip">${esc(w)}</span>`).join("")}</div>` : ""}</div>
+        <button class="btn primary" data-act="newstory" data-id="${k.id}" ${s.writing ? "disabled" : ""}>${s.writing ? '<span class="spin"></span> Writing' : "Make practice story"}</button>
+      </div>
+      <div class="progress-line"><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="${libTotal}" aria-valuenow="${libRead}" aria-label="Library stories read at this level"><i style="width:${libTotal ? (libRead / libTotal) * 100 : 0}%"></i></div>
+        <span class="small num"><b>${libRead}</b> <span class="muted">of ${libTotal} read at Level ${n}</span></span></div>
+      ${practice.length ? `<h3 class="group-h">Practice stories for ${name} <span class="count">${practice.length}</span></h3><div class="stack">${practice.map(st => storyRow(st, "practice")).join("")}</div>` : ""}
+      <h3 class="group-h">Up next <span class="count">${unread.length}</span></h3>
+      ${unread.length ? `<div class="stack">${unread.map((st, i) => storyRow(st, i === 0 ? "next" : "unread")).join("")}</div>`
+        : `<div class="empty"><b>${name} has read every Level ${n} story.</b>${n < 12 ? `Try <button class="linkish" data-act="browse" data-id="${k.id}" data-n="${n + 1}">Level ${n + 1}</button>, make a practice story, or read a favourite again below.` : "Make a practice story, or read a favourite again below."}</div>`}
+      ${read.length ? `<button class="group-toggle" data-act="toggleread" data-id="${k.id}" aria-expanded="${!!s.showRead}"><span>${s.showRead ? "Hide" : "Show"} stories already read</span><span class="count">${read.length}</span></button>
+        ${s.showRead ? `<div class="stack">${read.map(st => storyRow(st, "read")).join("")}</div>` : ""}` : ""}
     </section></div>`;
 }
 
@@ -737,6 +758,7 @@ document.addEventListener("click", async e => {
     case "endlesson": window.scrollTo(0, 0); return startSummary();
     case "tab": S.activeKid = id; break;
     case "browse": sess(id).browse = Number(b.dataset.n); break;
+    case "toggleread": sess(id).showRead = !sess(id).showRead; break;
     case "scrollstories": $("#stories")?.scrollIntoView({ behavior: "smooth", block: "start" }); return;
     case "read": Object.assign(sess(id), { mode: "read", storyId: b.dataset.story, marked: new Set(), acc: 0, running: false, startedAt: 0 }); window.scrollTo(0, 0); break;
     case "home": Object.assign(sess(id), { mode: "home", running: false }); break;
