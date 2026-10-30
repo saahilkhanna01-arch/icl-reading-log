@@ -180,15 +180,19 @@ function practiceWords(sid, max = 10) {
   D.warmups.filter(w => w.studentId === sid).slice(0, 2).forEach(w => (w.wrong || []).forEach(x => seen.set(x, (seen.get(x) || 0) + 1)));
   return [...seen.entries()].sort((a, b) => b[1] - a[1]).slice(0, max).map(e => e[0]);
 }
-function warmupDeck(k) {
-  const words = practiceWords(k.id, 8);
-  const lvl = k.level || 1;
-  storiesAt(lvl).forEach(st => (st.tricky || []).forEach(w => { const c = clean(w); if (c && !words.includes(c) && words.length < 12) words.push(c); }));
-  if (words.length < 8) {
-    const pool = [...new Set(storiesAt(lvl).flatMap(st => tokens(st.text).filter(isWord).map(clean)).filter(w => w.length >= 3))];
-    for (let i = 0; words.length < 10 && pool.length; i++) { const w = pool.splice((i * 7) % pool.length, 1)[0]; if (!words.includes(w)) words.push(w); }
-  }
-  return words.slice(0, 12);
+const shuffle = arr => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+/* About 30 warm-up words, shuffled every time: every word the kid has been missing, this level's tricky
+   words, words from this level's stories that use its sound pattern, and a few from the level below as review. */
+function warmupDeck(k, size = 30) {
+  const lvl = k.level || 1, out = [], add = w => { const c = clean(w); if (c && c.length > 1 && !out.includes(c)) out.push(c); };
+  practiceWords(k.id, 12).forEach(add);
+  shuffle([...new Set(storiesAt(lvl).flatMap(st => st.tricky || []))]).slice(0, 8).forEach(add);
+  const pattern = shuffle([...new Set(storiesAt(lvl).flatMap(st => patternWords(st, 40)))]);
+  const review = lvl > 1 ? shuffle([...new Set(storiesAt(lvl - 1).flatMap(st => patternWords(st, 40)))]) : [];
+  for (const w of pattern) { if (out.length >= size - 4) break; add(w); }
+  for (const w of review) { if (out.length >= size) break; add(w); }
+  for (const w of pattern) { if (out.length >= size) break; add(w); }
+  return shuffle(out).slice(0, size);
 }
 function struggling(s) {
   if (!s.level || s.level <= 1) return false;
@@ -430,11 +434,10 @@ function stepDone(k, key) {
 }
 function stepperHTML(k, s) {
   const cur = s.mode === "result" ? (s.round > 1 ? 5 : 4) : s.mode === "pick" ? 2 : LESSON_STEPS.findIndex(x => x.key === s.mode);
-  const total = LESSON_STEPS.reduce((a, x) => a + x.min, 0);
   return `<nav class="stepper" aria-label="Lesson steps for ${esc(first(k.name))}">${LESSON_STEPS.map((x, i) => {
     const done = stepDone(k, x.key) && i !== cur;
-    return `<button class="stp ${i === cur ? "cur" : ""} ${done ? "done" : ""}" data-act="gostep" data-id="${k.id}" data-v="${x.key}" ${i === cur ? 'aria-current="step"' : ""}><span class="stp-n">${done ? TICK : ""}</span><span class="stp-l">${x.label}</span><span class="stp-m">${x.min} min</span></button>`;
-  }).join("")}</nav><p class="stepper-note muted small">About ${total} minutes in all. Follow the steps in order, or tap any step to jump to it.</p>`;
+    return `<button class="stp ${i === cur ? "cur" : ""} ${done ? "done" : ""}" data-act="gostep" data-id="${k.id}" data-v="${x.key}" ${i === cur ? 'aria-current="step"' : ""}><span class="stp-n">${done ? TICK : ""}</span><span class="stp-l">${x.label}</span></button>`;
+  }).join("")}</nav><p class="stepper-note muted small">Follow the steps in order, or tap any step to jump to it.</p>`;
 }
 const script = (text) => `<div class="script"><span class="script-k">Say</span><p>${text}</p></div>`;
 
@@ -627,6 +630,7 @@ function warmupHTML(k, s) {
     ${i === 0 ? script(`Let's warm up! Read each word as fast as you can. If you're not sure, sound it out.`) : ""}
     <div class="flash-word" aria-live="polite">${esc(w.words[i])}</div>
     <div class="flash-btns"><button class="btn" data-act="wcard" data-id="${k.id}" data-ok="0">Wrong</button><button class="btn primary" data-act="wcard" data-id="${k.id}" data-ok="1">Right</button></div>
+    ${i >= 5 ? `<p style="text-align:center;margin-top:12px"><button class="linkish" data-act="wstop" data-id="${k.id}">Stop here and finish the warm-up</button></p>` : ""}
     <p class="muted small" style="text-align:center;margin-top:14px">Keyboard: left arrow for wrong, right arrow for right</p>
   </div>`;
 }
@@ -1096,6 +1100,12 @@ document.addEventListener("click", async e => {
     case "settime": { const m = Number(b.dataset.m); s.acc = m * 60000; s.askTime = false; s.timeAsked = true; s.estimated = m > 0; return saveReading(id); }
     case "newstory": return writeStoryFor(id);
     case "warmup": { const k = student(id); Object.assign(sess(id), { mode: "warmup", warm: { words: warmupDeck(k), res: [], i: 0 } }); break; }
+    case "wstop": {
+      const w = s.warm; if (!w || !w.i) break;
+      w.words = w.words.slice(0, w.i);
+      await safe(Store.add("warmups", { date: TODAY, studentId: id, tutorId: S.me, right: w.words.filter((_, j) => w.res[j]), wrong: w.words.filter((_, j) => w.res[j] === false), at: Date.now() }));
+      break;
+    }
     case "wcard": {
       const w = s.warm; w.res[w.i] = b.dataset.ok === "1"; w.i++;
       if (w.i >= w.words.length) safe(Store.add("warmups", { date: TODAY, studentId: id, tutorId: S.me, right: w.words.filter((_, j) => w.res[j]), wrong: w.words.filter((_, j) => w.res[j] === false), at: Date.now() }));

@@ -309,9 +309,9 @@ table.att th.c, table.att td.c { text-align: center; padding-left: 6px; padding-
 
 /* Guided lesson */
 .stepper { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
-.stp { display: grid; grid-template-columns: 20px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 8px; align-items: center; text-align: left; padding: 10px 12px; border-radius: 14px; border: 1px solid var(--border); background: var(--raised); cursor: pointer; min-width: 0; transition: border-color .15s ease; }
+.stp { display: grid; grid-template-columns: 20px minmax(0, 1fr); grid-template-rows: auto; column-gap: 8px; align-items: center; text-align: left; padding: 10px 12px; border-radius: 14px; border: 1px solid var(--border); background: var(--raised); cursor: pointer; min-width: 0; transition: border-color .15s ease; }
 .stp:hover { border-color: var(--muted); }
-.stp-n { grid-row: 1 / 3; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--control); display: grid; place-items: center; }
+.stp-n { grid-row: 1; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--control); display: grid; place-items: center; }
 .stp-n svg { width: 12px; height: 12px; }
 .stp-l { font-weight: 500; font-size: 13px; line-height: 1.25; overflow-wrap: anywhere; }
 .stp-m { font-size: 11px; color: var(--muted); }
