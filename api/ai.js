@@ -64,7 +64,7 @@ ${str(b.text, 3000)}
 Write 3 simple comprehension questions a child can answer by talking. Use easy words. Each answer must be in the story and short.
 Reply with JSON only: {"questions":[{"q":"","a":""}]}`;
   if (b.task === "summary") return `${AUDIENCE}
-A volunteer tutor just finished a one hour lesson. Write a short note (2 or 3 sentences, under 60 words) for whichever tutor teaches this child next week. Be specific and encouraging, use plain words, and say what to practise next. Do not invent anything that is not in the facts.
+A volunteer tutor just finished a one hour lesson. Write a short note (2 or 3 sentences, under 60 words) for whichever tutor teaches this child at the next lesson. Be specific and encouraging, use plain words, and say what to practise next. Do not invent anything that is not in the facts.
 
 Facts about today's lesson:
 ${str(b.facts, 2500)}

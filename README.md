@@ -63,14 +63,14 @@ If you added the key after the first deploy, go to **Deployments**, open the **â
 
 1. Open your link, click **Admin**, and enter the password `corner2026`.
 2. Change the password straight away (bottom of the Admin page).
-3. Add your tutors, or let them add themselves on Sunday.
+3. Tutors add themselves the first time they sign in.
 4. Send the link to your tutors.
 
 ---
 
 ## Each week
 
-- **On Sunday:** tutors sign in, pick their kids, start the lesson, and end with notes for next week.
+- **Any day:** tutors sign in, pick their kids, start the lesson, and end with notes for the next tutor.
 - **Any time:** download everything as a spreadsheet from Admin.
 
 ## Changing something later
@@ -84,7 +84,7 @@ Edit or replace a file on GitHub (open the file, click the pencil, save). Vercel
 - **"The AI isn't set up yet"**: add `GROQ_API_KEY` in Vercel, then redeploy.
 - **"The free AI limit is used up"**: Groq's free plan allows roughly 30 requests a minute and 1,000 a day. Wait a minute and try again.
 - **Stories stop working one day**: Groq may have retired the model. In Vercel, add `GROQ_MODEL` set to a current model name from console.groq.com/docs/models, then redeploy.
-- **Supabase project paused**: free projects pause after about a week with no use. Log in to Supabase and click **Restore**. Using the site every Sunday keeps it awake.
+- **Supabase project paused**: free projects pause after about a week with no use. Log in to Supabase and click **Restore**. Using the site every week keeps it awake.
 
 ## Google sign-in
 
