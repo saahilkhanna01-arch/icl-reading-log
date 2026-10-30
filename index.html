@@ -354,6 +354,21 @@ table.att th.c, table.att td.c { text-align: center; padding-left: 6px; padding-
 .pending-panel { background: var(--warn-bg); }
 .pending-panel .panel-head h2 { color: var(--warn-ink); }
 input[type=email] { height: 38px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--control); background: var(--raised); min-width: 0; flex: 1 1 200px; }
+
+/* Turns and lesson clock */
+.turnline { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.turn-chip { font-weight: 600; font-size: 14px; background: var(--text); color: var(--ground); border-radius: 999px; padding: 4px 12px; }
+.stepper.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.upnext-card { display: flex; gap: 16px; align-items: center; padding: 18px 20px; border-radius: 16px; background: var(--accent-soft); }
+.upnext-card .grow { flex: 1; min-width: 0; }
+.upnext-card .t { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+.upnext-card .m { color: var(--muted); font-size: 13px; }
+.lclock { font-size: 13px; color: var(--muted); padding: 6px 12px; border-radius: 999px; background: var(--surface); font-variant-numeric: tabular-nums; }
+.lclock b { color: var(--text); font-weight: 600; }
+.lclock.soon { background: var(--warn-bg); color: var(--warn-ink); }
+.lclock.soon b, .lclock.over b { color: inherit; }
+.lclock.over { background: var(--neg-bg); color: var(--neg-ink); }
+@media (max-width: 760px) { .stepper.four { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); } .stepper.four .stp { width: auto; } .upnext-card { flex-direction: column; align-items: stretch; } }
 @media (prefers-reduced-motion: reduce) { .spin { animation-duration: 2s; } }
 </style>
 </head>
