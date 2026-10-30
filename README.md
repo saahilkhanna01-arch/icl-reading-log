@@ -5,7 +5,7 @@ This folder is the whole website. Putting it online takes about 30 minutes the f
 | Service | What it does | Cost |
 | --- | --- | --- |
 | Supabase | Saves tutors, kids and reading results so every tutor sees the same log | Free |
-| Groq | The AI that writes stories, questions and end-of-lesson notes | Free |
+| Groq | The AI for extra practice stories and end-of-lesson notes | Free |
 | GitHub | Holds these files | Free |
 | Vercel | Puts the website online and keeps the Groq key hidden | Free |
 
@@ -64,14 +64,12 @@ If you added the key after the first deploy, go to **Deployments**, open the **â
 1. Open your link, click **Admin**, and enter the password `corner2026`.
 2. Change the password straight away (bottom of the Admin page).
 3. Add your tutors, or let them add themselves on Sunday.
-4. Under **Make this week's stories**, tick the levels you want and click **Write stories**. With no kids yet, all 12 levels are ticked. It takes a few minutes; leave the page open.
-5. Send the link to your tutors.
+4. Send the link to your tutors.
 
 ---
 
 ## Each week
 
-- **Before Sunday:** open Admin and write this week's stories. The levels your kids are on (and the next one up) are ticked for you. Read a few and delete any you don't like.
 - **On Sunday:** tutors sign in, pick their kids, start the lesson, and end with notes for next week.
 - **Any time:** download everything as a spreadsheet from Admin.
 
@@ -92,5 +90,6 @@ Edit or replace a file on GitHub (open the file, click the pencil, save). Vercel
 
 - There are no logins. Anyone with the link can see and change the log, so share it only with your tutors and use kids' first names (plus a last initial if two share a name).
 - The admin password keeps casual visitors out of Admin, but it isn't real security.
-- The 36 built-in stories are always there. AI stories are added on top and can be deleted from Admin.
+- The library has 240 stories, 20 per level, each with 3 questions. They're in the `library` folder, one file per level.
+- Tutors can also make an AI practice story built around a kid's missed words. These show up in the kid's story list and can be deleted from Admin.
 - Story levels follow the UFLI Foundations order. The lesson ranges are approximate, so check them against your UFLI manual.

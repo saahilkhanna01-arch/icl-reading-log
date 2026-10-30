@@ -171,7 +171,7 @@ const S = {
   me: lsGet("icl-me"), signedToday: lsGet("icl-day") === TODAY,
   sessions: {}, pickerQ: "", newKid: "", newTutor: "", kidsQ: "", signQ: "",
   adminOk: false, adminMsg: "", textSize: Number(lsGet("icl-size")) || 0,
-  summary: null, gen: { running: false, log: [], perLevel: 4, levels: null }, libLevel: "", openStory: null,
+  summary: null, libLevel: "", openStory: null,
 };
 const sess = kid => (S.sessions[kid] ||= { mode: "home", browse: null });
 function setStep(step) { S.step = step; lsSet("icl-step-" + TODAY, step); }
@@ -332,7 +332,6 @@ function planHTML(k, s) {
   const n = s.browse || k.level, lv = levelOf(n);
   const done = new Map(); readingsOf(k.id).forEach(r => { if (!done.has(r.storyId)) done.set(r.storyId, r); });
   const list = storiesAt(n).sort((a, b) => (!!done.get(a.id) - !!done.get(b.id)) || ((b.at || 0) - (a.at || 0)));
-  const weekAgo = Date.now() - 7 * 864e5;
   return `<div class="s9 stack" style="gap:var(--gap);align-content:start">
     <section class="panel"><div class="panel-head"><h2>Today with ${esc(first(k.name))}</h2><span class="muted small">About an hour: warm-up, a story with questions, then a second story</span></div>
       <div class="plan">
@@ -346,14 +345,14 @@ function planHTML(k, s) {
         <div class="inline"><button class="btn small quiet" data-act="browse" data-id="${k.id}" data-n="${n - 1}" ${n <= 1 ? "disabled" : ""}>Easier</button>
         <button class="btn small quiet" data-act="browse" data-id="${k.id}" data-n="${n + 1}" ${n >= 12 ? "disabled" : ""}>Harder</button></div></div>
       ${n !== k.level ? `<p class="muted small" style="margin:-6px 0 12px">${esc(first(k.name))} is on Level ${k.level}. <button class="linkish" data-act="browse" data-id="${k.id}" data-n="${k.level}">Back to their level</button></p>` : ""}
-      <div class="row" style="margin-bottom:8px;background:var(--accent-soft);border-color:transparent"><div class="grow"><div class="t">Write a new story for ${esc(first(k.name))}</div><div class="m">${s.writing ? "Writing… this takes a few seconds" : `AI writes a Level ${n} story${practiceWords(k.id).length ? " using their practice words" : ""}`}</div></div>
-        <button class="btn small primary" data-act="newstory" data-id="${k.id}" ${s.writing ? "disabled" : ""}>${s.writing ? '<span class="spin"></span>' : "Write story"}</button></div>
       <div class="stack">${list.map(st => {
         const r = done.get(st.id);
-        return `<div class="row"><div class="grow"><div class="t">${esc(st.title)}</div><div class="m">${wordCount(st.text)} words${st.source !== "built-in" && (st.at || 0) > weekAgo ? " · new this week" : ""}${st.forKid === k.id ? ` · written for ${esc(first(k.name))}` : ""}</div></div>
+        return `<div class="row"><div class="grow"><div class="t">${esc(st.title)}</div><div class="m">${wordCount(st.text)} words${st.forKid ? ` · practice story${st.forKid === k.id ? ` for ${esc(first(k.name))}` : ""}` : ""}</div></div>
           ${r ? `<span class="chip ${r.accuracy >= .95 ? "good" : r.accuracy >= .9 ? "" : "warn"}">Read ${fmtShort(r.date)} · ${pct(r.accuracy)}</span>` : ""}
           <button class="btn small ${r ? "" : "primary"}" data-act="read" data-id="${k.id}" data-story="${st.id}">Read</button></div>`;
       }).join("")}</div>
+      <div class="row" style="margin-top:14px;background:var(--surface);border-style:dashed"><div class="grow"><div class="t">Extra: practice story for ${esc(first(k.name))}</div><div class="m">${s.writing ? "Writing… this takes a few seconds" : practiceWords(k.id).length ? `AI writes a short Level ${n} story using words ${esc(first(k.name))} keeps missing: ${practiceWords(k.id).slice(0, 5).map(esc).join(", ")}` : `AI writes a short Level ${n} story. It uses ${esc(first(k.name))}'s missed words once they have read a story.`}</div></div>
+        <button class="btn small" data-act="newstory" data-id="${k.id}" ${s.writing ? "disabled" : ""}>${s.writing ? '<span class="spin"></span>' : "Make practice story"}</button></div>
     </section></div>`;
 }
 
@@ -637,10 +636,6 @@ function chartHTML(rs) {
 }
 
 /* ---------- Admin ---------- */
-function defaultGenLevels() {
-  const used = new Set(); activeStudents().forEach(s => { if (s.level) { used.add(s.level); if (s.level < 12) used.add(s.level + 1); } });
-  return used.size ? [...used].sort((a, b) => a - b) : LEVELS.map(l => l.n);
-}
 function adminHTML() {
   if (!S.adminOk) return `<div class="col"><div class="title-row"><div><h1 class="h1">Admin</h1><p class="sub">Attendance, stories, tutors and downloads.</p></div></div>
     <section class="panel s6"><form class="stack" data-form="admin"><label for="apw" class="muted small">Admin password</label>
@@ -648,7 +643,6 @@ function adminHTML() {
       ${S.adminMsg ? `<p class="small" style="color:var(--negative)">${esc(S.adminMsg)}</p>` : ""}</form></section></div>`;
   const days = classDays();
   const missing = activeStudents().filter(s => { const a = kidAttendance(s.id); return a.of >= 2 && a.missedLast === 2; });
-  const g = S.gen; if (!g.levels) g.levels = defaultGenLevels();
   const lib = D.stories.filter(s => s.active !== false), libShown = lib.filter(s => !S.libLevel || s.level === Number(S.libLevel));
   return `<div class="col">
     <div class="title-row"><div><h1 class="h1">Admin</h1><p class="sub">${plural(days.length, "class", "classes")} logged · ${plural(D.readings.length, "story", "stories")} read in total</p></div>
@@ -656,21 +650,13 @@ function adminHTML() {
     <div class="col tiles" style="grid-column:1/-1;gap:var(--gap)">
       ${tile("Tutors", activeTutors().length, `${new Set(D.attendance.map(a => a.tutorId)).size} have signed in at least once`)}
       ${tile("Kids", activeStudents().length, `${activeStudents().filter(s => !s.level).length} still need the placement test`)}
-      ${tile("Story library", lib.length + STORIES.length, `${lib.length} written by AI, ${STORIES.length} built in`)}
+      ${tile("Story library", STORIES.length, `${Math.round(STORIES.length / 12)} per level, with questions${lib.length ? ` · ${lib.length} practice stories` : ""}`)}
       ${tile("Missing lately", missing.length, missing.length ? missing.slice(0, 3).map(s => first(s.name)).join(", ") : "No one has missed two classes in a row")}
     </div>
-    <section class="panel s6"><div class="panel-head"><h2>Make this week's stories</h2></div>
-      <p class="muted small" style="margin-bottom:12px">AI writes new stories for each level you tick, with three questions each. The levels kids are on now (and the next one up) are ticked for you.</p>
-      <div class="checks" style="margin-bottom:12px">${LEVELS.map(l => `<label><input type="checkbox" data-genlevel="${l.n}" ${g.levels.includes(l.n) ? "checked" : ""} ${g.running ? "disabled" : ""}>Level ${l.n}</label>`).join("")}</div>
-      <div class="inline"><label class="muted small" for="perlevel">Stories per level</label>
-        <select id="perlevel" data-gen="perLevel" ${g.running ? "disabled" : ""}>${[2, 4, 6, 8, 10].map(n => `<option ${g.perLevel === n ? "selected" : ""}>${n}</option>`).join("")}</select>
-        <button class="btn primary" data-act="generate" ${g.running || !g.levels.length ? "disabled" : ""}>${g.running ? '<span class="spin"></span> Writing stories' : `Write ${g.levels.length * g.perLevel} stories`}</button></div>
-      ${g.log.length ? `<div class="genlog">${g.log.map(l => `<div class="${l.err ? "" : "muted"}" ${l.err ? 'style="color:var(--negative)"' : ""}>${esc(l.text)}</div>`).join("")}</div>` : ""}
-    </section>
-    <section class="panel s6"><div class="panel-head"><h2>AI story library <span class="count">${lib.length}</span></h2>
+    <section class="panel s6"><div class="panel-head"><h2>Practice stories written by AI <span class="count">${lib.length}</span></h2>
       <select id="liblevel" data-input="libLevel" aria-label="Filter by level"><option value="">All levels</option>${LEVELS.map(l => `<option value="${l.n}" ${S.libLevel == l.n ? "selected" : ""}>Level ${l.n}</option>`).join("")}</select></div>
       <div class="stack">${libShown.slice(0, 40).map(st => `<div class="row"><div class="grow"><div class="t">${esc(st.title)}</div><div class="m">Level ${st.level} · ${wordCount(st.text)} words · ${fmtShort(dayKey(new Date(st.at || Date.now())))}${st.forKid ? ` · for ${esc(first(student(st.forKid)?.name))}` : ""}</div></div>
-        <button class="btn small quiet" data-act="preview" data-id="${st.id}">${S.openStory === st.id ? "Close" : "Read"}</button><button class="btn small quiet" data-act="rmstory" data-id="${st.id}">Delete</button></div>${S.openStory === st.id ? `<div class="storyprev">${esc(st.text)}${(st.questions || []).length ? `\n\nQuestions:\n${st.questions.map(q => `• ${q.q} (${q.a})`).join("\n")}` : ""}</div>` : ""}`).join("") || `<div class="empty"><b>No AI stories yet</b>Write this week's stories to fill the library. The ${STORIES.length} built-in stories are always available.</div>`}
+        <button class="btn small quiet" data-act="preview" data-id="${st.id}">${S.openStory === st.id ? "Close" : "Read"}</button><button class="btn small quiet" data-act="rmstory" data-id="${st.id}">Delete</button></div>${S.openStory === st.id ? `<div class="storyprev">${esc(st.text)}${(st.questions || []).length ? `\n\nQuestions:\n${st.questions.map(q => `• ${q.q} (${q.a})`).join("\n")}` : ""}</div>` : ""}`).join("") || `<div class="empty"><b>No practice stories yet</b>Tutors can make one for a kid during a lesson. The ${STORIES.length} library stories are always there.</div>`}
       ${libShown.length > 40 ? `<p class="muted small">Showing the newest 40. Filter by level to see more.</p>` : ""}</div>
     </section>
     <section class="panel s6"><div class="panel-head"><h2>Classes <span class="count">${days.length}</span></h2></div>
@@ -692,29 +678,6 @@ function adminHTML() {
       <form class="inline" data-form="pw"><input type="password" id="newpw" autocomplete="new-password" placeholder="New password, 6 or more characters" aria-label="New password"><button class="btn" type="submit">Change password</button></form>
     </section>
   </div>`;
-}
-async function generate() {
-  const g = S.gen; if (g.running) return;
-  g.running = true; g.log = []; render();
-  let added = 0;
-  for (const level of g.levels.slice().sort((a, b) => a - b)) {
-    let got = 0, tries = 0;
-    while (got < g.perLevel && tries < Math.ceil(g.perLevel / 2) + 2) {
-      tries++;
-      const count = Math.min(2, g.perLevel - got);
-      try {
-        const avoid = storiesAt(level).map(s => s.title);
-        const out = await AI.call("stories", { level, count, avoid });
-        for (const st of out.stories) { await Store.add("stories", { ...st, level, source: "ai", at: Date.now() }); got++; added++; }
-      } catch (e) {
-        g.log.push({ text: `Level ${level}: ${e.message}`, err: true }); render();
-        if (/limit/i.test(e.message)) await sleep(30000); else break;
-      }
-      await sleep(2500);
-    }
-    g.log.push({ text: `Level ${level}: ${plural(got, "story", "stories")} added` }); render();
-  }
-  g.running = false; g.log.push({ text: `Done. ${plural(added, "new story", "new stories")} in the library.` }); render();
 }
 function csvOf(rows) { return rows.map(r => r.map(v => { const s = String(v ?? ""); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; }).join(",")).join("\n"); }
 function exportCsv(kind) {
@@ -755,7 +718,7 @@ async function writeStoryFor(kid) {
     const id = await Store.add("stories", { ...st, level, source: "ai", forKid: kid, at: Date.now() });
     s.writing = false;
     Object.assign(s, { mode: "read", storyId: id, marked: new Set(), acc: 0, running: false });
-    toast("New story ready");
+    toast("Practice story ready");
   } catch (e) { s.writing = false; toast(e.message); }
   render();
 }
@@ -823,7 +786,6 @@ document.addEventListener("click", async e => {
     }
     case "kid": S.kidId = id; S.screen = "kid"; window.scrollTo(0, 0); break;
     case "csv": exportCsv(b.dataset.kind); return;
-    case "generate": generate(); return;
     case "preview": S.openStory = S.openStory === id ? null : id; break;
     case "rmstory": await safe(Store.update("stories", id, { active: false }), "Story deleted"); break;
     case "rmtutor": await safe(Store.update("tutors", id, { active: false }), "Tutor removed. Their past classes stay in the log."); break;
@@ -848,8 +810,6 @@ document.addEventListener("input", e => {
 document.addEventListener("change", async e => {
   const t = e.target;
   if (t.dataset.actChange === "setlevel") { await safe(Store.update("students", t.dataset.id, { level: t.value ? Number(t.value) : null }), t.value ? `Level set to ${t.value}` : null); sess(t.dataset.id).browse = null; render(); return; }
-  if (t.dataset.genlevel) { const n = Number(t.dataset.genlevel); S.gen.levels = t.checked ? [...new Set([...S.gen.levels, n])] : S.gen.levels.filter(x => x !== n); render(); return; }
-  if (t.dataset.gen === "perLevel") { S.gen.perLevel = Number(t.value); render(); return; }
   if (t.dataset.input === "libLevel") { S.libLevel = t.value; render(); return; }
   if (t.dataset.inputSess) sess(t.dataset.id)[t.dataset.inputSess] = t.value;
 });

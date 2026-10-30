@@ -29,8 +29,9 @@ function earlier(n) {
   return Object.entries(LEVELS).filter(([k]) => Number(k) < n).map(([k, l]) => `Level ${k}: ${l.pattern}`).join("\n") || "None. This is the first level.";
 }
 
-function storyPrompt(level, count, focusWords, avoid) {
+function storyPrompt(level, count, focusWords, avoid, practice) {
   const L = LEVELS[level];
+  const words = practice ? [Math.round(L.words[0] * 0.8), L.words[0]] : L.words;
   return `You write decodable reading stories. ${AUDIENCE}
 
 Write ${count} different stories for Level ${level}: ${L.name}.
@@ -39,12 +40,12 @@ Patterns the child already knows from earlier levels:
 ${earlier(level)}
 
 Rules:
-- Each story is ${L.words[0]} to ${L.words[1]} words long, split into 2 to 4 short paragraphs separated by a blank line.
+- Each story is ${words[0]} to ${words[1]} words long, split into 2 to 4 short paragraphs separated by a blank line.
 - Most words must follow this level's pattern or an earlier level's pattern. Use many words with this level's focus.
 - Any other word must be a very common sight word (the, a, is, was, to, of, said, you, they, he, she, we, my, are, have, do, what, where, come, some) or a name.
 - List every sight word and name you used that does not follow the patterns in "tricky" (at most 8).
 - ${STYLE}
-- Each story has its own title and its own plot.${focusWords?.length ? `\n- Work these practice words in naturally where they fit the level: ${focusWords.slice(0, 10).join(", ")}.` : ""}${avoid?.length ? `\n- Do not reuse these titles: ${avoid.slice(0, 60).join("; ")}.` : ""}
+- Each story has its own title and its own plot.${focusWords?.length ? `\n- This is a practice story for one child. Use each of these words they keep missing at least twice, naturally: ${focusWords.slice(0, 10).join(", ")}. Also use plenty of other words with this level's pattern.` : ""}${avoid?.length ? `\n- Do not reuse these titles: ${avoid.slice(0, 60).join("; ")}.` : ""}
 - For each story write 3 simple comprehension questions a child can answer by talking, with a short answer each. Answers must be in the story.
 
 Reply with JSON only, in this shape:
@@ -54,7 +55,7 @@ Reply with JSON only, in this shape:
 function build(b) {
   const level = Math.min(12, Math.max(1, Number(b.level) || 1));
   if (b.task === "stories") return storyPrompt(level, Math.min(3, Math.max(1, Number(b.count) || 2)), [], arr(b.avoid, 60).map(s => str(s, 80)));
-  if (b.task === "story") return storyPrompt(level, 1, arr(b.focusWords, 10).map(s => str(s, 30)), arr(b.avoid, 60).map(s => str(s, 80)));
+  if (b.task === "story") return storyPrompt(level, 1, arr(b.focusWords, 10).map(s => str(s, 30)), arr(b.avoid, 60).map(s => str(s, 80)), true);
   if (b.task === "questions") return `${AUDIENCE}
 Here is a story they read:
 Title: ${str(b.title, 120)}
