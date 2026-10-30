@@ -748,13 +748,28 @@ function scoreCheck(c) {
   const ptotal = wordCount(PLACEMENT.passage.text);
   const pacc = (ptotal - c.miss[2].size) / ptotal;
   const pwcpm = c.secs[2] ? (ptotal - c.miss[2].size) / (c.secs[2] / 60) : null;
+  /* Each made-up word band covers a range of levels. The first band that isn't secure (3 or fewer of 5 right)
+     sets the level, and how many they got right picks a level inside that range. The story then caps it,
+     so a kid who can sound out made-up words but can't yet read real text isn't placed too high. */
+  const lettersPct = lettersRight / PLACEMENT.letters.length;
+  const RANGES = [[1, 1, 2, 3], [4, 4, 5, 6], [7, 7, 8, 8], [9, 9, 10, 11]]; // level for 0-1, (1), 2, 3 right
+  const NAMES = ["short vowel words like cat and pig", "words with sh, th, ch and blends", "silent e words like cake and bike", "vowel team and r words like rain and farm"];
   let level, why;
-  if (lettersRight < PLACEMENT.letters.length * 0.8 || (lpm != null && lpm < 20)) { level = 1; why = "Still learning letter sounds"; }
+  if (lettersPct < 0.6 || (lpm != null && lpm < 15)) { level = 1; why = "Still learning many letter sounds"; }
   else {
-    const fail = PLACEMENT.bands.findIndex((b, i) => bandScores[i] < 4);
-    if (fail >= 0) { level = PLACEMENT.bands[fail].level; why = `Missed 2 or more ${PLACEMENT.bands[fail].label.toLowerCase()} words`; }
-    else if (pacc < 0.95 || (pwcpm != null && pwcpm < 60)) { level = 10; why = "Decodes well; vowel teams and fluency next"; }
-    else { level = 12; why = "Strong on every part"; }
+    const fail = bandScores.findIndex(sc => sc <= 3);
+    if (fail >= 0) {
+      const sc = bandScores[fail];
+      level = RANGES[fail][Math.min(3, sc <= 1 ? 0 : sc)];
+      why = `Secure up to here, still working on ${NAMES[fail]} (${sc} of 5 right)`;
+    } else if (pacc >= 0.97 && (pwcpm == null || pwcpm >= 90)) { level = 12; why = "Strong on every part, including reading speed"; }
+    else if (pacc >= 0.93) { level = 11; why = "Decodes everything; building accuracy and speed in longer stories"; }
+    else if (pacc >= 0.85) { level = 10; why = "Decodes well; vowel teams in real stories are next"; }
+    else { level = 9; why = "Sounds out made-up words well but finds real stories harder"; }
+    const before = level;
+    if (pacc < 0.6) level = Math.min(level, 3); else if (pacc < 0.75) level = Math.min(level, 6); else if (pacc < 0.85) level = Math.min(level, 9);
+    if (lettersPct < 0.85) level = Math.min(level, 2);
+    if (level < before) why += `. Lowered to Level ${level} because the short story was hard (${Math.round(pacc * 100)}%)`;
   }
   return { lettersRight, lettersTotal: PLACEMENT.letters.length, lpm, bandScores, pacc, pwcpm, level, why };
 }
@@ -898,11 +913,27 @@ function chartHTML(rs) {
 
 
 /* ---------- tutor attendance calendar ---------- */
+/* Tutors are counted as people, not records: two records with the same name (an old name-only record and a
+   Google one, say) are one person, and anyone who has ever signed in for a class is listed, even if removed. */
+const personKey = t => (t?.name || "").trim().toLowerCase().replace(/\s+/g, " ");
+function tutorPeople() {
+  const attended = new Set(D.attendance.map(a => a.tutorId)), people = new Map();
+  for (const t of D.tutors) {
+    if (t.mergedInto || (t.active === false && !attended.has(t.id))) continue;
+    const k = personKey(t); if (!k) continue;
+    const p = people.get(k) || { key: k, name: t.name, ids: new Set(), active: false, at: Infinity };
+    p.ids.add(t.id); p.active ||= t.active !== false; p.at = Math.min(p.at, t.at || 0);
+    if (t.email) p.name = t.name;
+    people.set(k, p);
+  }
+  return people;
+}
 function attendanceHTML() {
   const days = classDays();
   const now = new Date(); const [cy, cm] = (S.calMonth || `${now.getFullYear()}-${now.getMonth()}`).split("-").map(Number);
   const firstDay = new Date(cy, cm, 1), daysIn = new Date(cy, cm + 1, 0).getDate(), lead = firstDay.getDay();
-  const byDay = {}; D.attendance.forEach(a => (byDay[a.date] ||= new Set()).add(a.tutorId));
+  const people = tutorPeople(), keyOf = id => personKey(tutor(id));
+  const byDay = {}; D.attendance.forEach(a => { const k = keyOf(a.tutorId); if (k && people.has(k)) (byDay[a.date] ||= new Set()).add(k); });
   const maxN = Math.max(1, ...Object.values(byDay).map(x => x.size));
   const monthName = firstDay.toLocaleDateString(undefined, { month: "long", year: "numeric" });
   const cells = [];
@@ -916,20 +947,20 @@ function attendanceHTML() {
   const sel = S.calDay && byDay[S.calDay] ? S.calDay : days.find(d => byDay[d]);
   let detail = `<div class="empty"><b>No classes yet</b>Days light up here once tutors sign in.</div>`;
   if (sel) {
-    const here = [...(byDay[sel] || [])].map(tutor).filter(Boolean), hereIds = new Set(here.map(t => t.id));
-    const away = activeTutors().filter(t => !hereIds.has(t.id) && (t.at || 0) <= new Date(sel + "T23:59").getTime());
+    const hereKeys = byDay[sel] || new Set(), here = [...hereKeys].map(k => people.get(k));
+    const away = [...people.values()].filter(p => p.active && !hereKeys.has(p.key) && p.at <= new Date(sel + "T23:59").getTime());
     const kids = new Set(D.picks.filter(p => p.date === sel).map(p => p.studentId)).size, stories = D.readings.filter(r => r.date === sel).length;
     detail = `<h3 class="cal-h">${fmtDayLong(sel)}</h3>
       <p class="muted small" style="margin-bottom:12px">${plural(here.length, "tutor")} · ${plural(kids, "kid")} · ${plural(stories, "story", "stories")} read</p>
-      <div class="k small muted">Came</div><div class="words" style="margin:4px 0 12px">${here.map(t => `<span class="chip good">${esc(t.name)}</span>`).join("") || "–"}</div>
-      ${away.length ? `<div class="k small muted">Didn't come</div><div class="words" style="margin-top:4px">${away.map(t => `<span class="chip">${esc(t.name)}</span>`).join("")}</div>` : ""}`;
+      <div class="k small muted">Came</div><div class="words" style="margin:4px 0 12px">${here.map(p => `<span class="chip good">${esc(p.name)}</span>`).join("") || "–"}</div>
+      ${away.length ? `<div class="k small muted">Didn't come</div><div class="words" style="margin-top:4px">${away.map(p => `<span class="chip">${esc(p.name)}</span>`).join("")}</div>` : ""}`;
   }
   const recent = days.filter(d => byDay[d]).slice(0, 8).reverse();
-  const rows = activeTutors().map(t => {
-    const came = recent.filter(d => byDay[d].has(t.id)).length;
-    const all = D.attendance.filter(a => a.tutorId === t.id).map(a => a.date).sort();
-    return { t, came, total: new Set(all).size, last: all[all.length - 1] };
-  }).sort((a, b) => b.came - a.came || b.total - a.total);
+  const rows = [...people.values()].map(p => {
+    const came = recent.filter(d => byDay[d].has(p.key)).length;
+    const all = D.attendance.filter(a => p.ids.has(a.tutorId)).map(a => a.date).sort();
+    return { t: p, came, total: new Set(all).size, last: all[all.length - 1] };
+  }).sort((a, b) => b.came - a.came || b.total - a.total || a.t.name.localeCompare(b.t.name));
   return `<section class="panel"><div class="panel-head"><h2>Tutor attendance</h2>
       <div class="inline"><button class="btn small quiet" data-act="calmove" data-d="-1" aria-label="Previous month">Previous</button><b style="min-width:140px;text-align:center">${monthName}</b><button class="btn small quiet" data-act="calmove" data-d="1" aria-label="Next month">Next</button></div></div>
     <div class="cal-wrap">
@@ -941,7 +972,7 @@ function attendanceHTML() {
     </div>
     ${recent.length ? `<h3 class="group-h" style="margin-top:22px">Each tutor, last ${plural(recent.length, "class", "classes")}</h3>
     <div class="table-wrap"><table class="att"><thead><tr><th>Tutor</th>${recent.map(d => `<th class="c">${fmtShort(d)}</th>`).join("")}<th class="n">Came</th><th class="n">All time</th><th>Last seen</th></tr></thead><tbody>
-      ${rows.map(r => `<tr><td><b style="font-weight:500">${esc(r.t.name)}</b></td>${recent.map(d => `<td class="c">${byDay[d].has(r.t.id) ? '<span class="dot yes" title="Came"></span>' : '<span class="dot" title="Not there"></span>'}</td>`).join("")}<td class="n">${r.came} of ${recent.length}</td><td class="n">${r.total}</td><td>${r.last ? fmtDay(r.last) : '<span class="muted">Never</span>'}</td></tr>`).join("")}
+      ${rows.map(r => `<tr><td><b style="font-weight:500">${esc(r.t.name)}</b>${r.t.active ? "" : ' <span class="muted small">(removed)</span>'}</td>${recent.map(d => `<td class="c">${byDay[d].has(r.t.key) ? '<span class="dot yes" title="Came"></span>' : '<span class="dot" title="Not there"></span>'}</td>`).join("")}<td class="n">${r.came} of ${recent.length}</td><td class="n">${r.total}</td><td>${r.last ? fmtDay(r.last) : '<span class="muted">Never</span>'}</td></tr>`).join("")}
     </tbody></table></div>` : ""}
   </section>`;
 }
@@ -979,11 +1010,14 @@ function adminHTML() {
     <section class="panel s6"><div class="panel-head"><h2>Tutors <span class="count">${activeTutors().length}</span></h2></div>
       ${Auth.on ? `<p class="muted small" style="margin-bottom:12px">Tutors appear here the first time they sign in with Google.</p>`
         : `<form class="inline" data-form="adminTutor" style="margin-bottom:12px"><input type="text" id="atutor" data-input="newTutor" placeholder="Tutor's full name" value="${esc(S.newTutor)}" aria-label="Tutor's full name"><button class="btn" type="submit">Add tutor</button></form>`}
-      <div class="stack">${activeTutors().map(t => `<div class="row"><div class="grow"><div class="t">${esc(t.name)}</div><div class="m">${t.email ? `${esc(t.email)} · ` : Auth.on ? "No Google account linked · " : ""}${plural(D.attendance.filter(a => a.tutorId === t.id).length, "class", "classes")} taught</div></div><button class="btn small quiet" data-act="rmtutor" data-id="${t.id}">Remove</button></div>`).join("") || `<div class="empty">No tutors yet.</div>`}</div>
+      <div class="stack">${D.tutors.filter(t => t.active !== false || D.attendance.some(a => a.tutorId === t.id)).sort((a, b) => (b.active !== false) - (a.active !== false) || a.name.localeCompare(b.name)).map(t => `<div class="row"><div class="grow"><div class="t">${esc(t.name)}</div><div class="m">${t.email ? `${esc(t.email)} · ` : Auth.on ? "No Google account linked · " : ""}${plural(D.attendance.filter(a => a.tutorId === t.id).length, "class", "classes")} taught</div></div>${t.active === false ? `<span class="chip">Removed</span><button class="btn small quiet" data-act="restoretutor" data-id="${t.id}">Restore</button>` : `<button class="btn small quiet" data-act="rmtutor" data-id="${t.id}">Remove</button>`}</div>`).join("") || `<div class="empty">No tutors yet.</div>`}</div>
     </section>
     <section class="panel s6"><div class="panel-head"><h2>Kids <span class="count">${activeStudents().length}</span></h2></div>
       <div class="stack">${activeStudents().map(s => `<div class="row"><div class="grow"><div class="t">${esc(s.name)}</div><div class="m">${s.level ? `Level ${s.level}` : "No level"} · ${plural(readingsOf(s.id).length, "story", "stories")}</div></div><button class="btn small quiet" data-act="rmkid" data-id="${s.id}">Remove</button></div>`).join("") || `<div class="empty">No kids yet.</div>`}</div>
     </section>
+    ${(() => { const dupes = [...tutorPeople().values()].filter(p => p.ids.size > 1); return dupes.length ? `<section class="panel"><div class="panel-head"><h2>Duplicate tutors <span class="count">${dupes.length}</span></h2></div>
+      <p class="muted small" style="margin-bottom:12px">These names appear more than once, usually an old name-only entry plus their Google account. Attendance already counts them as one person; merging tidies up the records.</p>
+      <div class="stack">${dupes.map(p => `<div class="row"><div class="grow"><div class="t">${esc(p.name)}</div><div class="m">${p.ids.size} records</div></div><button class="btn small" data-act="mergetutor" data-v="${esc(p.key)}">Merge into one</button></div>`).join("")}</div></section>` : ""; })()}
     <section class="panel"><div class="panel-head"><h2>Merge duplicate kids</h2></div>
       <p class="muted small" style="margin-bottom:12px">If the same kid was added twice, move everything from one into the other. Stories, tests, notes and attendance all come across.</p>
       <div class="inline">
@@ -1142,6 +1176,18 @@ document.addEventListener("click", async e => {
     case "rmtutor": await safe(Store.update("tutors", id, { active: false }), "Tutor removed. Their past classes stay in the log."); break;
     case "rmkid": await safe(Store.update("students", id, { active: false }), "Kid removed. Their past stories stay in the log."); break;
     case "lock": S.adminOk = false; break;
+    case "restoretutor": await safe(Store.update("tutors", id, { active: true }), "Tutor restored"); break;
+    case "mergetutor": {
+      const p = tutorPeople().get(b.dataset.v); if (!p) break;
+      const recs = [...p.ids].map(tutor).filter(Boolean).sort((a, b) => (!!b.email - !!a.email) || ((b.active !== false) - (a.active !== false)));
+      const keep = recs[0], others = recs.slice(1);
+      for (const o of others) {
+        for (const c of ["attendance", "readings", "checks", "warmups", "notes", "picks"]) for (const d of D[c].filter(x => x.tutorId === o.id)) await safe(Store.update(c, d.id, { tutorId: keep.id }));
+        await safe(Store.update("tutors", o.id, { active: false, mergedInto: keep.id }));
+      }
+      if (keep.active === false) await safe(Store.update("tutors", keep.id, { active: true }));
+      toast(`${keep.name} merged into one record`); break;
+    }
     case "calday": S.calDay = b.dataset.v; break;
     case "calmove": { const now = new Date(); const [y, m] = (S.calMonth || `${now.getFullYear()}-${now.getMonth()}`).split("-").map(Number); const d = new Date(y, m + Number(b.dataset.d), 1); S.calMonth = `${d.getFullYear()}-${d.getMonth()}`; break; }
     case "cancelmerge": S.mergeConfirm = false; break;
