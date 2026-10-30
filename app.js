@@ -612,22 +612,25 @@ function planHTML(k, s) {
 }
 
 /* ---------- warm-up cards ---------- */
+const WARM_ROUND = 25;
 function warmupHTML(k, s) {
-  const w = s.warm, i = w.i, done = i >= w.words.length;
+  const w = s.warm, i = w.i;
+  if (!w.goal) w.goal = Math.min(WARM_ROUND, w.words.length);
+  const done = i >= w.goal, left = w.words.length - i;
   if (done) {
-    const wrong = w.words.filter((_, j) => w.res[j] === false);
-    return `<div class="reader"><div class="reader-bar"><div class="ttl">Warm-up done for ${esc(k.name)}</div></div>
-      <div class="result-nums" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="tile"><span class="k">Read correctly</span><span class="v">${w.words.length - wrong.length}<small>of ${w.words.length}</small></span></div>
+    const seen = w.words.slice(0, i), wrong = seen.filter((_, j) => w.res[j] === false);
+    return `<div class="reader"><div class="reader-bar"><div class="ttl">Warm-up done for ${esc(k.name)}</div><span class="muted small">${left > 0 ? `${left} more words in the bank` : "Every word done"}</span></div>
+      <div class="result-nums" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="tile"><span class="k">Read correctly</span><span class="v">${seen.length - wrong.length}<small>of ${seen.length}</small></span></div>
       <div class="tile"><span class="k">To keep practising</span><span class="c" style="margin-top:auto">${wrong.length ? "" : "None. Great start!"}</span><div class="words">${wrong.map(x => `<span class="chip bad">${esc(x)}</span>`).join("")}</div></div></div>
-      <div class="inline"><button class="btn primary big" data-act="gostep" data-id="${k.id}" data-v="read">Next: Read the story</button><button class="btn" data-act="gostep" data-id="${k.id}" data-v="warmup">Do it again</button></div></div>`;
+      <div class="inline"><button class="btn primary big" data-act="gostep" data-id="${k.id}" data-v="read">Next: Read the story</button>${left > 0 ? `<button class="btn" data-act="wmore" data-id="${k.id}">Do ${Math.min(WARM_ROUND, left)} more words</button>` : ""}</div></div>`;
   }
   return `<div class="reader">
     <div class="reader-bar"><div><button class="linkish" data-act="gostep" data-id="${k.id}" data-v="read">Skip to the story</button><div class="ttl">Warm-up words for ${esc(k.name)}</div></div>
-      <span class="muted num">Word ${i + 1} of ${w.words.length}</span></div>
+      <span class="muted num">Word ${i + 1} of ${w.goal}</span></div>
     ${i === 0 ? script(`Let's warm up! Read each word as fast as you can. If you're not sure, sound it out.`) : ""}
     <div class="flash-word" aria-live="polite">${esc(w.words[i])}</div>
     <div class="flash-btns"><button class="btn" data-act="wcard" data-id="${k.id}" data-ok="0">Wrong</button><button class="btn primary" data-act="wcard" data-id="${k.id}" data-ok="1">Right</button></div>
-    ${i >= 5 ? `<p style="text-align:center;margin-top:12px"><button class="linkish" data-act="wstop" data-id="${k.id}">Stop here and finish the warm-up</button></p>` : ""}
+    ${i >= 5 && i < w.goal - 1 ? `<p style="text-align:center;margin-top:12px"><button class="linkish" data-act="wstop" data-id="${k.id}">Stop here and finish the warm-up</button></p>` : ""}
     <p class="muted small" style="text-align:center;margin-top:14px">Keyboard: left arrow for wrong, right arrow for right</p>
   </div>`;
 }
@@ -1029,6 +1032,13 @@ async function signIn(id) {
   if (!hereToday().find(a => a.tutorId === id)) await safe(Store.set("attendance", `${TODAY}_${id}`, { date: TODAY, tutorId: id, at: Date.now() }));
 }
 async function pick(sid) { await safe(Store.set("picks", `${TODAY}_${sid}`, { date: TODAY, studentId: sid, tutorId: S.me, at: Date.now() })); render(); }
+/* One warm-up record per session, updated if the tutor does extra rounds. */
+async function saveWarmup(kid) {
+  const w = sess(kid).warm, seen = w.words.slice(0, w.i);
+  const rec = { date: TODAY, studentId: kid, tutorId: S.me, right: seen.filter((_, j) => w.res[j]), wrong: seen.filter((_, j) => w.res[j] === false), at: Date.now() };
+  if (w.recId) return safe(Store.set("warmups", w.recId, rec));
+  w.recId = newId(); return safe(Store.set("warmups", w.recId, rec));
+}
 async function saveReading(kid) {
   const s = sess(kid), st = storyById(s.storyId);
   if (s.running) { s.acc = elapsed(s); s.running = false; }
@@ -1097,17 +1107,9 @@ document.addEventListener("click", async e => {
     case "settime": { const m = Number(b.dataset.m); s.acc = m * 60000; s.askTime = false; s.timeAsked = true; s.estimated = m > 0; return saveReading(id); }
     case "newstory": return writeStoryFor(id);
     case "warmup": { const k = student(id); Object.assign(sess(id), { mode: "warmup", warm: { words: warmupDeck(k), res: [], i: 0 } }); break; }
-    case "wstop": {
-      const w = s.warm; if (!w || !w.i) break;
-      w.words = w.words.slice(0, w.i);
-      await safe(Store.add("warmups", { date: TODAY, studentId: id, tutorId: S.me, right: w.words.filter((_, j) => w.res[j]), wrong: w.words.filter((_, j) => w.res[j] === false), at: Date.now() }));
-      break;
-    }
-    case "wcard": {
-      const w = s.warm; w.res[w.i] = b.dataset.ok === "1"; w.i++;
-      if (w.i >= w.words.length) safe(Store.add("warmups", { date: TODAY, studentId: id, tutorId: S.me, right: w.words.filter((_, j) => w.res[j]), wrong: w.words.filter((_, j) => w.res[j] === false), at: Date.now() }));
-      break;
-    }
+    case "wstop": { const w = s.warm; if (!w || !w.i) break; w.goal = w.i; await saveWarmup(id); break; }
+    case "wcard": { const w = s.warm; w.res[w.i] = b.dataset.ok === "1"; w.i++; if (w.i >= w.goal) saveWarmup(id); break; }
+    case "wmore": { const w = s.warm; w.goal = Math.min(w.words.length, w.i + WARM_ROUND); break; }
     case "askdel": s.confirmDel = true; break;
     case "canceldel": s.confirmDel = false; break;
     case "delresult": { await safe(Store.remove("readings", s.resultId), "Reading deleted"); Object.assign(s, { mode: "home", confirmDel: false, result: null, resultId: null }); break; }
