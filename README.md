@@ -94,7 +94,7 @@ To turn it on: switch on Google in Supabase (Authentication > Providers), put yo
 
 ## Good to know
 
-- Use kids' first names (plus a last initial if two share a name).
+- Use tutees' first names (plus a last initial if two share a name).
 - The library has 240 stories, 20 per level, each with 3 questions. They're in the `library` folder, one file per level.
 - Tutors can also make an AI practice story built around a kid's missed words. These show up in the kid's story list and can be deleted from Admin.
 - Story levels follow the UFLI Foundations order. The lesson ranges are approximate, so check them against your UFLI manual.

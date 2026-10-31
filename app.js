@@ -285,7 +285,7 @@ const ICON = {
 const TICK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3 3 7-7"/></svg>';
 const MARK = '<svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="9" fill="var(--accent)"/><path d="M15 9.5c-2.2-1.3-4.6-1.8-7-1.5v12c2.4-.3 4.8.2 7 1.5 2.2-1.3 4.6-1.8 7-1.5V8c-2.4-.3-4.8.2-7 1.5z" fill="none" stroke="var(--accent-ink)" stroke-width="1.6" stroke-linejoin="round"/><path d="M15 9.5v12" stroke="var(--accent-ink)" stroke-width="1.6"/></svg>';
 function navHTML() {
-  const items = [["class", "Today's class"], ["kids", "Kids"], ["admin", "Admin"]];
+  const items = [["class", "Today's class"], ["kids", "Tutees"], ["admin", "Admin"]];
   return `<nav class="nav" aria-label="Main">${items.map(([v, l]) => `<button data-act="go" data-v="${v}" ${S.screen === v || (v === "kids" && S.screen === "kid") ? 'aria-current="page"' : ""}>${ICON[v]}${l}</button>`).join("")}</nav>`;
 }
 function sideHTML() {
@@ -361,10 +361,10 @@ function pickHTML(me) {
   const here = hereToday(), kidsToday = new Set(picksToday().map(p => p.studentId)).size;
   return `<div class="col">
     <div class="title-row"><div><h1 class="greet">Hello, ${esc(first(me.name))}.</h1>
-      <p class="sub">${fmtDayLong(TODAY)} · ${plural(here.length, "tutor")} and ${plural(kidsToday, "kid")} in class so far. Choose the kids you're teaching today.</p></div></div>
+      <p class="sub">${fmtDayLong(TODAY)} · ${plural(here.length, "tutor")} and ${plural(kidsToday, "tutee")} in class so far. Choose the tutees you're teaching today.</p></div></div>
     <section class="panel">
-      <div class="panel-head"><h2>All kids <span class="count">${activeStudents().length}</span></h2>
-        <input type="search" id="pickq" data-input="pickerQ" placeholder="Search by name" value="${esc(S.pickerQ)}" aria-label="Search kids"></div>
+      <div class="panel-head"><h2>All tutees <span class="count">${activeStudents().length}</span></h2>
+        <input type="search" id="pickq" data-input="pickerQ" placeholder="Search by name" value="${esc(S.pickerQ)}" aria-label="Search tutees"></div>
       <div class="stack">
       ${list.length ? list.map(s => {
         const p = pickOf(s.id), other = p && p.tutorId !== S.me ? tutor(p.tutorId) : null, att = kidAttendance(s.id), added = mine.has(s.id);
@@ -372,13 +372,13 @@ function pickHTML(me) {
           ${added ? `<span class="chip accent">In your group</span><button class="btn small quiet" data-act="unpick" data-id="${s.id}">Remove</button>`
           : other ? `<span class="chip">With ${esc(first(other.name))} today</span><button class="btn small quiet" data-act="pick" data-id="${s.id}">Take over</button>`
           : `<button class="btn small" data-act="pick" data-id="${s.id}">Add</button>`}</div>`;
-      }).join("") : `<div class="empty"><b>${q ? `No kid called “${esc(S.pickerQ)}” yet` : "No kids in the log yet"}</b>Add a new kid below. They'll start with the placement test.</div>`}
+      }).join("") : `<div class="empty"><b>${q ? `No tutee called “${esc(S.pickerQ)}” yet` : "No tutees in the log yet"}</b>Add a new tutee below. They'll start with the placement test.</div>`}
       </div>
       <form class="inline" data-form="newKid" style="margin-top:14px">
-        <input type="text" id="newkid" data-input="newKid" placeholder="New kid's name, e.g. Robert L." value="${esc(S.newKid)}" aria-label="New kid's name">
-        <button class="btn" type="submit">Add new kid</button>
+        <input type="text" id="newkid" data-input="newKid" placeholder="New tutee's name, e.g. Robert L." value="${esc(S.newKid)}" aria-label="New tutee's name">
+        <button class="btn" type="submit">Add new tutee</button>
       </form>
-      <div class="pickbar"><span class="muted">${mine.size ? `${plural(mine.size, "kid")} in your group` : "Add at least one kid to start"}</span>
+      <div class="pickbar"><span class="muted">${mine.size ? `${plural(mine.size, "tutee")} in your group` : "Add at least one tutee to start"}</span>
         <button class="btn primary" data-act="startlesson" ${mine.size ? "" : "disabled"}>Start lesson</button></div>
     </section></div>`;
 }
@@ -389,12 +389,12 @@ function lessonHTML(me) {
   const k = student(S.activeKid);
   return `<div class="col">
     <div class="kidbar">
-      <div class="kidtabs" role="tablist" aria-label="Kids in today's lesson">${kids.map(x => {
+      <div class="kidtabs" role="tablist" aria-label="Tutees in today's lesson">${kids.map(x => {
         const s = sess(x.id), n = readsToday(x).length;
         const status = !x.level ? "Needs test" : s.mode === "read" ? "Reading now" : s.mode === "warmup" ? "Warm-up" : s.mode === "check" ? "Taking test" : ["review", "questions"].includes(s.mode) ? "Going over it" : n ? `${plural(n, "story", "stories")} today` : `Level ${x.level}`;
         return `<button class="tab ${x.level ? "" : "needs"}" role="tab" aria-selected="${x.id === S.activeKid}" data-act="tab" data-id="${x.id}">${esc(x.name)}<span class="st">${status}</span></button>`;
       }).join("")}</div>
-      <div class="inline" style="flex:none">${lessonClockHTML()}<button class="btn small quiet" data-act="tostep" data-v="pick">Change kids</button><button class="btn small ${lessonMins() >= LESSON_MIN ? "primary" : ""}" data-act="endlesson">End lesson</button></div>
+      <div class="inline" style="flex:none">${lessonClockHTML()}<button class="btn small quiet" data-act="tostep" data-v="pick">Change tutees</button><button class="btn small ${lessonMins() >= LESSON_MIN ? "primary" : ""}" data-act="endlesson">End lesson</button></div>
     </div>
     ${kidWorkHTML(k)}
   </div>`;
@@ -472,12 +472,12 @@ function readyHTML(k, s) {
   if (!done.length) return `${catchupHTML(k)}<div class="s9 stack" style="gap:var(--gap);align-content:start">
     <section class="panel"><div class="panel-head"><h2>First turn with ${name}</h2><span class="muted small">Share your screen in Zoom now</span></div>
       <ol class="plan-list">
-        <li><b>Warm-up words</b><span>25 quick flash cards.</span></li>
+        <li><b>Warm-up words</b><span>12 quick flash cards.</span></li>
         <li><b>Read the story</b><span>${st ? `“${esc(st.title)}”. ` : ""}You time it and tap any word ${name} gets wrong.</span></li>
         <li><b>Hard words</b><span>Go over the words ${name} missed.</span></li>
         <li><b>Questions</b><span>Three quick questions about the story.</span></li>
       </ol>
-      <p class="muted small" style="margin-top:12px">Then move on to your next kid, and come back to ${name} for another story. Keep rotating until the hour is up.</p>
+      <p class="muted small" style="margin-top:12px">Then move on to your next tutee, and come back to ${name} for another story. Keep rotating until the hour is up.</p>
       ${script(`Hi ${name}! Let's warm up with some words, then read a story together.`)}
       <div class="inline" style="margin-top:16px"><button class="btn primary big" data-act="gostep" data-id="${k.id}" data-v="warmup">Start: Warm-up words</button>
         <button class="btn quiet" data-act="gostep" data-id="${k.id}" data-v="read">Skip the warm-up</button></div>
@@ -604,7 +604,7 @@ function planHTML(k, s) {
 }
 
 /* ---------- warm-up cards ---------- */
-const WARM_ROUND = 25;
+const WARM_ROUND = 12;
 function warmupHTML(k, s) {
   const w = s.warm, i = w.i;
   if (!w.goal) w.goal = Math.min(WARM_ROUND, w.words.length);
@@ -841,7 +841,7 @@ function summaryHTML(me) {
 }
 function doneHTML(me) {
   const n = myKids().length;
-  return `<div class="col"><div class="title-row"><div><h1 class="greet">Thank you, ${esc(first(me.name))}.</h1><p class="sub">Notes saved for ${plural(n, "kid")}. See you next time.</p></div></div>
+  return `<div class="col"><div class="title-row"><div><h1 class="greet">Thank you, ${esc(first(me.name))}.</h1><p class="sub">Notes saved for ${plural(n, "tutee")}. See you next time.</p></div></div>
     <section class="panel s6"><div class="inline"><button class="btn primary" data-act="signout">Sign out</button><button class="btn" data-act="tostep" data-v="lesson">Back to the lesson</button></div></section></div>`;
 }
 
@@ -850,23 +850,23 @@ function kidsHTML() {
   const q = S.kidsQ.trim().toLowerCase();
   const list = activeStudents().filter(s => !q || s.name.toLowerCase().includes(q));
   return `<div class="col">
-    <div class="title-row"><div><h1 class="h1">Kids</h1><p class="sub">${plural(activeStudents().length, "kid")} in the program. Pick one to see their progress.</p></div>
-      <input type="search" id="kidsq" data-input="kidsQ" placeholder="Search by name" value="${esc(S.kidsQ)}" aria-label="Search kids"></div>
+    <div class="title-row"><div><h1 class="h1">Tutees</h1><p class="sub">${plural(activeStudents().length, "tutee")} in the program. Pick one to see their progress.</p></div>
+      <input type="search" id="kidsq" data-input="kidsQ" placeholder="Search by name" value="${esc(S.kidsQ)}" aria-label="Search tutees"></div>
     <section class="panel">
       ${list.length ? `<div class="table-wrap"><table><thead><tr><th>Name</th><th>Level</th><th>Last read</th><th class="n">Accuracy</th><th class="n">Words a minute</th><th class="n">Weeks</th></tr></thead><tbody>
       ${list.map(s => { const rs = readingsOf(s.id), l = rs[0], att = kidAttendance(s.id); return `<tr class="click" data-act="kid" data-id="${s.id}" tabindex="0"><td><b style="font-weight:500">${esc(s.name)}</b></td><td>${s.level ? `Level ${s.level} <span class="muted">· ${esc(levelOf(s.level).name)}</span>` : `<span class="chip warn">Needs test</span>`}</td><td>${l ? fmtDay(l.date) : '<span class="muted">–</span>'}</td><td class="n">${l ? pct(l.accuracy) : "–"}</td><td class="n">${l && l.seconds ? Math.round(l.wcpm) : "–"}</td><td class="n">${att.of ? `${att.came} of ${att.of}` : "–"}</td></tr>`; }).join("")}
-      </tbody></table></div>` : `<div class="empty"><b>${q ? "No kid by that name" : "No kids yet"}</b>Tutors add kids on the Today's class page.</div>`}
+      </tbody></table></div>` : `<div class="empty"><b>${q ? "No tutee by that name" : "No tutees yet"}</b>Tutors add tutees on the Today's class page.</div>`}
     </section></div>`;
 }
 function kidHTML() {
   const k = student(S.kidId);
-  if (!k) return `<div class="col"><div class="empty"><b>Kid not found</b><button class="linkish" data-act="go" data-v="kids">Back to all kids</button></div></div>`;
+  if (!k) return `<div class="col"><div class="empty"><b>Tutee not found</b><button class="linkish" data-act="go" data-v="kids">Back to all tutees</button></div></div>`;
   const rs = readingsOf(k.id), lv = levelOf(k.level), timed = rs.filter(r => r.seconds), att = kidAttendance(k.id, 12);
   const firstW = timed[timed.length - 1], lastW = timed[0];
   const checks = D.checks.filter(c => c.studentId === k.id), notes = D.notes.filter(n => n.studentId === k.id && n.text).slice(0, 6);
   const withQ = rs.filter(r => r.questions?.length), comp = withQ.length ? avg(withQ.map(r => r.questions.filter(q => q.ok).length / r.questions.length)) : null;
   return `<div class="col">
-    <div class="title-row"><div><button class="linkish back" data-act="go" data-v="kids">All kids</button><h1 class="h1">${esc(k.name)}</h1>
+    <div class="title-row"><div><button class="linkish back" data-act="go" data-v="kids">All tutees</button><h1 class="h1">${esc(k.name)}</h1>
       <p class="sub">${lv ? `Level ${lv.n} · ${esc(lv.name)} · about UFLI lessons ${lv.ufli}` : "No level yet. The placement test runs when they join a lesson."}</p></div></div>
     <div class="col tiles" style="grid-column:1/-1;gap:var(--gap)">
       ${tile("Stories read", rs.length, rs.length ? `Since ${fmtDay(rs[rs.length - 1].date)}` : "None yet")}
@@ -888,8 +888,8 @@ function kidHTML() {
       ${rs.length ? `<div class="table-wrap"><table><thead><tr><th>Date</th><th>Story</th><th>Tutor</th><th class="n">Accuracy</th><th class="n">Words a minute</th><th class="n">Questions</th><th>Missed</th><th><span class="sr">Fix</span></th></tr></thead><tbody>
       ${rs.map(r => `<tr><td style="white-space:nowrap">${fmtDay(r.date)}</td><td>${esc(r.title)} <span class="muted">· L${r.level}</span></td><td>${esc(tutor(r.tutorId)?.name || "–")}</td><td class="n">${pct(r.accuracy)}</td><td class="n">${r.seconds ? Math.round(r.wcpm) : "–"}</td><td class="n">${r.questions?.length ? `${r.questions.filter(q => q.ok).length}/${r.questions.length}` : "–"}</td><td>${(r.missed || []).map(esc).join(", ") || '<span class="muted">None</span>'}</td><td><button class="btn small quiet" data-act="fixrow" data-id="${r.id}" aria-expanded="${S.fixRow === r.id}">Fix</button></td></tr>
       ${S.fixRow === r.id ? `<tr class="fix"><td colspan="8"><div class="inline">
-        <label class="muted small" for="move-${r.id}">Saved for the wrong kid? Move it to</label>
-        <select id="move-${r.id}"><option value="">Choose a kid</option>${activeStudents().filter(x => x.id !== k.id).map(x => `<option value="${x.id}">${esc(x.name)}</option>`).join("")}</select>
+        <label class="muted small" for="move-${r.id}">Saved for the wrong tutee? Move it to</label>
+        <select id="move-${r.id}"><option value="">Choose a tutee</option>${activeStudents().filter(x => x.id !== k.id).map(x => `<option value="${x.id}">${esc(x.name)}</option>`).join("")}</select>
         <button class="btn small" data-act="fixmove" data-id="${r.id}">Move</button>
         <span class="muted small">or</span>
         <button class="btn small ${S.fixDel ? "danger" : "quiet"}" data-act="fixdel" data-id="${r.id}">${S.fixDel ? "Yes, delete this reading" : "Delete it"}</button>
@@ -958,7 +958,7 @@ function attendanceHTML() {
     const away = [...people.values()].filter(p => p.active && !hereKeys.has(p.key) && p.at <= new Date(sel + "T23:59").getTime());
     const kids = new Set(D.picks.filter(p => p.date === sel).map(p => p.studentId)).size, stories = D.readings.filter(r => r.date === sel).length;
     detail = `<h3 class="cal-h">${fmtDayLong(sel)}</h3>
-      <p class="muted small" style="margin-bottom:12px">${plural(here.length, "tutor")} · ${plural(kids, "kid")} · ${plural(stories, "story", "stories")} read</p>
+      <p class="muted small" style="margin-bottom:12px">${plural(here.length, "tutor")} · ${plural(kids, "tutee")} · ${plural(stories, "story", "stories")} read</p>
       <div class="k small muted">Tutors who taught</div><div class="words" style="margin:4px 0 12px">${here.map(p => `<span class="chip good">${esc(p.name)}</span>`).join("") || "–"}</div>
       `;
   }
@@ -998,41 +998,41 @@ function adminHTML() {
   const lib = D.stories.filter(s => s.active !== false), libShown = lib.filter(s => !S.libLevel || s.level === Number(S.libLevel));
   return `<div class="col">
     <div class="title-row"><div><h1 class="h1">Admin</h1><p class="sub">Lessons on ${plural(days.length, "day")} · ${plural(D.readings.length, "story", "stories")} read in total</p></div>
-      <div class="inline"><button class="btn" data-act="csv" data-kind="readings">Download stories read (CSV)</button><button class="btn" data-act="csv" data-kind="kids">Download kids (CSV)</button></div></div>
+      <div class="inline"><button class="btn" data-act="csv" data-kind="readings">Download stories read (CSV)</button><button class="btn" data-act="csv" data-kind="kids">Download tutees (CSV)</button></div></div>
     <div class="col tiles" style="grid-column:1/-1;gap:var(--gap)">
       ${tile("Tutors", activeTutors().length, `${new Set(D.attendance.map(a => a.tutorId)).size} have signed in at least once`)}
-      ${tile("Kids", activeStudents().length, `${activeStudents().filter(s => !s.level).length} still need the placement test`)}
+      ${tile("Tutees", activeStudents().length, `${activeStudents().filter(s => !s.level).length} still need the placement test`)}
       ${tile("Story library", STORIES.length, `${Math.round(STORIES.length / 12)} per level, with questions${lib.length ? ` · ${lib.length} practice stories` : ""}`)}
       ${tile("Missing lately", missing.length, missing.length ? missing.slice(0, 3).map(s => first(s.name)).join(", ") : "No one has gone two weeks without a lesson")}
     </div>
     <section class="panel s6"><div class="panel-head"><h2>Practice stories written by AI <span class="count">${lib.length}</span></h2>
       <select id="liblevel" data-input="libLevel" aria-label="Filter by level"><option value="">All levels</option>${LEVELS.map(l => `<option value="${l.n}" ${S.libLevel == l.n ? "selected" : ""}>Level ${l.n}</option>`).join("")}</select></div>
       <div class="stack">${libShown.slice(0, 40).map(st => `<div class="row"><div class="grow"><div class="t">${esc(st.title)}</div><div class="m">Level ${st.level} · ${wordCount(st.text)} words · ${fmtShort(dayKey(new Date(st.at || Date.now())))}${st.forKid ? ` · for ${esc(first(student(st.forKid)?.name))}` : ""}</div></div>
-        <button class="btn small quiet" data-act="preview" data-id="${st.id}">${S.openStory === st.id ? "Close" : "Read"}</button><button class="btn small quiet" data-act="rmstory" data-id="${st.id}">Delete</button></div>${S.openStory === st.id ? `<div class="storyprev">${esc(st.text)}${(st.questions || []).length ? `\n\nQuestions:\n${st.questions.map(q => `• ${q.q} (${q.a})`).join("\n")}` : ""}</div>` : ""}`).join("") || `<div class="empty"><b>No practice stories yet</b>Tutors can make one for a kid during a lesson. The ${STORIES.length} library stories are always there.</div>`}
+        <button class="btn small quiet" data-act="preview" data-id="${st.id}">${S.openStory === st.id ? "Close" : "Read"}</button><button class="btn small quiet" data-act="rmstory" data-id="${st.id}">Delete</button></div>${S.openStory === st.id ? `<div class="storyprev">${esc(st.text)}${(st.questions || []).length ? `\n\nQuestions:\n${st.questions.map(q => `• ${q.q} (${q.a})`).join("\n")}` : ""}</div>` : ""}`).join("") || `<div class="empty"><b>No practice stories yet</b>Tutors can make one for a tutee during a lesson. The ${STORIES.length} library stories are always there.</div>`}
       ${libShown.length > 40 ? `<p class="muted small">Showing the newest 40. Filter by level to see more.</p>` : ""}</div>
     </section>
     ${attendanceHTML()}
-    <section class="panel s6"><div class="panel-head"><h2>Kids missing lately <span class="count">${missing.length}</span></h2></div>
-      <div class="stack">${missing.map(s => { const a = kidAttendance(s.id); const lastDay = D.picks.filter(p => p.studentId === s.id).map(p => p.date).sort().reverse()[0]; return `<div class="row"><div class="grow"><div class="t">${esc(s.name)}</div><div class="m">No lesson in the last 2 weeks · last lesson ${fmtDay(lastDay)} · ${a.came} of ${a.of} weeks overall</div></div><button class="btn small quiet" data-act="kid" data-id="${s.id}">Progress</button></div>`; }).join("") || `<div class="empty">Every kid has had a lesson in the last two weeks.</div>`}</div>
+    <section class="panel s6"><div class="panel-head"><h2>Tutees missing lately <span class="count">${missing.length}</span></h2></div>
+      <div class="stack">${missing.map(s => { const a = kidAttendance(s.id); const lastDay = D.picks.filter(p => p.studentId === s.id).map(p => p.date).sort().reverse()[0]; return `<div class="row"><div class="grow"><div class="t">${esc(s.name)}</div><div class="m">No lesson in the last 2 weeks · last lesson ${fmtDay(lastDay)} · ${a.came} of ${a.of} weeks overall</div></div><button class="btn small quiet" data-act="kid" data-id="${s.id}">Progress</button></div>`; }).join("") || `<div class="empty">Every tutee has had a lesson in the last two weeks.</div>`}</div>
     </section>
     <section class="panel s6"><div class="panel-head"><h2>Tutors <span class="count">${activeTutors().length}</span></h2></div>
       ${Auth.on ? `<p class="muted small" style="margin-bottom:12px">Tutors appear here the first time they sign in with Google.</p>`
         : `<form class="inline" data-form="adminTutor" style="margin-bottom:12px"><input type="text" id="atutor" data-input="newTutor" placeholder="Tutor's full name" value="${esc(S.newTutor)}" aria-label="Tutor's full name"><button class="btn" type="submit">Add tutor</button></form>`}
       <div class="stack">${D.tutors.filter(t => t.active !== false || D.attendance.some(a => a.tutorId === t.id)).sort((a, b) => (b.active !== false) - (a.active !== false) || a.name.localeCompare(b.name)).map(t => `<div class="row"><div class="grow"><div class="t">${esc(t.name)}</div><div class="m">${t.email ? `${esc(t.email)} · ` : Auth.on ? "No Google account linked · " : ""}${plural(D.attendance.filter(a => a.tutorId === t.id).length, "lesson day")}</div></div>${t.active === false ? `<span class="chip">Removed</span><button class="btn small quiet" data-act="restoretutor" data-id="${t.id}">Restore</button>` : `<button class="btn small quiet" data-act="rmtutor" data-id="${t.id}">Remove</button>`}</div>`).join("") || `<div class="empty">No tutors yet.</div>`}</div>
     </section>
-    <section class="panel s6"><div class="panel-head"><h2>Kids <span class="count">${activeStudents().length}</span></h2></div>
-      <div class="stack">${activeStudents().map(s => `<div class="row"><div class="grow"><div class="t">${esc(s.name)}</div><div class="m">${s.level ? `Level ${s.level}` : "No level"} · ${plural(readingsOf(s.id).length, "story", "stories")}</div></div><button class="btn small quiet" data-act="rmkid" data-id="${s.id}">Remove</button></div>`).join("") || `<div class="empty">No kids yet.</div>`}</div>
+    <section class="panel s6"><div class="panel-head"><h2>Tutees <span class="count">${activeStudents().length}</span></h2></div>
+      <div class="stack">${activeStudents().map(s => `<div class="row"><div class="grow"><div class="t">${esc(s.name)}</div><div class="m">${s.level ? `Level ${s.level}` : "No level"} · ${plural(readingsOf(s.id).length, "story", "stories")}</div></div><button class="btn small quiet" data-act="rmkid" data-id="${s.id}">Remove</button></div>`).join("") || `<div class="empty">No tutees yet.</div>`}</div>
     </section>
     ${(() => { const dupes = [...tutorPeople().values()].filter(p => p.ids.size > 1); return dupes.length ? `<section class="panel"><div class="panel-head"><h2>Duplicate tutors <span class="count">${dupes.length}</span></h2></div>
       <p class="muted small" style="margin-bottom:12px">These names appear more than once, usually an old name-only entry plus their Google account. Attendance already counts them as one person; merging tidies up the records.</p>
       <div class="stack">${dupes.map(p => `<div class="row"><div class="grow"><div class="t">${esc(p.name)}</div><div class="m">${p.ids.size} records</div></div><button class="btn small" data-act="mergetutor" data-v="${esc(p.key)}">Merge into one</button></div>`).join("")}</div></section>` : ""; })()}
-    <section class="panel"><div class="panel-head"><h2>Merge duplicate kids</h2></div>
-      <p class="muted small" style="margin-bottom:12px">If the same kid was added twice, move everything from one into the other. Stories, tests, notes and attendance all come across.</p>
+    <section class="panel"><div class="panel-head"><h2>Merge duplicate tutees</h2></div>
+      <p class="muted small" style="margin-bottom:12px">If the same tutee was added twice, move everything from one into the other. Stories, tests, notes and attendance all come across.</p>
       <div class="inline">
         <label class="muted small" for="mfrom">Merge</label>
         <select id="mfrom" data-input="mergeFrom"><option value="">Choose the duplicate</option>${activeStudents().map(x => `<option value="${x.id}" ${S.mergeFrom === x.id ? "selected" : ""}>${esc(x.name)} · ${plural(readingsOf(x.id).length, "story", "stories")}</option>`).join("")}</select>
         <label class="muted small" for="minto">into</label>
-        <select id="minto" data-input="mergeInto"><option value="">Choose the kid to keep</option>${activeStudents().filter(x => x.id !== S.mergeFrom).map(x => `<option value="${x.id}" ${S.mergeInto === x.id ? "selected" : ""}>${esc(x.name)} · ${plural(readingsOf(x.id).length, "story", "stories")}</option>`).join("")}</select>
+        <select id="minto" data-input="mergeInto"><option value="">Choose the tutee to keep</option>${activeStudents().filter(x => x.id !== S.mergeFrom).map(x => `<option value="${x.id}" ${S.mergeInto === x.id ? "selected" : ""}>${esc(x.name)} · ${plural(readingsOf(x.id).length, "story", "stories")}</option>`).join("")}</select>
         ${S.mergeConfirm && S.mergeFrom && S.mergeInto ? `<button class="btn small danger" data-act="merge">Yes, merge ${esc(student(S.mergeFrom)?.name)} into ${esc(student(S.mergeInto)?.name)}</button><button class="btn small quiet" data-act="cancelmerge">Cancel</button>`
           : `<button class="btn small" data-act="merge" ${S.mergeFrom && S.mergeInto && S.mergeFrom !== S.mergeInto ? "" : "disabled"}>Merge</button>`}
       </div></section>
@@ -1044,8 +1044,8 @@ function adminHTML() {
 function csvOf(rows) { return rows.map(r => r.map(v => { const s = String(v ?? ""); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; }).join(",")).join("\n"); }
 function exportCsv(kind) {
   let rows, name;
-  if (kind === "readings") { name = `stories-read-${TODAY}.csv`; rows = [["date", "kid", "tutor", "story", "level", "words", "missed_count", "accuracy_pct", "words_correct_per_min", "seconds", "questions_right", "questions_asked", "missed_words", "note"], ...D.readings.map(r => [r.date, student(r.studentId)?.name, tutor(r.tutorId)?.name, r.title, r.level, r.total, r.errors, Math.round(r.accuracy * 100), r.seconds ? Math.round(r.wcpm) : "", r.seconds || 0, r.questions ? r.questions.filter(q => q.ok).length : "", r.questions ? r.questions.length : "", (r.missed || []).join(" "), r.note])]; }
-  else { name = `kids-${TODAY}.csv`; rows = [["kid", "level", "level_name", "stories_read", "last_read", "last_accuracy_pct", "last_words_per_min", "weeks_with_lesson", "weeks_since_joining"], ...activeStudents().map(s => { const l = readingsOf(s.id)[0], a = kidAttendance(s.id, 999); return [s.name, s.level || "", levelOf(s.level)?.name || "", readingsOf(s.id).length, l?.date || "", l ? Math.round(l.accuracy * 100) : "", l && l.seconds ? Math.round(l.wcpm) : "", a.came, a.of]; })]; }
+  if (kind === "readings") { name = `stories-read-${TODAY}.csv`; rows = [["date", "tutee", "tutor", "story", "level", "words", "missed_count", "accuracy_pct", "words_correct_per_min", "seconds", "questions_right", "questions_asked", "missed_words", "note"], ...D.readings.map(r => [r.date, student(r.studentId)?.name, tutor(r.tutorId)?.name, r.title, r.level, r.total, r.errors, Math.round(r.accuracy * 100), r.seconds ? Math.round(r.wcpm) : "", r.seconds || 0, r.questions ? r.questions.filter(q => q.ok).length : "", r.questions ? r.questions.length : "", (r.missed || []).join(" "), r.note])]; }
+  else { name = `tutees-${TODAY}.csv`; rows = [["tutee", "level", "level_name", "stories_read", "last_read", "last_accuracy_pct", "last_words_per_min", "weeks_with_lesson", "weeks_since_joining"], ...activeStudents().map(s => { const l = readingsOf(s.id)[0], a = kidAttendance(s.id, 999); return [s.name, s.level || "", levelOf(s.level)?.name || "", readingsOf(s.id).length, l?.date || "", l ? Math.round(l.accuracy * 100) : "", l && l.seconds ? Math.round(l.wcpm) : "", a.came, a.of]; })]; }
   const url = URL.createObjectURL(new Blob([csvOf(rows)], { type: "text/csv" }));
   const a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 2000);
@@ -1142,7 +1142,7 @@ document.addEventListener("click", async e => {
     case "delresult": { await safe(Store.remove("readings", s.resultId), "Reading deleted"); Object.assign(s, { mode: "home", confirmDel: false, result: null, resultId: null }); break; }
     case "fixrow": S.fixRow = S.fixRow === id ? null : id; S.fixDel = false; break;
     case "fixdel": if (!S.fixDel) { S.fixDel = true; break; } await safe(Store.remove("readings", id), "Reading deleted"); S.fixRow = null; S.fixDel = false; break;
-    case "fixmove": { const to = $(`#move-${id}`)?.value; if (!to) { toast("Choose a kid to move it to."); return; } await safe(Store.update("readings", id, { studentId: to }), `Moved to ${student(to)?.name}`); S.fixRow = null; break; }
+    case "fixmove": { const to = $(`#move-${id}`)?.value; if (!to) { toast("Choose a tutee to move it to."); return; } await safe(Store.update("readings", id, { studentId: to }), `Moved to ${student(to)?.name}`); S.fixRow = null; break; }
     case "qmark": s.q.marks[Number(b.dataset.i)] = b.dataset.ok === "1"; break;
     case "qshow": s.q.show = !s.q.show; break;
     case "qretry": loadQuestions(id); return;
@@ -1182,7 +1182,7 @@ document.addEventListener("click", async e => {
     case "preview": S.openStory = S.openStory === id ? null : id; break;
     case "rmstory": await safe(Store.update("stories", id, { active: false }), "Story deleted"); break;
     case "rmtutor": await safe(Store.update("tutors", id, { active: false }), "Tutor removed. Their past lessons stay in the log."); break;
-    case "rmkid": await safe(Store.update("students", id, { active: false }), "Kid removed. Their past stories stay in the log."); break;
+    case "rmkid": await safe(Store.update("students", id, { active: false }), "Tutee removed. Their past stories stay in the log."); break;
     case "lock": S.adminOk = false; break;
     case "restoretutor": await safe(Store.update("tutors", id, { active: true }), "Tutor restored"); break;
     case "mergetutor": {
@@ -1262,7 +1262,7 @@ document.addEventListener("submit", async e => {
   }
   if (kind === "newKid") {
     const name = S.newKid.trim().replace(/\s+/g, " "); if (!name) return;
-    if (activeStudents().find(s => s.name.toLowerCase() === name.toLowerCase())) { toast(`There's already a kid called ${name}. Search for them, or add a last initial.`); return; }
+    if (activeStudents().find(s => s.name.toLowerCase() === name.toLowerCase())) { toast(`There's already a tutee called ${name}. Search for them, or add a last initial.`); return; }
     const id = await Store.add("students", { name, level: null, active: true, at: Date.now() }).catch(() => null);
     S.newKid = ""; if (id) await pick(id); else toast("That didn't save. Try again.");
   }
