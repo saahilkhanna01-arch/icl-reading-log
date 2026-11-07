@@ -210,7 +210,7 @@ function levelHint(k, inResult) {
   return "";
 }
 function readyToMoveUp(s) {
-  if (!s.level || s.level >= 12) return false;
+  if (!s.level || s.level >= LEVELS.length) return false;
   const atLevel = readingsOf(s.id).filter(r => r.level === s.level).slice(0, 2);
   return atLevel.length === 2 && atLevel.every(r => r.accuracy >= 0.95);
 }
@@ -426,6 +426,7 @@ const PATTERNS = {
   4: w => /(ff|ll|ss|zz|ck)/.test(w), 5: w => /(sh|th|ch|wh)/.test(w), 6: w => /(ng|nk|^st|^fr|^gr|^pl|^bl|^cl|^dr|^tr|^sp|^sl|^fl|^br|^cr|^sn|^sk|^sw|^gl|st$|mp$|nd$)/.test(w),
   7: w => /[aeiou][^aeiouwy]e$/.test(w) && w.length >= 4, 8: w => /(ed|ing|es)$/.test(w) && w.length >= 5, 9: w => /(ar|or|er|ir|ur)/.test(w),
   10: w => /(ai|ay|ee|ea|oa|ow)/.test(w), 11: w => /(oo|ou|ow|oi|oy|aw|au)/.test(w), 12: w => w.length >= 8,
+  ...Object.fromEntries([13, 14, 15, 16, 17, 18].map(n => [n, w => w.length >= 8 + Math.floor((n - 13) / 2) || /(tion|sion|ous|ment|ness|able|ible|ture)$/.test(w) && w.length >= 7])),
 };
 function patternWords(st, n = 8) {
   const test = PATTERNS[st.level] || (() => false), tricky = new Set((st.tricky || []).map(clean)), out = [];
@@ -582,9 +583,9 @@ function planHTML(k, s) {
         <button class="step ${today.length > 1 ? "done" : ""}" data-act="scrollstories">${today.length > 1 ? TICK : ""}Second story</button>
       </div></section>`}
     <section class="panel" id="stories">
-      <div class="panel-head"><h2>${s.mode === "pick" ? `Choose a story for ${name}` : `Level ${n} stories`} <span class="muted" style="font-weight:400">${s.mode === "pick" ? `Level ${n} · ` : ""}${esc(lv.name)} · about UFLI ${lv.ufli}</span></h2>
+      <div class="panel-head"><h2>${s.mode === "pick" ? `Choose a story for ${name}` : `Level ${n} stories`} <span class="muted" style="font-weight:400">${s.mode === "pick" ? `Level ${n} · ` : ""}${esc(lv.name)} · ${levelSub(lv)}</span></h2>
         <div class="inline"><button class="btn small quiet" data-act="browse" data-id="${k.id}" data-n="${n - 1}" ${n <= 1 ? "disabled" : ""}>Easier</button>
-        <button class="btn small quiet" data-act="browse" data-id="${k.id}" data-n="${n + 1}" ${n >= 12 ? "disabled" : ""}>Harder</button></div></div>
+        <button class="btn small quiet" data-act="browse" data-id="${k.id}" data-n="${n + 1}" ${n >= LEVELS.length ? "disabled" : ""}>Harder</button></div></div>
       ${n !== k.level ? `<p class="muted small" style="margin:-6px 0 12px">${name} is on Level ${k.level}. <button class="linkish" data-act="browse" data-id="${k.id}" data-n="${k.level}">Back to their level</button></p>` : ""}
       <div class="ai-card">
         <div class="grow"><div class="t">Practice story made for ${name}</div>
@@ -597,7 +598,7 @@ function planHTML(k, s) {
       ${practice.length ? `<h3 class="group-h">Practice stories for ${name} <span class="count">${practice.length}</span></h3><div class="stack">${practice.map(st => storyRow(st, "practice")).join("")}</div>` : ""}
       <h3 class="group-h">Up next <span class="count">${unread.length}</span></h3>
       ${unread.length ? `<div class="stack">${unread.map((st, i) => storyRow(st, i === 0 ? "next" : "unread")).join("")}</div>`
-        : `<div class="empty"><b>${name} has read every Level ${n} story.</b>${n < 12 ? `Try <button class="linkish" data-act="browse" data-id="${k.id}" data-n="${n + 1}">Level ${n + 1}</button>, make a practice story, or read a favourite again below.` : "Make a practice story, or read a favourite again below."}</div>`}
+        : `<div class="empty"><b>${name} has read every Level ${n} story.</b>${n < LEVELS.length ? `Try <button class="linkish" data-act="browse" data-id="${k.id}" data-n="${n + 1}">Level ${n + 1}</button>, make a practice story, or read a favourite again below.` : "Make a practice story, or read a favourite again below."}</div>`}
       ${read.length ? `<button class="group-toggle" data-act="toggleread" data-id="${k.id}" aria-expanded="${!!s.showRead}"><span>${s.showRead ? "Hide" : "Show"} stories already read</span><span class="count">${read.length}</span></button>
         ${s.showRead ? `<div class="stack">${read.map(st => storyRow(st, "read")).join("")}</div>` : ""}` : ""}
     </section></div>`;
@@ -725,26 +726,27 @@ function resultHTML(k, s) {
 }
 
 /* ---------- placement test ---------- */
-const CHECK_STEPS = ["Letter sounds", "Made-up words", "Short story"];
+const CHECK_STEPS = ["Letter sounds", "Made-up words", "Short story", "Longer passage"];
 function checkHTML(k, s) {
   const c = s.check, step = c.step, PLACEMENT = PLACEMENTS[c.v || 0];
   let body = "", hint = "";
   if (step === 0) { hint = "Ask them to say the sound each letter makes, left to right. Start the timer as they begin. Tap any sound they get wrong."; body = `<div class="grid-items letters">${PLACEMENT.letters.map((l, i) => `<button class="gi ${c.miss[0].has(i) ? "miss" : ""}" data-act="cmark" data-id="${k.id}" data-i="${i}" aria-pressed="${c.miss[0].has(i)}">${l}</button>`).join("")}</div>`; }
   if (step === 1) { hint = "These are made-up words, so they have to sound them out. Tap any word read wrong. No timer needed."; let i = -1; body = `<div class="grid-items nwords">${PLACEMENT.bands.map(b => `<span class="band-label">${esc(b.label)}</span>${b.words.map(w => { i++; return `<button class="gi ${c.miss[1].has(i) ? "miss" : ""}" data-act="cmark" data-id="${k.id}" data-i="${i}" aria-pressed="${c.miss[1].has(i)}">${w}</button>`; }).join("")}`).join("")}</div>`; }
   if (step === 2) { hint = "Start the timer as they begin reading. Tap any word read wrong or skipped. Stop when they finish or after two minutes."; body = `<div class="story" style="--size:${36 + S.textSize * 4}px"><h2>${PLACEMENT.passage.title}</h2>${storyBody(PLACEMENT.passage.text, c.miss[2], k.id, "cmark")}</div>`; }
-  const timed = step !== 1;
+  if (step === 3) { hint = `${esc(first(k.name))} read the short story very well, so this harder passage finds how far above Level 12 they are. Start the timer as they begin. Tap any word read wrong or skipped.`; body = `<div class="story" style="--size:${30 + S.textSize * 4}px"><h2>${PLACEMENT.advanced.title}</h2>${storyBody(PLACEMENT.advanced.text, c.miss[3], k.id, "cmark")}</div>`; }
+  const timed = step !== 1, steps = c.adv ? CHECK_STEPS : CHECK_STEPS.slice(0, 3), last = steps.length - 1;
   return `<div class="reader">
     <div class="reader-bar">
       <div><button class="linkish" data-act="home" data-id="${k.id}">Cancel test</button>
         <div class="ttl">Placement test for ${esc(k.name)} <span class="muted small" style="font-weight:400">· version ${(c.v || 0) + 1} of 3</span></div>
-        <div class="steps" style="margin-top:6px">${CHECK_STEPS.map((n, i) => `<span class="chip ${i === step ? "accent" : i < step ? "good" : ""}">${n}</span>`).join("")}</div></div>
+        <div class="steps" style="margin-top:6px">${steps.map((n, i) => `<span class="chip ${i === step ? "accent" : i < step ? "good" : ""}">${n}</span>`).join("")}</div></div>
       ${timed ? `<div class="inline"><span class="timer" data-timer="${k.id}">${fmtTime(elapsed(s))}</span><button class="btn ${s.running ? "" : "primary"}" data-act="timer" data-id="${k.id}">${s.running ? "Pause" : elapsed(s) ? "Resume" : "Start timer"}</button></div>` : ""}
     </div>
     <p class="muted" style="margin-top:14px;max-width:70ch">${hint}</p>
     ${body}
     <div class="inline" style="justify-content:flex-end"><span class="muted num" id="cwrong">${c.miss[step].size} wrong</span>
       ${step > 0 ? `<button class="btn" data-act="cstep" data-id="${k.id}" data-d="-1">Back</button>` : ""}
-      <button class="btn primary" data-act="cstep" data-id="${k.id}" data-d="1">${step === 2 ? "Finish test" : "Next part"}</button></div>
+      <button class="btn primary" data-act="cstep" data-id="${k.id}" data-d="1">${step >= 2 && step === last ? "Finish test" : "Next part"}</button></div>
   </div>`;
 }
 function scoreCheck(c) {
@@ -778,7 +780,21 @@ function scoreCheck(c) {
     if (lettersPct < 0.85) level = Math.min(level, 2);
     if (level < before) why += `. Lowered to Level ${level} because the short story was hard (${Math.round(pacc * 100)}%)`;
   }
-  return { lettersRight, lettersTotal: PLACEMENT.letters.length, lpm, bandScores, pacc, pwcpm, level, why };
+  /* Strong readers take a harder passage. Accuracy and speed on it place them from Level 12 to 18. */
+  let aacc = null, awcpm = null;
+  if (level === 12 && c.adv && c.miss[3]) {
+    const atotal = wordCount(PLACEMENT.advanced.text);
+    aacc = (atotal - c.miss[3].size) / atotal;
+    awcpm = c.secs[3] ? (atotal - c.miss[3].size) / (c.secs[3] / 60) : null;
+    if (aacc < 0.9) { level = 12; why = `Strong on the main test; the longer passage was hard (${Math.round(aacc * 100)}%)`; }
+    else if (aacc < 0.95) { level = 13; why = `Read the longer passage at ${Math.round(aacc * 100)}% accuracy`; }
+    else {
+      const sp = awcpm ?? 0, top = aacc >= 0.98 ? 18 : aacc >= 0.97 ? 17 : 15;
+      level = Math.min(top, awcpm == null ? 14 : sp < 100 ? 14 : sp < 120 ? 15 : sp < 140 ? 16 : sp < 160 ? 17 : 18);
+      why = `Read the longer passage at ${Math.round(aacc * 100)}% accuracy${awcpm != null ? `, ${Math.round(awcpm)} words correct a minute` : " (not timed)"}`;
+    }
+  }
+  return { lettersRight, lettersTotal: PLACEMENT.letters.length, lpm, bandScores, pacc, pwcpm, aacc, awcpm, level, why };
 }
 function checkResultHTML(k, s) {
   const r = s.checkResult;
@@ -787,6 +803,7 @@ function checkResultHTML(k, s) {
       <div class="tile"><span class="k">Letter sounds</span><span class="v">${r.lettersRight}<small>of ${r.lettersTotal}</small></span><span class="c">${r.lpm != null ? `${Math.round(r.lpm)} correct a minute` : "Not timed"}</span></div>
       <div class="tile"><span class="k">Made-up words</span><span class="v">${r.bandScores.reduce((a, b) => a + b, 0)}<small>of 20</small></span><span class="c">${BAND_INFO.map((b, i) => `${b.label} ${r.bandScores[i]}/5`).join(" · ")}</span></div>
       <div class="tile"><span class="k">Short story</span><span class="v">${Math.round(r.pacc * 100)}<small>%</small></span><span class="c">${r.pwcpm != null ? `${Math.round(r.pwcpm)} words correct a minute` : "Not timed"}</span></div>
+      ${r.aacc != null ? `<div class="tile"><span class="k">Longer passage</span><span class="v">${Math.round(r.aacc * 100)}<small>%</small></span><span class="c">${r.awcpm != null ? `${Math.round(r.awcpm)} words correct a minute` : "Not timed"}</span></div>` : ""}
     </div>
     <p style="margin-bottom:12px"><b>Suggested start: Level ${r.level}, ${esc(levelOf(r.level).name)}.</b> <span class="muted">${esc(r.why)}.</span></p>
     <div class="inline"><label class="muted small" for="clevel-${k.id}">Start at</label>
@@ -867,7 +884,7 @@ function kidHTML() {
   const withQ = rs.filter(r => r.questions?.length), comp = withQ.length ? avg(withQ.map(r => r.questions.filter(q => q.ok).length / r.questions.length)) : null;
   return `<div class="col">
     <div class="title-row"><div><button class="linkish back" data-act="go" data-v="kids">All tutees</button><h1 class="h1">${esc(k.name)}</h1>
-      <p class="sub">${lv ? `Level ${lv.n} · ${esc(lv.name)} · about UFLI lessons ${lv.ufli}` : "No level yet. The placement test runs when they join a lesson."}</p></div></div>
+      <p class="sub">${lv ? `Level ${lv.n} · ${esc(lv.name)} · ${levelSub(lv)}` : "No level yet. The placement test runs when they join a lesson."}</p></div></div>
     <div class="col tiles" style="grid-column:1/-1;gap:var(--gap)">
       ${tile("Stories read", rs.length, rs.length ? `Since ${fmtDay(rs[rs.length - 1].date)}` : "None yet")}
       ${tile("Words a minute", lastW ? Math.round(lastW.wcpm) : "–", lastW && firstW && lastW !== firstW ? `${Math.round(lastW.wcpm - firstW.wcpm) >= 0 ? "+" : "−"}${Math.abs(Math.round(lastW.wcpm - firstW.wcpm))} since the first timed story` : "Latest timed story")}
@@ -1002,7 +1019,7 @@ function adminHTML() {
     <div class="col tiles" style="grid-column:1/-1;gap:var(--gap)">
       ${tile("Tutors", activeTutors().length, `${new Set(D.attendance.map(a => a.tutorId)).size} have signed in at least once`)}
       ${tile("Tutees", activeStudents().length, `${activeStudents().filter(s => !s.level).length} still need the placement test`)}
-      ${tile("Story library", STORIES.length, `${Math.round(STORIES.length / 12)} per level, with questions${lib.length ? ` · ${lib.length} practice stories` : ""}`)}
+      ${tile("Story library", STORIES.length, `${Math.round(STORIES.length / LEVELS.length)} per level, with questions${lib.length ? ` · ${lib.length} practice stories` : ""}`)}
       ${tile("Missing lately", missing.length, missing.length ? missing.slice(0, 3).map(s => first(s.name)).join(", ") : "No one has gone two weeks without a lesson")}
     </div>
     <section class="panel s6"><div class="panel-head"><h2>Practice stories written by AI <span class="count">${lib.length}</span></h2>
@@ -1155,18 +1172,24 @@ document.addEventListener("click", async e => {
     case "savernote": await safe(Store.update("readings", s.resultId, { note: (s.rnote || "").trim() }), "Note saved"); break;
     case "leveldown": { const k = student(id); if (k && k.level > 1) { await safe(Store.update("students", id, { level: k.level - 1 }), `${k.name} moved to Level ${k.level - 1}`); Object.assign(sess(id), { browse: null, storyId: null }); } break; }
     case "dismisshint": sess(id).hideHint = student(id)?.level; break;
-    case "levelup": { const k = student(id); if (k && k.level < 12) { await safe(Store.update("students", id, { level: k.level + 1 }), `${k.name} moved up to Level ${k.level + 1}`); Object.assign(sess(id), { browse: null, storyId: null }); } break; }
+    case "levelup": { const k = student(id); if (k && k.level < LEVELS.length) { await safe(Store.update("students", id, { level: k.level + 1 }), `${k.name} moved up to Level ${k.level + 1}`); Object.assign(sess(id), { browse: null, storyId: null }); } break; }
     case "check": { const v = D.checks.filter(c => c.studentId === id).length % PLACEMENTS.length; Object.assign(sess(id), { mode: "check", check: { step: 0, v, miss: [new Set(), new Set(), new Set()], secs: [0, 0, 0] }, acc: 0, running: false }); break; }
     case "cmark": { const c = s.check, i = Number(b.dataset.i), m = c.miss[c.step]; m.has(i) ? m.delete(i) : m.add(i); saveSessions(); b.classList.toggle("miss"); b.setAttribute("aria-pressed", m.has(i)); const w = $("#cwrong"); if (w) w.textContent = `${m.size} wrong`; return; }
     case "cstep": {
       const c = s.check; c.secs[c.step] = Math.round(elapsed(s) / 1000); s.acc = 0; s.running = false;
-      if (Number(b.dataset.d) > 0 && c.step === 2) { s.checkResult = scoreCheck(c); s.chosen = s.checkResult.level; s.mode = "checkResult"; }
+      const d = Number(b.dataset.d);
+      if (d > 0 && c.step === 2) {
+        const r = scoreCheck({ ...c, adv: false });
+        if (r.level === 12) { c.adv = true; c.miss[3] ||= new Set(); c.secs[3] ||= 0; c.step = 3; s.acc = 0; toast("Strong reader! One more passage to find the right level."); }
+        else { c.adv = false; s.checkResult = r; s.chosen = r.level; s.mode = "checkResult"; }
+      }
+      else if (d > 0 && c.step === 3) { s.checkResult = scoreCheck(c); s.chosen = s.checkResult.level; s.mode = "checkResult"; }
       else { c.step = Math.max(0, c.step + Number(b.dataset.d)); s.acc = (c.secs[c.step] || 0) * 1000; }
       break;
     }
     case "savecheck": {
       const r = s.checkResult, lvl = Number(s.chosen || r.level);
-      await safe(Store.add("checks", { date: TODAY, studentId: id, tutorId: S.me, lettersRight: r.lettersRight, lettersTotal: r.lettersTotal, lettersPerMin: r.lpm, wordsRight: r.bandScores.reduce((a, b) => a + b, 0), bandScores: r.bandScores, passageAccuracy: r.pacc, passageWcpm: r.pwcpm, suggested: r.level, level: lvl, version: (s.check?.v || 0) + 1, at: Date.now() }));
+      await safe(Store.add("checks", { date: TODAY, studentId: id, tutorId: S.me, lettersRight: r.lettersRight, lettersTotal: r.lettersTotal, lettersPerMin: r.lpm, wordsRight: r.bandScores.reduce((a, b) => a + b, 0), bandScores: r.bandScores, passageAccuracy: r.pacc, passageWcpm: r.pwcpm, advancedAccuracy: r.aacc, advancedWcpm: r.awcpm, suggested: r.level, level: lvl, version: (s.check?.v || 0) + 1, at: Date.now() }));
       await safe(Store.update("students", id, { level: lvl }), `Saved. Starting at Level ${lvl}`);
       Object.assign(s, { mode: "home", lstep: 0, browse: null, storyId: null }); break;
     }

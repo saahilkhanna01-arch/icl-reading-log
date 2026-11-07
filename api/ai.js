@@ -16,6 +16,12 @@ const LEVELS = {
   10: { name: "ai, ay, ee, ea, oa, ow", pattern: "long vowel teams ai, ay, ee, ea, oa, ow (rain, play, tree, read, boat, snow)", words: [180, 250] },
   11: { name: "oo, ou, ow, oi, oy, aw", pattern: "vowel teams oo, ou, ow (cow), oi, oy, aw, au (moon, cloud, coin, toy, saw)", words: [200, 270] },
   12: { name: "Longer words", pattern: "two- and three-syllable words, prefixes (un-, re-) and suffixes (-ful, -less, -ly, -tion)", words: [220, 300] },
+  13: { name: "Longer stories", grade: "Grade 3", words: [280, 340] },
+  14: { name: "Chapter-style stories", grade: "Grade 3 to 4", words: [320, 380] },
+  15: { name: "Richer vocabulary", grade: "Grade 4", words: [360, 430] },
+  16: { name: "Stories and true facts", grade: "Grade 4 to 5", words: [400, 480] },
+  17: { name: "Deeper reading", grade: "Grade 5 to 6", words: [440, 530] },
+  18: { name: "Advanced reading", grade: "Grade 6 to 7", words: [480, 580] },
 };
 
 const AUDIENCE = `The readers are children aged 6 to 13 in villages in rural Pakistan, learning to read English as a second language over Zoom with volunteer high school tutors from Canada.`;
@@ -26,10 +32,32 @@ const str = (v, max) => String(v ?? "").replace(/\s+\n/g, "\n").trim().slice(0, 
 const arr = (v, n) => (Array.isArray(v) ? v : []).slice(0, n);
 
 function earlier(n) {
-  return Object.entries(LEVELS).filter(([k]) => Number(k) < n).map(([k, l]) => `Level ${k}: ${l.pattern}`).join("\n") || "None. This is the first level.";
+  return Object.entries(LEVELS).filter(([k]) => Number(k) < n && LEVELS[k].pattern).map(([k, l]) => `Level ${k}: ${l.pattern}`).join("\n") || "None. This is the first level.";
+}
+
+function advancedPrompt(level, count, focusWords, avoid, practice) {
+  const L = LEVELS[level];
+  const words = practice ? [Math.round(L.words[0] * 0.7), L.words[0]] : L.words;
+  return `You write reading stories for confident readers. ${AUDIENCE} These children have finished phonics and now read at about ${L.grade} level.
+
+Write ${count} different stories for Level ${level}: ${L.name}.
+
+Rules:
+- Each story is ${words[0]} to ${words[1]} words long, in 4 to 7 paragraphs separated by a blank line.
+- Use vocabulary and sentence length right for ${L.grade}. Include a few new words the reader can work out from the sentences around them.
+- ${level >= 16 ? "About one story in three can be true nonfiction (science, nature, history, how things work), written in an engaging way." : "Write fiction with a clear problem, real feelings, dialogue, and a resolution."}
+- Each story has a point or lesson that is shown through what happens, not stated as a moral at the end.
+- List up to 8 harder vocabulary words or names from the story in "tricky".
+- ${STYLE.replace("Short sentences.", "Vary sentence length.")}
+- Each story has its own title and its own plot.${focusWords?.length ? `\n- This is a practice story for one child. Use each of these words they keep missing at least twice, naturally: ${focusWords.slice(0, 10).join(", ")}.` : ""}${avoid?.length ? `\n- Do not reuse these titles: ${avoid.slice(0, 60).join("; ")}.` : ""}
+- For each story write 3 questions with short answers: one about what happened, one asking why (the answer needs some thinking), and one asking what a word from the story means.
+
+Reply with JSON only, in this shape:
+{"stories":[{"title":"","text":"","tricky":[""],"questions":[{"q":"","a":""}]}]}`;
 }
 
 function storyPrompt(level, count, focusWords, avoid, practice) {
+  if (level >= 13) return advancedPrompt(level, count, focusWords, avoid, practice);
   const L = LEVELS[level];
   const words = practice ? [Math.round(L.words[0] * 0.8), L.words[0]] : L.words;
   return `You write decodable reading stories. ${AUDIENCE}
@@ -53,7 +81,7 @@ Reply with JSON only, in this shape:
 }
 
 function build(b) {
-  const level = Math.min(12, Math.max(1, Number(b.level) || 1));
+  const level = Math.min(18, Math.max(1, Number(b.level) || 1));
   if (b.task === "stories") return storyPrompt(level, Math.min(3, Math.max(1, Number(b.count) || 2)), [], arr(b.avoid, 60).map(s => str(s, 80)));
   if (b.task === "story") return storyPrompt(level, 1, arr(b.focusWords, 10).map(s => str(s, 30)), arr(b.avoid, 60).map(s => str(s, 80)), true);
   if (b.task === "questions") return `${AUDIENCE}
@@ -77,7 +105,7 @@ function tidy(task, out) {
   if (task === "stories" || task === "story") {
     const stories = arr(out.stories, 3).map(s => ({
       title: str(s.title, 80) || "A New Story",
-      text: str(s.text, 3000),
+      text: str(s.text, 5000),
       tricky: arr(s.tricky, 8).map(w => str(w, 30)).filter(Boolean),
       questions: arr(s.questions, 3).map(q => ({ q: str(q.q, 200), a: str(q.a, 200) })).filter(q => q.q),
     })).filter(s => s.text.split(/\s+/).length >= 30);
@@ -99,7 +127,7 @@ async function callGroq(key, model, prompt, withReasoning) {
     messages: [{ role: "user", content: prompt }],
     response_format: { type: "json_object" },
     temperature: 0.9,
-    max_completion_tokens: 4000,
+    max_completion_tokens: 6000,
   };
   if (withReasoning) body.reasoning_effort = "low";
   return fetch("https://api.groq.com/openai/v1/chat/completions", {
